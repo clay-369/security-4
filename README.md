@@ -5,3 +5,4 @@ Template voor WP3 opdracht "Accessibility Hub". Vul dit document aan zoals besch
 Namen:
 
 - Clayton Sumter
+- Yorick Mol
