@@ -6,3 +6,4 @@ Namen:
 
 - Clayton Sumter
 - Yorick Mol
+- Timothy Jansen
