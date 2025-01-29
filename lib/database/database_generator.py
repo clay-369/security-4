@@ -19,8 +19,8 @@ class WP3DatabaseGenerator:
         self.create_table_beperking_onderzoek()
         self.create_table_onderzoeken()
         self.create_table_inschrijvingen()
-        # if self.create_initial_data:
-        #     self.insert_admin_user()
+        if self.create_initial_data:
+            self.insert_beperkingen()
 
 
     def create_table_deskundigen(self):
@@ -158,13 +158,40 @@ class WP3DatabaseGenerator:
         print("✅ Beperkingen table created")
 
 
-    def insert_admin_user(self):
-        users = [
-            ( "krugw@hr.nl", hash_password("geheim"), "Gerard van Kruining", 1),
-            ( "vried@hr.nl", hash_password("geheimer"), "Diederik de Vries", 0),
+    def insert_beperkingen(self):
+        beperkingen = [
+            # Auditieve beperkingen
+            ("auditief", "doof"),
+            ("auditief", "slechthorend"),
+            ("auditief", "doofblind"),
+            # Visuele beperkingen
+            ("visueel", "blind"),
+            ("visueel", "slechtziend"),
+            ("visueel", "kleurenblind"),
+            ("visueel", "doofblind"),
+            # Motorische / lichamelijke beperkingen
+            ("motorisch of lichamelijk", "amputatie of mismaaktheid"),
+            ("motorisch of lichamelijk", "artritus"),
+            ("motorisch of lichamelijk", "fibromyalgie"),
+            ("motorisch of lichamelijk", "reuma"),
+            ("motorisch of lichamelijk", "verminderde handvaardigheid"),
+            ("motorisch of lichamelijk", "spierdystrofie"),
+            ("motorisch of lichamelijk", "rsi"),
+            ("motorisch of lichamelijk", "tremor of spasmen"),
+            ("motorisch of lichamelijk", "quadriplegie of tetraplegie"),
+            # Cognitieve / neurologische beperkingen
+            ("cognitief of neurologisch", "adhd"),
+            ("cognitief of neurologisch", "autisme"),
+            ("cognitief of neurologisch", "dyslexie"),
+            ("cognitief of neurologisch", "dyscalculie"),
+            ("cognitief of neurologisch", "leerstoornis"),
+            ("cognitief of neurologisch", "geheugen beperking"),
+            ("cognitief of neurologisch", "mulltiple sclerose"),
+            ("cognitief of neurologisch", "epilepsie"),
+            ("cognitief of neurologisch", "migraine")
         ]
-        insert_statement = "INSERT INTO users (login, password, display_name, is_admin) VALUES (?, ?, ?, ?);"
-        self.__execute_many_transaction_statement(insert_statement, users)
+        insert_statement = "INSERT INTO beperkingen (type_beperking, beperking) VALUES (?, ?)"
+        self.__execute_many_transaction_statement(insert_statement, beperkingen)
         print("✅ Default teachers / users created")
 
     # Transacties zijn duur, dat wil zeggen, ze kosten veel tijd en CPU kracht. Als je veel insert doet
