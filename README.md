@@ -8,3 +8,7 @@ Namen:
 - Yorick Mol
 - Timothy Jansen
 - Daan Stuivenberg
+
+Bronnen:
+
+- https://www.w3schools.com/
