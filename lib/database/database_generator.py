@@ -15,6 +15,8 @@ class WP3DatabaseGenerator:
         self.create_table_beheerders()
         self.create_table_organisaties()
         self.create_table_beperkingen()
+        self.create_table_beperking_deskundige()
+        self.create_table_beperking_onderzoek()
         self.create_table_onderzoeken()
         self.create_table_inschrijvingen()
         # if self.create_initial_data:
@@ -91,6 +93,32 @@ class WP3DatabaseGenerator:
         self.__execute_transaction_statement(create_statement)
         print("✅ Beperkingen table created")
 
+    def create_table_beperking_deskundige(self):
+        create_statement = """
+        CREATE TABLE IF NOT EXISTS beperking_deskundige (
+            beperking_deskundige_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            beperking_id INTEGER NOT NULL,
+            deskundige_id INTEGER NOT NULL,
+            FOREIGN KEY (beperking_id) REFERENCES beperkingen(beperking_id),
+            FOREIGN KEY (deskundige_id) REFERENCES deskundigen(deskundige_id)
+            );
+        """
+        self.__execute_transaction_statement(create_statement)
+        print("✅ Beperking-deskundige table created")
+
+    def create_table_beperking_onderzoek(self):
+        create_statement = """
+        CREATE TABLE IF NOT EXISTS beperking_onderzoek (
+            beperking_onderzoek_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            beperking_id INTEGER NOT NULL,
+            onderzoek_id INTEGER NOT NULL,
+            FOREIGN KEY (beperking_id) REFERENCES beperkingen(beperking_id),
+            FOREIGN KEY (onderzoek_id) REFERENCES onderdoeken(onderzoek_id)
+            );
+        """
+        self.__execute_transaction_statement(create_statement)
+        print("✅ Beperking-onderzoek table created")
+
     def create_table_onderzoeken(self):
         create_statement = """
         CREATE TABLE IF NOT EXISTS onderzoeken (
@@ -128,6 +156,7 @@ class WP3DatabaseGenerator:
         """
         self.__execute_transaction_statement(create_statement)
         print("✅ Beperkingen table created")
+
 
     def insert_admin_user(self):
         users = [
