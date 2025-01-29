@@ -21,6 +21,7 @@ class WP3DatabaseGenerator:
         self.create_table_inschrijvingen()
         if self.create_initial_data:
             self.insert_beperkingen()
+            self.insert_beheerders()
 
 
     def create_table_deskundigen(self):
@@ -192,7 +193,16 @@ class WP3DatabaseGenerator:
         ]
         insert_statement = "INSERT INTO beperkingen (type_beperking, beperking) VALUES (?, ?)"
         self.__execute_many_transaction_statement(insert_statement, beperkingen)
-        print("✅ Default teachers / users created")
+        print("✅ Filled beperkingen table")
+
+    def insert_beheerders(self):
+        beheerders = [
+            ("Gerry", "van Kruiningen", "krugw@hr.nl", "geheim")
+        ]
+        insert_statement = "INSERT INTO beheerders (voornaam, achternaam, email, wachtwoord) VALUES (?, ?, ?, ?)"
+        self.__execute_many_transaction_statement(insert_statement, beheerders)
+        print("✅ Filled default admin accounts")
+
 
     # Transacties zijn duur, dat wil zeggen, ze kosten veel tijd en CPU kracht. Als je veel insert doet
     # bundel je ze in één transactie, of je gebruikt de SQLite executemany methode.
