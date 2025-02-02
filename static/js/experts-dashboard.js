@@ -19,3 +19,5 @@ function toggleSections() {
         enlistmentsSection.classList.remove('hide');
     }
 }
+
+// Research details

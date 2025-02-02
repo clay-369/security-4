@@ -42,13 +42,14 @@ main {
 section {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 20px;
 }
 
 .section-header {
     display: flex;
     justify-content: space-between;
-    margin: 20px 0;
     align-items: end;
+    margin-bottom: 20px;
 }
 
 .section-title {
@@ -119,6 +120,11 @@ section {
     padding: 10px;
 }
 
+.enlistment-category-header {
+    text-align: center;
+    font-size: 24px;
+}
+
 .enlistments-search-bar {
     margin-bottom: 10px;
 }
@@ -165,3 +171,53 @@ section {
     border: 2px solid var(--prm-color);
 }
 
+
+/* Research Modal */
+.research-modal-background {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.research-modal {
+    background-color: #FFFFFF;
+    padding: 40px;
+    border: 1px solid #777777;
+    border-radius: 15px;
+    width: 700px;
+    min-height: 300px;
+}
+
+.research-modal-title {
+    margin: 0;
+}
+
+.research-modal-description {
+    margin: 10px 0;
+    font-size: 20px;
+    border-bottom: 1px solid black;
+    padding-bottom: 15px;
+    width: 100%;
+}
+
+.research-modal-details {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 150px auto;
+    row-gap: 5px;
+}
+
+.research-modal-details p {
+    margin: 0;
+    font-size: 18px;
+}
+
+.research-modal-organisation {
+    margin: 0;
+    font-size: 22px;
+    color: var(--prm-color);
+}

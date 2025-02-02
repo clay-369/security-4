@@ -12,6 +12,26 @@
     <link rel="stylesheet" href="../static/css/experts-dashboard.css">
 </head>
 <body>
+    <div class="research-modal-background">
+       <div class="research-modal">
+           <h1 class="research-modal-title">Onderzoek 1</h1>
+           <p class="research-modal-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus at autem consequatur consequuntur ducimus natus suscipit! Distinctio enim id laudantium?</p>
+           <h2 class="research-modal-organisation">Details</h2>
+           <div class="research-modal-details">
+               <p>Datum</p>
+               <p><time>17-01-2025</time> tot <time>31-01-2025</time></p>
+
+               <p>Waar</p>
+               <p>Op locatie</p>
+
+               <p>Beloning</p>
+               <p>taart</p>
+
+               <p>Leeftijd</p>
+               <p>18 tot 40 jaar</p>
+           </div>
+       </div>
+   </div>
    <main>
       <section class="js-research-section">
           <div class="section-header">
@@ -75,7 +95,7 @@
           </div>
           <div class="enlistments-grid-container">
               <div class="enlistment-category-container">
-                  <h2>Lopende inschrijvingen</h2>
+                  <h2 class="enlistment-category-header">Lopende inschrijvingen</h2>
                   <div class="enlistments-search-bar">
                       <label for="pending-enlistments-input">Zoeken</label>
                       <input id="pending-enlistments-input" class="enlistments-search-input" placeholder="Zoeken">
@@ -99,7 +119,7 @@
                   </div>
               </div>
               <div class="enlistment-category-container">
-                  <h2>Goedgekeurde inschrijvingen</h2>
+                  <h2 class="enlistment-category-header">Goedgekeurde inschrijvingen</h2>
                   <div class="enlistments-search-bar">
                       <label for="accepted-enlistments-input">Zoeken</label>
                       <input id="accepted-enlistments-input" class="enlistments-search-input" placeholder="Zoeken">
@@ -123,7 +143,7 @@
                   </div>
               </div>
               <div class="enlistment-category-container">
-                  <h2>Afgekeurde inschrijvingen</h2>
+                  <h2 class="enlistment-category-header">Afgekeurde inschrijvingen</h2>
                   <div class="enlistments-search-bar">
                       <label for="rejected-enlistments-input">Zoeken</label>
                       <input id="rejected-enlistments-input" class="enlistments-search-input" placeholder="Zoeken">
