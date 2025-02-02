@@ -20,4 +20,18 @@ function toggleSections() {
     }
 }
 
-// Research details
+// Close research modal
+document.querySelector('.js-close-modal')
+    .addEventListener('click', () => {
+        document.querySelector('.js-research-modal-background')
+           .classList.add('hide');
+    });
+
+// Open research modal
+document.querySelectorAll('.js-research-container')
+    .forEach(containerElement => {
+        containerElement.addEventListener('click', () => {
+            document.querySelector('.js-research-modal-background')
+                .classList.remove('hide');
+        });
+    });
