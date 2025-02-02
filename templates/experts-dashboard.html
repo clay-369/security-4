@@ -9,14 +9,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="../static/experts-dashboard.css">
+    <link rel="stylesheet" href="../static/css/experts-dashboard.css">
 </head>
 <body>
-  <main>
-      <section>
+   <main>
+      <section class="js-research-section">
           <div class="section-header">
               <h1 class="section-title">Beschikbare onderzoeken</h1>
-              <nav class="page-toggle">Ga naar inschrijvingen</nav>
+              <nav class="page-toggler js-page-toggler">Ga naar inschrijvingen</nav>
           </div>
           <div class="research-grid-container">
 
@@ -68,10 +68,10 @@
           </div>
       </section>
 
-      <section class="hide">
+      <section class="js-enlistments-section hide">
           <div class="section-header">
               <h1 class="section-title">Jouw inschrijvingen</h1>
-              <nav class="page-toggle">Ga naar onderzoeken</nav>
+              <nav class="page-toggler js-page-toggler">Ga naar onderzoeken</nav>
           </div>
           <div class="enlistments-grid-container">
               <div class="enlistment-category-container">
@@ -148,6 +148,8 @@
               </div>
           </div>
       </section>
-  </main>
+   </main>
+
+<script src="../static/js/experts-dashboard.js"></script>
 </body>
 </html>
