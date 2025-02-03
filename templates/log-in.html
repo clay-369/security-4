@@ -7,32 +7,10 @@
 
     <title>Loginpagina</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='general.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='log-in.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='...') }}">
 </head>
 <body>
-    {% with messages = get_flashed_messages(with_categories = True) %}
-        {% if messages %}
-            <div class="flash-messages">
-                {% for category, message in messages %}
-                    <div class="{{category}}">
-                        {% if category == 'succes' %}
-                            <img alt="V" class = "icon" src="static/images/check.svg">
-                        {% elif category == 'error' %}
-                            <img alt="X" class="icon" src="static/images/xmark.svg">
-                        {% endif %}
-                        <div>{{message}}</div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
-<div class="background">
-    <div class="shape"><img src="https://www.test-correct.nl/hubfs/02%20TC%20assets%20-%20illustrations/TC-on-devices-v4.svg"></div>
-    <div class="shape"></div>
-</div>
-<form method="POST" action="{{ url_for('login') }}">
-    <img class="logo" src="https://welcome.test-correct.nl/svg/logos/Logo-Test-Correct-2.svg">
+    <div class="shape"><img src="https://www.accessibility.nl/themes/sa/images/logo.svg"></div>
     <h3>Login Here</h3>
 
     <label for="email">Email</label>
@@ -42,10 +20,6 @@
     <input type="password" id="password" name="password" required>
 
     <button type="submit">Log In</button>
-
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
 </form>
 
 
