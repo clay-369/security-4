@@ -4,15 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="https://www.accessibility.nl/themes/sa/images/logo.svg">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='log-in.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <title>Loginpagina</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='...') }}">
 </head>
 <body>
-    <div class="shape"><img src="https://www.accessibility.nl/themes/sa/images/logo.svg"></div>
-    <h3>Login Here</h3>
-
+    <div class="header">
+            <img src="https://www.accessibility.nl/themes/sa/images/logo.svg">
+    </div>
+<form>
+    <h1>Log hier in</h1>
     <label for="email">Email</label>
     <input type="email" id="email" name="email" required>
 
