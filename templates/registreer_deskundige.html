@@ -1,0 +1,148 @@
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registratie ervaringsdeskundige</title>
+    <link rel="stylesheet" href="/static/registreer_deskundige.css" />
+  </head>
+  <body>
+    <h1>Registratie ervaringsdeskundige</h1>
+    <form action="/registreer deskundige">
+      <h2 class="form-title">Vul de onderstaande gegevens in</h2>
+      <div class="label-column">
+        <label for="fname">Voornaam</label>
+        <input type="text" id="fname" name="fname" />
+      </div>
+
+      <div class="label-column">
+        <label for="lname">Achternaam</label>
+        <input type="text" id="lname" name="lname" />
+      </div>
+
+      <div class="label-column">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" />
+      </div>
+
+      <div class="label-column">
+        <label for="telefoon">Telefoon</label>
+        <input type="text" id="telefoon" name="telefoon" />
+      </div>
+
+      <div class="full-width-form-element label-column">
+        <label for="postcode">Postcode</label>
+        <input type="text" id="postcode" name="postcode" />
+      </div>
+
+      <div class="label-column">
+        <label for="geboortedatum">Geboortedatum</label>
+        <input type="date" id="geboortedatum" name="geboortedatum" />
+      </div>
+
+      <div class="label-column dropdown">
+        <label for="geslacht">Geslacht</label>
+        <select name="geslacht" id="geslacht">
+          <option value="man">Man</option>
+          <option value="vrouw">Vrouw</option>
+          <option value="anders">Anders</option>
+        </select>
+      </div>
+
+      <div class="label-column dropdown">
+        <label for="type-beperking">Type beperking</label>
+        <select name="type-beperking" id="type-beperking">
+          <option value="blind">Blind</option>
+          <option value="dikbeklede">Dikbeklede</option>
+          <option value="andere">Andere</option>
+        </select>
+      </div>
+
+      <div class="label-column">
+        <label for="hulpmiddelen">Gebruikte hulpmiddelen</label>
+        <input type="text" id="hulpmiddelen" name="hulpmiddelen" />
+      </div>
+
+      <div class="label-column full-width-form-element">
+        <label for="kort-voorstel">Kort voorstel</label>
+        <textarea name="kort-voorstel" id="kort-voorstel"></textarea>
+      </div>
+
+      <div class="label-column full-width-form-element">
+        <label for="kort-voorstel">Kort voorstel</label>
+        <input type="text" id="hulpmiddelen" name="hulpmiddelen" />
+      </div>
+
+      <div class="full-width-form-element">
+        <label class="checkbox-container"
+          >Toezichthouder
+          <input type="checkbox" checked="checked" />
+          <span class="checkmark"></span>
+        </label>
+      </div>
+
+      <div class="label-column">
+        <label for="toezichthouder_naam">Naam toezichthouder </label>
+        <input
+          type="text"
+          id="toezichthouder_naam"
+          name="toezichthouder_naam"
+        />
+      </div>
+
+      <div class="label-column">
+        <label for="toezichthouder_email">Email toezichthouder </label>
+        <input
+          type="email"
+          id="toezichthouder_email"
+          name="toezichthouder_email"
+        />
+      </div>
+
+      <div class="label-column full-width-form-element">
+        <label for="toezichthouder_tel">Telefoonnummer toezichthouder </label>
+        <input type="tel" id="toezichthouder_tel" name="toezichthouder_tel" />
+      </div>
+
+      <div class="label-column">
+        <label for="voorkeur-benadering">Voorkeur benadering </label>
+        <div class="radio-container">
+          <input type="radio" name="telefoon" value="telefoon" />
+          <label for="telefoon">telefoonisch</label>
+        </div>
+        <div class="radio-container">
+          <input type="radio" name="email" value="email" />
+          <label for="email">E-mail</label>
+        </div>
+      </div>
+
+      <div class="label-column dropdown">
+        <label for="type-onderzoek">Type onderzoek</label>
+        <select name="type-onderzoek" id="type-onderzoek">
+          <option value="man">Man</option>
+          <option value="vrouw">Vrouw</option>
+          <option value="anders">Anders</option>
+        </select>
+      </div>
+
+      <div class="label-column full-width-form-element">
+        <label for="toezichthouder_bijzonderheden"
+          >Bijzonderheden beschikbaarheid
+        </label>
+        <input
+          type="text"
+          name="toezichthouder_bijzonderheden"
+          id="toezichthouder_bijzonderheden"
+        />
+      </div>
+      <div class="label-column">
+        <label class="checkbox-container"
+          >Akkoord met voorwaarden en privacy
+          <input type="checkbox" checked="checked" />
+          <span class="checkmark"></span>
+        </label>
+      </div>
+
+      <input type="submit" value="Registreer" class="label-column" />
+    </form>
+  </body>
+</html>
