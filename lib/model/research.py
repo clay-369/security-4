@@ -1,4 +1,5 @@
 from lib.model.database import Database
+from lib.model.disabilities import Disabilities
 
 
 class Research:
@@ -31,7 +32,6 @@ class Research:
 
 
         research_item['status'] = 'NIEUW'
-        research_item['beschikbaar'] = True  # maybe let organisation choose
 
         # Filter optional fields
         try:
@@ -45,28 +45,48 @@ class Research:
             research_item['beloning'] = None
 
         # Filter onderzoek_type
-        if research_item['onderzoek_type'] not in ['ONLINE', 'OP LOCATIE', 'TELEFONISCH']:
+        if research_item['onderzoek_type'].upper() not in ['ONLINE', 'OP LOCATIE', 'TELEFONISCH']:
             return False
 
-        self.cursor.execute("""
-        INSERT INTO onderzoeken 
-        (
-            organisatie_id, titel, beschikbaar, datum_vanaf, datum_tot, onderzoek_type, locatie, 
-            met_beloning, beloning, leeftijd_vanaf, leeftijd_tot, status
-        ) 
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""",
-        (
-            research_item['organisatie_id'], research_item['titel'], research_item['beschikbaar'],
-            research_item['datum_vanaf'], research_item['datum_tot'], research_item['onderzoek_type'],
-            research_item['locatie'], research_item['met_beloning'], research_item['beloning'],
-            research_item['leeftijd_vanaf'], research_item['leeftijd_tot'], research_item['status']
-        ))
+        # Check if disabilities exist in database
+        disability_model = Disabilities()
+        for disability_name in research_item['beperkingen']:
+            disability_id = disability_model.get_disability_id(disability_name.lower())
+            if not disability_id:
+                return False
 
-        self.conn.commit()
+        # Create new research
+        self.cursor.execute(
+            """
+            INSERT INTO onderzoeken 
+            (
+                organisatie_id, titel, beschikbaar, datum_vanaf, datum_tot, onderzoek_type, locatie, 
+                met_beloning, beloning, leeftijd_vanaf, leeftijd_tot, status
+            ) 
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+            """,
+            (
+                research_item['organisatie_id'], research_item['titel'], research_item['beschikbaar'],
+                research_item['datum_vanaf'], research_item['datum_tot'], research_item['onderzoek_type'],
+                research_item['locatie'], research_item['met_beloning'], research_item['beloning'],
+                research_item['leeftijd_vanaf'], research_item['leeftijd_tot'], research_item['status']
+            )
+        )
 
         new_research_id = self.cursor.lastrowid
 
-        # TODO: create beperking_onderzoek instances
-        # for item in research_item['beperkingen']
+        # Create beperking_onderzoek instances
+        for disability_name in research_item['beperkingen']:
+            disability_id = disability_model.get_disability_id(disability_name)
 
+            self.cursor.execute(
+                """
+                INSERT INTO beperking_onderzoek 
+                (beperking_id, onderzoek_id)
+                VALUES (?,?)
+                """,
+                (disability_id, new_research_id)
+            )
+
+        self.conn.commit()
         return new_research_id
