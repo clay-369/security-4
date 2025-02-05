@@ -1,10 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Organisatie Registratie</title>
 </head>
 <body>
+<div class="container">
+    <form action="/" method="POST">
+        <div class="form-group">
+            <div class="form-items">
+                <label for="naam">Naam Organisatie:</label>
+                <input type="text" id="naam" name="naam" required>
+            </div>
+            <div class="form-items">
+                <label for="type">Type Organisatie:</label>
+                <input type="text" id="type" name="type" required>
+            </div>
+        </div>
 
+        <div class="form-group">
+            <div class="form-items">
+                <label for="website">Website:</label>
+                <input type="url" id="website" name="website">
+            </div>
+            <div class="form-items">
+                <label for="contactpersoon">Contactpersoon:</label>
+                <input type="text" id="contactpersoon" name="contactpersoon" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-items">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-items">
+                <label for="telefoonnummer">Telefoonnummer:</label>
+                <input type="tel" id="telefoonnummer" name="telefoonnummer">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-items">
+                <label for="details">Overige Details:</label>
+                <input type="text" id="details" name="details">
+            </div>
+        </div>
+
+        <button type="submit">Verzenden</button>
+    </form>
+</div>
 </body>
 </html>
