@@ -17,11 +17,15 @@ def test():
 def create_research_item():
     research_model = Research()
 
+    auth_token = request.headers.get('Authorization')
+    print(auth_token)
+    # TODO: Authorization
+
     research_item = request.json
 
     new_research_id = research_model.create_research(research_item)
     if not new_research_id:
-        return # Error code
+        return 500
 
     new_research_item = dict(research_model.get_research_by_id(new_research_id))
 

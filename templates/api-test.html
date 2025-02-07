@@ -25,7 +25,8 @@
   fetch('/api/onderzoeken', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + 'Mijn_auth_token' // Bearer + TOKEN
     },
     body: JSON.stringify(research)
   })
