@@ -126,6 +126,7 @@ class WP3DatabaseGenerator:
             onderzoek_id INTEGER PRIMARY KEY AUTOINCREMENT,
             organisatie_id INTEGER NOT NULL,
             titel TEXT NOT NULL,
+            beschrijving TEXT,
             beschikbaar INTEGER NOT NULL,
             datum_vanaf DATE NOT NULL,
             datum_tot DATE NOT NULL,
