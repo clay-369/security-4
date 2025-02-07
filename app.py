@@ -31,5 +31,21 @@ def create_research_item():
 
     return new_research_item, 201
 
+@app.route('/api/onderzoeken', methods=['GET'])
+def get_research_items():
+    research_model = Research()
+    all_research_items = research_model.get_all_research_items()
+
+    all_formatted_research_items = []
+    for research_item in all_research_items:
+        formatted_research_item = research_model.format_research_item(research_item)
+        all_formatted_research_items.append(formatted_research_item)
+
+    return all_formatted_research_items
+
+@app.route('/deskundige')
+def expert_dashboard():
+    return render_template('experts-dashboard.html')
+
 if __name__ == "__main__":
     app.run(debug=True)

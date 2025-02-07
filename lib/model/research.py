@@ -90,3 +90,18 @@ class Research:
 
         self.conn.commit()
         return new_research_id
+
+    def get_all_research_items(self):
+        self.cursor.execute("SELECT * FROM onderzoeken")
+        return self.cursor.fetchall()
+
+    def format_research_item(self, research_item):
+        research_item = dict(research_item)
+
+        organisation_id = research_item['organisatie_id']
+        organisation_name = self.cursor.execute("SELECT naam FROM organisaties WHERE organisatie_id = ?", (organisation_id,))
+        organisation_name = organisation_name.fetchone()['naam']
+
+        research_item['organisatie_naam'] = organisation_name
+
+        return research_item

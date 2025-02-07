@@ -1,43 +1,19 @@
-const researchItems = [{
-    beheerder_id:   null,
-    beloning:       "$1",
-    beschikbaar:    1,
-    beschrijving:   "onderzoek met blinde mensen",
-    datum_tot:      "01-04-2025",
-    datum_vanaf:	"01-02-2025",
-    leeftijd_tot:	77,
-    leeftijd_vanaf:	19,
-    locatie:	    "Abbenbroek",
-    met_beloning:	0,
-    onderzoek_id:	5,
-    onderzoek_type:	"OP LOCATIE",
-    organisatie:	"AAA",
-    status:	        "NIEUW",
-    titel:	        "Onderzoeken 2222",
-    beperkingen:    ['doofblind', 'amputatie of mismaaktheid']
-  }, {
-    beheerder_id:   null,
-    beloning:       "$1",
-    beschikbaar:    1,
-    beschrijving:   "onderzoek met blinde mensen",
-    datum_tot:      "01-04-2025",
-    datum_vanaf:	"01-02-2025",
-    leeftijd_tot:	77,
-    leeftijd_vanaf:	19,
-    locatie:	    "Abbenbroek",
-    met_beloning:	1,
-    onderzoek_id:	6,
-    onderzoek_type:	"OP LOCATIE",
-    organisatie:	"Oke",
-    status:	        "NIEUW",
-    titel:	        "Onderzoeken hier",
-    beperkingen:    ['doofblind', 'amputatie of mismaaktheid']
-  }]
+let allResearchItems = [];
+
+fetch('/api/onderzoeken', {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+})
+    .then(response => response.json())
+    .then(data => allResearchItems = data)
+    .then(renderResearchPage);
 
 // Research page
 function renderResearchPage() {
     let html = '';
-    researchItems.forEach(researchItem => {
+    allResearchItems.forEach(researchItem => {
         html += `
             <div class="research-container js-research-container" data-research-id="${researchItem.onderzoek_id}">
                 <h2 class="research-title">${researchItem.titel}</h2>
@@ -47,7 +23,7 @@ function renderResearchPage() {
                 </div>
                 <div class="research-details">
                     <p>${researchItem.met_beloning ? 'Met beloning' : 'Zonder beloning'}</p>
-                    <p>${researchItem.organisatie}</p>
+                    <p>${researchItem.organisatie_naam}</p>
                 </div>
             </div>
         `;
@@ -66,8 +42,6 @@ function renderResearchPage() {
         });
     });
 }
-
-renderResearchPage();
 
 
 // Page toggler
@@ -97,7 +71,7 @@ function toggleSections() {
 function renderResearchModal(researchId) {
     let matchingResearchItem;
 
-    researchItems.forEach(researchItem => {
+    allResearchItems.forEach(researchItem => {
         if (researchItem.onderzoek_id === researchId) {
             matchingResearchItem = researchItem;
         }
@@ -124,7 +98,7 @@ function renderResearchModal(researchId) {
                     <p>${matchingResearchItem.leeftijd_vanaf} tot ${matchingResearchItem.leeftijd_tot} jaar</p>
                     
                     <p>Organisatie</p>
-                    <p>${matchingResearchItem.organisatie}</p>
+                    <p>${matchingResearchItem.organisatie_naam}</p>
                 </div>
                 <button class="research-modal-enlist">Inschrijven</button>
             </div>
