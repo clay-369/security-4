@@ -1,5 +1,4 @@
 from lib.model.database import Database
-from hashlib import sha256
 
 class Users:
     def __init__(self):
@@ -7,12 +6,10 @@ class Users:
         self.conn, self.cursor = database.connect_db()
 
     def login(self, email, password):
-        self.cursor.execute('SELECT * FROM deskundingen WHERE email = ?', (email,))
-        user = self.cursor.fetchone()
-        if user and password == user['password']:
-                return 'user', True
+        user = self.cursor.execute('SELECT * FROM deskundigen WHERE email = ?', (email,)).fetchone()
+        if user is not None and password == user[2]:
+            return 'user', True
         else:
-            self.cursor.execute('SELECT * FROM beheerders WHERE email = ?', (email,))
-            admin = self.cursor.fetchone()
-            if admin and password == user['password']:
-                    return 'admin', True
+            admin = self.cursor.execute('SELECT * FROM beheerders WHERE email = ?', (email,)).fetchone()
+            if admin is not None and password == admin[4]:
+                return 'admin', True

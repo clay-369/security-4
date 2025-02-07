@@ -28,7 +28,7 @@ def user():
 
 @app.route('/admin')
 def admin():
-    return render_template('beheerder-beheerd.html')
+    return render_template('beheerder-beheer.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
