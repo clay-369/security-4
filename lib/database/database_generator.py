@@ -15,9 +15,9 @@ class WP3DatabaseGenerator:
         self.create_table_beheerders()
         self.create_table_organisaties()
         self.create_table_beperkingen()
+        self.create_table_onderzoeken()
         self.create_table_beperking_deskundige()
         self.create_table_beperking_onderzoek()
-        self.create_table_onderzoeken()
         self.create_table_inschrijvingen()
         if self.create_initial_data:
             self.insert_beperkingen()
@@ -114,7 +114,7 @@ class WP3DatabaseGenerator:
             beperking_id INTEGER NOT NULL,
             onderzoek_id INTEGER NOT NULL,
             FOREIGN KEY (beperking_id) REFERENCES beperkingen(beperking_id),
-            FOREIGN KEY (onderzoek_id) REFERENCES onderdoeken(onderzoek_id)
+            FOREIGN KEY (onderzoek_id) REFERENCES onderzoeken(onderzoek_id)
             );
         """
         self.__execute_transaction_statement(create_statement)
@@ -147,11 +147,13 @@ class WP3DatabaseGenerator:
 
     def create_table_inschrijvingen(self):
         create_statement = """
-        CREATE TABLE IF NOT EXISTS beperkingen (
+        CREATE TABLE IF NOT EXISTS inschrijvingen (
             inschrijving_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            deskundige_id INTEGER NOT NULL,
             onderzoek_id INTEGER NOT NULL,
             status TEXT NOT NULL,
-            beheerder_id INTEGER NOT NULL,
+            beheerder_id INTEGER,
+            FOREIGN KEY (deskundige_id) REFERENCES deskundigen(deskundige_id),
             FOREIGN KEY (onderzoek_id) REFERENCES onderzoeken(onderzoek_id),
             FOREIGN KEY (beheerder_id) REFERENCES beheerders(beheerder_id)
             );

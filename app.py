@@ -2,6 +2,7 @@ import flask
 from flask import Flask, render_template, request
 # DB Models
 from lib.model.research import Research
+from lib.model.enlistments import Enlistment
 
 app = Flask(__name__)
 
@@ -27,9 +28,9 @@ def create_research_item():
     if not new_research_id:
         return 500
 
-    new_research_item = dict(research_model.get_research_by_id(new_research_id))
+    new_research_item = research_model.get_research_by_id(new_research_id)
 
-    return new_research_item, 201
+    return dict(new_research_item), 201
 
 @app.route('/api/onderzoeken', methods=['GET'])
 def get_research_items():
@@ -42,6 +43,19 @@ def get_research_items():
         all_formatted_research_items.append(formatted_research_item)
 
     return all_formatted_research_items
+
+@app.route('/api/onderzoeken/inschrijvingen', methods=['POST'])
+def create_enlistment():
+    enlistment_model = Enlistment()
+
+    research_id = request.json['research_id']
+    expert_id = request.json['expert_id']
+
+    new_enlistment_id = enlistment_model.create_enlistment(research_id=research_id, expert_id=expert_id)
+    new_enlistment = enlistment_model.get_enlistment_by_id(new_enlistment_id)
+
+    return dict(new_enlistment), 201
+
 
 @app.route('/deskundige')
 def expert_dashboard():

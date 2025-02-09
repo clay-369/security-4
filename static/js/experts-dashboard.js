@@ -3,7 +3,7 @@ let allResearchItems = [];
 fetch('/api/onderzoeken', {
     method: 'GET',
     headers: {
-        'Content-Type': 'application/json'
+        'Accept': 'application/json'
     }
 })
     .then(response => response.json())
@@ -100,7 +100,7 @@ function renderResearchModal(researchId) {
                     <p>Organisatie</p>
                     <p>${matchingResearchItem.organisatie_naam}</p>
                 </div>
-                <button class="research-modal-enlist">Inschrijven</button>
+                <button class="research-modal-enlist js-enlist-button">Inschrijven</button>
             </div>
         `;
 
@@ -109,8 +109,27 @@ function renderResearchModal(researchId) {
 
     // Close research modal event listener
     document.querySelector('.js-close-modal')
-    .addEventListener('click', () => {
-        document.querySelector('.js-research-modal-background')
+    .addEventListener('click', closeResearchModal);
+
+    // Enlist event listener
+    document.querySelector('.js-enlist-button')
+        .addEventListener('click', () => {
+
+            const expertId = 1 // TODO: Use expertId from session
+
+            fetch('/api/onderzoeken/inschrijvingen', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({research_id: researchId, expert_id: expertId})
+            })
+                .then(closeResearchModal)
+        })
+}
+
+
+function closeResearchModal() {
+    document.querySelector('.js-research-modal-background')
            .classList.add('hide');
-    });
 }

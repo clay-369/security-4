@@ -95,7 +95,7 @@ class Research:
         self.cursor.execute("SELECT * FROM onderzoeken")
         return self.cursor.fetchall()
 
-    def format_research_item(self, research_item):
+    def format_research_item(self, research_item) -> dict:
         research_item = dict(research_item)
 
         organisation_id = research_item['organisatie_id']
