@@ -1,6 +1,7 @@
 :root {
     --prm-color: #0057B7;
     --sec-color: #B8860B;
+    --red-color: #8B0000;
     --border-color: #c3d0ed;
     --background-color: #f0f2f5;
 
@@ -240,7 +241,7 @@ section {
     color: var(--prm-color);
 }
 
-.research-modal-enlist {
+.research-modal-button {
     margin-top: 15px;
     padding: 10px;
     font-size: 18px;
@@ -250,7 +251,12 @@ section {
     border-radius: 5px;
     transition-duration: 0.2s;
 }
-.research-modal-enlist:hover {
+.research-modal-button.red {
+    border: 2px solid var(--red-color);
+    background-color: var(--red-color);
+    color: #FFF;
+}
+.research-modal-button:hover {
     border: 2px solid var(--prm-color);
 }
 

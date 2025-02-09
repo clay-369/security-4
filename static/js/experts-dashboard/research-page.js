@@ -1,10 +1,16 @@
+import {renderEnlistmentPage} from "./enlistment-page.js";
+
 // TODO: Switch to sessions
 const expertId = 1;
+
+let allResearchItems = [];
 
 // TODO: Only show researches that have not been interacted with by this user
 
 // Research page
-export function renderResearchPage(allResearchItems) {
+export function renderResearchPage(allResearchItemsList) {
+    allResearchItems = allResearchItemsList
+
     let html = '';
     allResearchItems.forEach(researchItem => {
         html += `
@@ -31,17 +37,17 @@ export function renderResearchPage(allResearchItems) {
         const researchId = containerElement.dataset.researchId;
 
         containerElement.addEventListener('click', () => {
-            renderResearchModal(Number(researchId), allResearchItems);
+            renderResearchModal(researchId, allResearchItems);
         });
     });
 }
 
 // Research Modal
-function renderResearchModal(researchId, allResearchItems) {
+export function renderResearchModal(researchId, allResearchItems, enlistmentId=null) {
     let matchingResearchItem;
 
     allResearchItems.forEach(researchItem => {
-        if (researchItem.onderzoek_id === researchId) {
+        if (Number(researchItem['onderzoek_id']) === Number(researchId)) {
             matchingResearchItem = researchItem;
         }
     });
@@ -69,27 +75,41 @@ function renderResearchModal(researchId, allResearchItems) {
                     <p>Organisatie</p>
                     <p>${matchingResearchItem.organisatie_naam}</p>
                 </div>
-                <button class="research-modal-enlist js-enlist-button">Inschrijven</button>
+                
+                ${
+                    enlistmentId
+                    ? '<button class="research-modal-button red js-enlist-button">Uitschrijven</button>'
+                    : '<button class="research-modal-button js-enlist-button">Inschrijven</button>'
+                }                
+                
+                
             </div>
         `;
 
     document.querySelector('.js-research-modal-background')
-                .classList.remove('hide');
+        .classList.remove('hide');
 
     // Close research modal event listener
     document.querySelector('.js-close-modal')
     .addEventListener('click', closeResearchModal);
 
     // Enlist event listener
-    document.querySelector('.js-enlist-button')
-        .addEventListener('click', () => {
-            enlist(researchId)
-        })
+    const enlistButton = document.querySelector('.js-enlist-button')
+    enlistButton.addEventListener('click', () => {
+        if (enlistmentId) {
+            delist(enlistmentId);
+        } else {
+            enlist(researchId);
+        }
+
+    })
 }
 
 function closeResearchModal() {
     document.querySelector('.js-research-modal-background')
            .classList.add('hide');
+
+
 }
 
 function enlist(researchId) {
@@ -101,4 +121,18 @@ function enlist(researchId) {
             body: JSON.stringify({research_id: researchId, expert_id: expertId})
         })
             .then(closeResearchModal);
+}
+
+function delist(enlistmentId) {
+    fetch('/api/onderzoeken/inschrijvingen', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({enlistment_id: enlistmentId})
+        })
+            .then(closeResearchModal)
+            .then(() => {
+                renderEnlistmentPage(allResearchItems);
+            });
 }

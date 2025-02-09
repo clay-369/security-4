@@ -1,4 +1,5 @@
-import {renderResearchPage} from "./experts-dachboard/research-page.js";
+import {renderResearchPage} from "./experts-dashboard/research-page.js";
+import {renderEnlistmentPage} from "./experts-dashboard/enlistment-page.js";
 
 
 // Get research items from database and call the render function
@@ -32,13 +33,11 @@ function toggleSections() {
         researchSection.classList.remove('hide');
         enlistmentsSection.classList.add('hide');
 
-        renderResearchPage();
+        renderResearchPage(allResearchItems);
     } else {
         researchSection.classList.add('hide');
         enlistmentsSection.classList.remove('hide');
+
+        renderEnlistmentPage(allResearchItems);
     }
 }
-
-
-
-

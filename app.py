@@ -42,7 +42,7 @@ def get_research_items():
         formatted_research_item = research_model.format_research_item(research_item)
         all_formatted_research_items.append(formatted_research_item)
 
-    return all_formatted_research_items
+    return all_formatted_research_items, 200
 
 @app.route('/api/onderzoeken/inschrijvingen', methods=['POST'])
 def create_enlistment():
@@ -55,6 +55,22 @@ def create_enlistment():
     new_enlistment = enlistment_model.get_enlistment_by_id(new_enlistment_id)
 
     return dict(new_enlistment), 201
+
+@app.route('/api/onderzoeken/inschrijvingen', methods=['GET'])
+def get_all_enlistments():
+    enlistment_model = Enlistment()
+
+    all_enlistments = enlistment_model.get_all_formatted_enlistments()
+
+    return all_enlistments, 200
+
+@app.route('/api/onderzoeken/inschrijvingen', methods=['DELETE'])
+def delist():
+    enlistment_model = Enlistment()
+    enlistment_id = request.json['enlistment_id']
+    deleted_item = enlistment_model.delete_enlistment(enlistment_id)
+
+    return dict(deleted_item), 200
 
 
 @app.route('/deskundige')
