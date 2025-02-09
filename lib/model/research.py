@@ -96,6 +96,7 @@ class Research:
         return self.cursor.fetchall()
 
     def format_research_item(self, research_item) -> dict:
+        """ Adds organisatie_naam to research_item and converts it to dict """
         research_item = dict(research_item)
 
         organisation_id = research_item['organisatie_id']
