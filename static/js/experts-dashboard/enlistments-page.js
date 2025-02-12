@@ -1,4 +1,4 @@
-import {closeResearchModal} from "../experts-dashboard.js";
+import {closeResearchModal, showResearchModal} from "../experts-dashboard.js";
 
 // TODO: Switch to sessions
 const expertId = 1;
@@ -24,6 +24,7 @@ function renderPartitions(enlistments) {
     let acceptedHTML = '';
     let rejectedHTML = '';
 
+    // Generating the HTML for each part
     enlistments.forEach((enlistment) => {
         // Pending
         if (enlistment['deskundige_id'] === expertId && enlistment['status'] === 'NIEUW') {
@@ -63,6 +64,7 @@ function renderPartitions(enlistments) {
         }
     })
 
+    // Setting the HTML for each part
     document.querySelector('.js-pending-enlistments')
         .innerHTML = pendingHTML;
 
@@ -72,7 +74,7 @@ function renderPartitions(enlistments) {
     document.querySelector('.js-rejected-enlistments')
         .innerHTML = rejectedHTML;
 
-    // Eventlisteners
+    // Adding Eventlisteners to open modal
     document.querySelectorAll('.js-enlistment-details-button')
         .forEach(button => {
             const researchId = button.dataset.researchId;
@@ -83,66 +85,62 @@ function renderPartitions(enlistments) {
         });
 }
 
-function renderEnlistmentModal(researchId, status) {
-    fetch(`api/onderzoeken?research_id=${researchId}`, {
+async function renderEnlistmentModal(researchId, status) {
+    // Get research item information from server
+    const response = await fetch(`api/onderzoeken?research_id=${researchId}`, {
         method: 'GET',
         headers: {
             'Accept': 'apllication/json'
         }
     })
-        .then(response => response.json())
-        .then(researchItem => {
-            document.querySelector('.js-research-modal-background')
-                .innerHTML = `
-                    <div class="research-modal">
-                        <img class="close-modal js-close-modal" alt="Sluit Popup" src="../static/icons/xmark-solid.svg">
-                        <h1 class="research-modal-title">${researchItem.titel}</h1>
-                        <p class="research-modal-description">${researchItem.beschrijving}</p>
-                        <h2 class="research-modal-organisation">Details</h2>
-                        <div class="research-modal-details">
-                            <p>Datum</p>
-                            <p><time>${researchItem.datum_vanaf}</time> tot <time>${researchItem.datum_tot}</time></p>
+    const researchItem = await response.json();
+
+    // Generate the HTML
+    document.querySelector('.js-research-modal-background')
+        .innerHTML = `
+            <div class="research-modal">
+                <img class="close-modal js-close-modal" alt="Sluit Popup" src="../static/icons/xmark-solid.svg">
+                <h1 class="research-modal-title">${researchItem.titel}</h1>
+                <p class="research-modal-description">${researchItem.beschrijving}</p>
+                <h2 class="research-modal-organisation">Details</h2>
+                <div class="research-modal-details">
+                    <p>Datum</p>
+                    <p><time>${researchItem.datum_vanaf}</time> tot <time>${researchItem.datum_tot}</time></p>
+            
+                    <p>Waar</p>
+                    <p>${researchItem.onderzoek_type.toLowerCase()}</p>
                     
-                            <p>Waar</p>
-                            <p>${researchItem.onderzoek_type.toLowerCase()}</p>
-                            
-                            <p>Beloning</p>
-                            <p>${researchItem.met_beloning ? researchItem.beloning : 'Zonder beloning'}</p>
-                            
-                            <p>Leeftijd</p>
-                            <p>${researchItem.leeftijd_vanaf} tot ${researchItem.leeftijd_tot} jaar</p>
-                            
-                            <p>Organisatie</p>
-                            <p>${researchItem.organisatie_naam}</p>
-                            
-                            <p>Status</p>
-                            <p>${status.toLowerCase()}</p>
-                        </div>
-                        ${
-                            status === 'NIEUW'
-                            ? '<button class="research-modal-button red js-delist-button">Uitschrijven</button>'
-                            : ''
-                        }
-                            
-                    </div>
-                `;
-            // TODO: remove
-            document.querySelector('.js-research-modal-background')
-                .classList.remove('hide');
+                    <p>Beloning</p>
+                    <p>${researchItem.met_beloning ? researchItem.beloning : 'Zonder beloning'}</p>
+                    
+                    <p>Leeftijd</p>
+                    <p>${researchItem.leeftijd_vanaf} tot ${researchItem.leeftijd_tot} jaar</p>
+                    
+                    <p>Organisatie</p>
+                    <p>${researchItem.organisatie_naam}</p>
+                    
+                    <p>Status</p>
+                    <p>${status.toLowerCase()}</p>
+                </div>
+                ${
+                    status === 'NIEUW'
+                    ? '<button class="research-modal-button red js-delist-button">Uitschrijven</button>'
+                    : ''
+                }
+                    
+            </div>
+        `;
 
-            // Close research modal event listener
-            document.querySelector('.js-close-modal')
-            .addEventListener('click', closeResearchModal);
+    showResearchModal();
 
-            // Enlist event listener
-            document.querySelector('.js-delist-button')
-                .addEventListener('click', () => {
-                    delist(researchId);
-                })
-
-    });
+    // Enlist event listener
+    document.querySelector('.js-delist-button')
+        .addEventListener('click', () => {
+            delist(researchId);
+        })
 }
 
+// Remove the enlistment from database
 function delist(researchId) {
     fetch('/api/onderzoeken/inschrijvingen', {
             method: 'DELETE',
@@ -152,7 +150,5 @@ function delist(researchId) {
             body: JSON.stringify({expert_id: expertId, research_id: researchId})
         })
             .then(closeResearchModal)
-            .then(() => {
-                renderEnlistmentPage();
-            });
+            .then(() => renderEnlistmentPage());
 }
