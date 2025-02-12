@@ -1,9 +1,9 @@
-function openModal() {
-    document.getElementById("createModal").style.display = "flex";
+function openModal(modalType) {
+    document.getElementById(modalType).style.display = "flex";
 }
 
-function closeModal() {
-    document.getElementById("createModal").style.display = "none";
+function closeModal(modalType) {
+    document.getElementById(modalType).style.display = "none";
 }
 
 document.getElementById('createAdmin').addEventListener('submit', function(event){
