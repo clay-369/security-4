@@ -19,7 +19,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
                 console.log('Succes voor user!')
             }
             if (data.type === 'admin') {
-                window.location.href = '/admin'
+                window.location.href = '/admin/beheer'
                 console.log('Succes voor admin!')
             }
         } else {

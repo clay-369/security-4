@@ -7,13 +7,6 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET','POST'])
 def login():
-    return render_template('log-in.html')
-@app.route('/admin/beheer')
-def beheer():
-    return render_template('beheerder-beheer.html')
-@app.route('/admin/nieuw')
-def admin_nieuw():
-    return render_template('nieuwe-admin.html')
     if request.method == 'POST':
         data = request.get_json()
         email = data.get('email')
@@ -28,14 +21,12 @@ def admin_nieuw():
             return jsonify({"success": False})
     else:
         return render_template('log-in.html')
-
+@app.route('/admin/beheer')
+def beheer():
+    return render_template('beheerder-beheer.html')
 @app.route('/user')
 def user():
     return render_template('experts-dashboard.html')
-
-@app.route('/admin')
-def admin():
-    return render_template('beheerder-beheer.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
