@@ -3,28 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loginpagina</title>
+
     <link rel="icon" type="image/x-icon" href="https://www.accessibility.nl/themes/sa/images/logo.svg">
     <link rel="stylesheet" href="{{ url_for('static', filename='log-in.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
-    <title>Loginpagina</title>
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='...') }}">
 </head>
 <body>
     <div class="header">
             <img src="https://www.accessibility.nl/themes/sa/images/logo.svg">
     </div>
-<form>
+<form id="loginForm">
     <h1>Log hier in</h1>
-    <label for="email">Email</label>
+    <label for="email">Email of gebruikersnaam:</label>
     <input type="email" id="email" name="email" required>
 
-    <label for="password">Password</label>
+    <label for="password">Wachtwoord:</label>
     <input type="password" id="password" name="password" required>
 
     <button type="submit">Log In</button>
 </form>
 
-
+<script src="../static/js/login.js"></script>
 </body>
 </html>
