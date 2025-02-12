@@ -1,0 +1,158 @@
+import {closeResearchModal} from "../experts-dashboard.js";
+
+// TODO: Switch to sessions
+const expertId = 1;
+
+// Enlistment Page
+export function renderEnlistmentPage() {
+    // Getting all enlistments
+    fetch('/api/onderzoeken/inschrijvingen', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Rendering each partition
+            renderPartitions(data);
+        });
+}
+
+function renderPartitions(enlistments) {
+    let pendingHTML = '';
+    let acceptedHTML = '';
+    let rejectedHTML = '';
+
+    enlistments.forEach((enlistment) => {
+        // Pending
+        if (enlistment['deskundige_id'] === expertId && enlistment['status'] === 'NIEUW') {
+            pendingHTML += `
+                <div class="enlistment">
+                    <h3 class="enlistment-name">${enlistment['titel']}</h3>
+                    <button class="enlistment-details-button js-enlistment-details-button" 
+                        data-research-id="${enlistment['onderzoek_id']}"
+                        data-status="${enlistment['status']}"
+                    >Details</button>
+                </div>
+            `;
+        }
+        // Accpeted
+        else if (enlistment['deskundige_id'] === expertId && enlistment['status'] === 'GOEDGEKEURD') {
+            acceptedHTML += `
+                <div class="enlistment">
+                    <h3 class="enlistment-name">${enlistment['titel']}</h3>
+                    <button class="enlistment-details-button js-enlistment-details-button" 
+                        data-research-id="${enlistment['onderzoek_id']}"
+                        data-status="${enlistment['status']}"
+                    >Details</button>
+                </div>
+            `;
+        }
+        // Rejected
+        else if (enlistment['deskundige_id'] === expertId && enlistment['status'] === 'AFGEKEURD') {
+            rejectedHTML += `
+                <div class="enlistment">
+                    <h3 class="enlistment-name">${enlistment['titel']}</h3>
+                    <button class="enlistment-details-button js-enlistment-details-button" 
+                        data-research-id="${enlistment['onderzoek_id']}"
+                        data-status="${enlistment['status']}"
+                    >Details</button>
+                </div>
+            `;
+        }
+    })
+
+    document.querySelector('.js-pending-enlistments')
+        .innerHTML = pendingHTML;
+
+    document.querySelector('.js-accepted-enlistments')
+        .innerHTML = acceptedHTML;
+
+    document.querySelector('.js-rejected-enlistments')
+        .innerHTML = rejectedHTML;
+
+    // Eventlisteners
+    document.querySelectorAll('.js-enlistment-details-button')
+        .forEach(button => {
+            const researchId = button.dataset.researchId;
+            const status = button.dataset.status;
+            button.addEventListener('click', () => {
+                renderEnlistmentModal(researchId, status);
+            });
+        });
+}
+
+function renderEnlistmentModal(researchId, status) {
+    fetch(`api/onderzoeken?research_id=${researchId}`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'apllication/json'
+        }
+    })
+        .then(response => response.json())
+        .then(researchItem => {
+            document.querySelector('.js-research-modal-background')
+                .innerHTML = `
+                    <div class="research-modal">
+                        <img class="close-modal js-close-modal" alt="Sluit Popup" src="../static/icons/xmark-solid.svg">
+                        <h1 class="research-modal-title">${researchItem.titel}</h1>
+                        <p class="research-modal-description">${researchItem.beschrijving}</p>
+                        <h2 class="research-modal-organisation">Details</h2>
+                        <div class="research-modal-details">
+                            <p>Datum</p>
+                            <p><time>${researchItem.datum_vanaf}</time> tot <time>${researchItem.datum_tot}</time></p>
+                    
+                            <p>Waar</p>
+                            <p>${researchItem.onderzoek_type.toLowerCase()}</p>
+                            
+                            <p>Beloning</p>
+                            <p>${researchItem.met_beloning ? researchItem.beloning : 'Zonder beloning'}</p>
+                            
+                            <p>Leeftijd</p>
+                            <p>${researchItem.leeftijd_vanaf} tot ${researchItem.leeftijd_tot} jaar</p>
+                            
+                            <p>Organisatie</p>
+                            <p>${researchItem.organisatie_naam}</p>
+                            
+                            <p>Status</p>
+                            <p>${status.toLowerCase()}</p>
+                        </div>
+                        ${
+                            status === 'NIEUW'
+                            ? '<button class="research-modal-button red js-delist-button">Uitschrijven</button>'
+                            : ''
+                        }
+                            
+                    </div>
+                `;
+            // TODO: remove
+            document.querySelector('.js-research-modal-background')
+                .classList.remove('hide');
+
+            // Close research modal event listener
+            document.querySelector('.js-close-modal')
+            .addEventListener('click', closeResearchModal);
+
+            // Enlist event listener
+            document.querySelector('.js-delist-button')
+                .addEventListener('click', () => {
+                    delist(researchId);
+                })
+
+    });
+}
+
+function delist(researchId) {
+    fetch('/api/onderzoeken/inschrijvingen', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({expert_id: expertId, research_id: researchId})
+        })
+            .then(closeResearchModal)
+            .then(() => {
+                renderEnlistmentPage();
+            });
+}

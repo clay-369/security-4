@@ -40,13 +40,13 @@ class Enlistment:
 
         return all_enlistments
 
-    def delete_enlistment(self, enlistment_id:int):
+    def delete_enlistment(self, expert_id:int, research_id:int):
         deleted_item = self.cursor.execute(
             """
             DELETE FROM inschrijvingen
-            WHERE inschrijving_id = ?
+            WHERE deskundige_id = ? AND onderzoek_id = ?
             """,
-            (enlistment_id,)
+            (expert_id, research_id)
         )
         self.conn.commit()
         return deleted_item

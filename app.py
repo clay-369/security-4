@@ -35,6 +35,15 @@ def create_research_item():
 @app.route('/api/onderzoeken', methods=['GET'])
 def get_research_items():
     research_model = Research()
+
+    # Single research item
+    if request.args.get('research_id'):
+        research_id = request.args.get('research_id')
+        research_item = research_model.get_research_by_id(int(research_id))
+        formatted_research_item = research_model.format_research_item(research_item)
+        return formatted_research_item
+
+    # All research items
     all_research_items = research_model.get_all_research_items()
 
     all_formatted_research_items = []
@@ -66,9 +75,10 @@ def get_all_enlistments():
 
 @app.route('/api/onderzoeken/inschrijvingen', methods=['DELETE'])
 def delist():
+    expert_id = request.json['expert_id']
+    research_id = request.json['research_id']
     enlistment_model = Enlistment()
-    enlistment_id = request.json['enlistment_id']
-    deleted_item = enlistment_model.delete_enlistment(enlistment_id)
+    deleted_item = enlistment_model.delete_enlistment(expert_id, research_id)
 
     return dict(deleted_item), 200
 
