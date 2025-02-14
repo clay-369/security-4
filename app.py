@@ -44,7 +44,9 @@ def beheer():
 
     elif request.method == 'GET' and request.args.get('fetch') == 'adminData':
         admin_data = users_model.get_admins()
-        return jsonify(admin_data)
+        admin_dict = [dict(row) for row in admin_data]
+
+        return jsonify(admin_dict)
 
     else:
         return render_template('beheerder-beheer.html')

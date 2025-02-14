@@ -6,6 +6,49 @@ function closeModal(modalType) {
     document.getElementById(modalType).style.display = "none";
 }
 
+window.addEventListener('load', function() {
+    setInterval(function() {
+        fetch('/admin/beheer?fetch=adminData')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector("table tbody");
+            tbody.innerHTML = '';
+
+            data.forEach(admin => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td> ${admin.voornaam} ${admin.achternaam}</td>
+                <td>${admin.email}</td>
+                <td>
+                    <button class="btn">Details</button>
+                </td>
+                `;
+                tbody.appendChild(row)
+            });
+        })
+    }, 1000)
+})
+function loadTable() {
+    fetch('/admin/beheer?fetch=adminData')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector("table tbody");
+            tbody.innerHTML = '';
+
+            data.forEach(admin => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td> ${admin.voornaam} ${admin.achternaam}</td>
+                <td>${admin.email}</td>
+                <td>
+                    <button class="btn">Details</button>
+                </td>
+                `;
+                tbody.appendChild(row)
+            });
+        })
+}
+
 document.getElementById('createAdmin').addEventListener('submit', function(event){
     event.preventDefault();
 
@@ -26,10 +69,10 @@ document.getElementById('createAdmin').addEventListener('submit', function(event
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            console.log('Admin gemaakt!')
-            closeModal()
+            console.log('Admin gemaakt!');
+            closeModal('createModal');
         } else {
-            console.log('Error!')
+            console.log('Error!');
         }
     })
 });
