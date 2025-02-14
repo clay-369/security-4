@@ -13,8 +13,15 @@ class Users:
             admin = self.cursor.execute('SELECT * FROM beheerders WHERE email = ?', (email,)).fetchone()
             if admin is not None and password == admin[4]:
                 return 'admin', True
+
+
     def admin_create(self, first_name, last_name, email, password):
         self.cursor.execute('INSERT into beheerders (voornaam, achternaam, email, wachtwoord) VALUES (?, ?, ?, ?)',
                             (first_name, last_name, email, password))
         self.conn.commit()
         return True
+
+
+    def get_admins(self):
+        admins = self.cursor.execute('SELECT * from beheerders').fetchall()
+        return admins
