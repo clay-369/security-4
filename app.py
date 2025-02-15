@@ -33,20 +33,47 @@ def beheer():
 
     if request.method == 'POST':
         data = request.get_json()
-        first_name = data.get('first_name')
-        last_name = data.get('last_name')
-        email = data.get('email')
-        password = data.get('password')
+        request_type = data.get('request')
 
-        create_admin = users_model.admin_create(first_name, last_name, email, password)
-        if create_admin:
+        if request_type == 'create':
+            first_name = data.get('first_name')
+            last_name = data.get('last_name')
+            email = data.get('email')
+            password = data.get('password')
 
-            return jsonify({"success": True})
+            create_admin = users_model.admin_create(first_name, last_name, email, password)
+            if create_admin:
+                return jsonify({"success": True})
+            else:
+                return jsonify({"success": False})
+
+        elif request_type == 'update':
+            first_name = data.get('first_name')
+            last_name = data.get('last_name')
+            email = data.get('email')
+            password = data.get('password')
+            admin_id = data.get('admin_id')
+
+            print(first_name, last_name, email, password, admin_id)
+
+            edit_admin = users_model.admin_edit(admin_id, first_name, last_name, email, password)
+            if edit_admin:
+                return jsonify({"success": True})
+            else:
+                return jsonify({"success": False})
+
+        elif request_type == 'delete':
+            admin_id = data.get('admin_id')
+
+            delete_admin = users_model.admin_delete(admin_id)
+            if delete_admin:
+                return jsonify({"success": True})
+            else:
+                return jsonify({"success": False})
 
     elif request.method == 'GET' and request.args.get('fetch') == 'adminData':
         admin_data = users_model.get_admins()
         admin_dict = [dict(row) for row in admin_data]
-
         return jsonify(admin_dict)
 
     elif request.method == 'GET' and request.args.get('id') is not None:

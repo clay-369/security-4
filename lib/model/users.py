@@ -26,6 +26,21 @@ class Users:
         admins = self.cursor.execute('SELECT * FROM beheerders').fetchall()
         return admins
 
+
     def get_single_admin(self, admin_id):
         admin = self.cursor.execute('SELECT * FROM beheerders WHERE beheerder_id = ?', (admin_id,)).fetchone()
         return admin
+
+
+    def admin_edit(self, admin_id, first_name, last_name, email, password):
+        self.cursor.execute('UPDATE beheerders '
+                            'SET voornaam = ?, achternaam = ?, email = ?, wachtwoord = ?  '
+                            'WHERE beheerder_id = ?', (first_name, last_name, email, password, admin_id))
+        self.conn.commit()
+        return True
+
+
+    def admin_delete(self, admin_id):
+        self.cursor.execute('DELETE FROM beheerders WHERE beheerder_id = ?', (admin_id,))
+        self.conn.commit()
+        return True
