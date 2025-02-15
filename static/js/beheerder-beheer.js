@@ -20,7 +20,7 @@ window.addEventListener('load', function() {
                 <td> ${admin.voornaam} ${admin.achternaam}</td>
                 <td>${admin.email}</td>
                 <td>
-                    <button class="btn">Details</button>
+                    <button class="btn" id=${admin.beheerder_id}>Details</button>
                 </td>
                 `;
                 tbody.appendChild(row)
@@ -28,26 +28,6 @@ window.addEventListener('load', function() {
         })
     }, 1000)
 })
-function loadTable() {
-    fetch('/admin/beheer?fetch=adminData')
-        .then(response => response.json())
-        .then(data => {
-            const tbody = document.querySelector("table tbody");
-            tbody.innerHTML = '';
-
-            data.forEach(admin => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                <td> ${admin.voornaam} ${admin.achternaam}</td>
-                <td>${admin.email}</td>
-                <td>
-                    <button class="btn">Details</button>
-                </td>
-                `;
-                tbody.appendChild(row)
-            });
-        })
-}
 
 document.getElementById('createAdmin').addEventListener('submit', function(event){
     event.preventDefault();
