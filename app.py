@@ -40,6 +40,7 @@ def beheer():
 
         create_admin = users_model.admin_create(first_name, last_name, email, password)
         if create_admin:
+
             return jsonify({"success": True})
 
     elif request.method == 'GET' and request.args.get('fetch') == 'adminData':
@@ -47,6 +48,13 @@ def beheer():
         admin_dict = [dict(row) for row in admin_data]
 
         return jsonify(admin_dict)
+
+    elif request.method == 'GET' and request.args.get('id') is not None:
+        admin_id = request.args.get('id')
+        admin_info = users_model.get_single_admin(admin_id)
+        single_admin_dict = dict(admin_info)
+
+        return jsonify(single_admin_dict)
 
     else:
         return render_template('beheerder-beheer.html')

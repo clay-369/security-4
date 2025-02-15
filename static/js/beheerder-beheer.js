@@ -6,6 +6,46 @@ function closeModal(modalType) {
     document.getElementById(modalType).style.display = "none";
 }
 
+function openEditModal(adminID) {
+    fetch(`/admin/beheer?id=${adminID}`)
+        .then(response => response.json())
+        .then(admin => {
+            const openedModal = document.getElementById("editModal");
+            if (openedModal) {
+                openedModal.remove();
+            }
+
+            const modal = document.createElement("div");
+            modal.id = "editModal";
+            modal.className = "modal";
+            modal.innerHTML = `
+                <div class="modalForm">
+                    <button class="close-btn" onclick="closeModal('editModal')">x</button>
+                    <h1>Bewerk gebruiker</h1>
+                        <form method="POST" id="editForm">
+                            <label for="voornaam">Voornaam</label>
+                            <input class="text-input" type="text" id="voornaam" name="voornaam" value="${admin.voornaam}" required>
+
+                            <label for="achternaam">Achternaam</label>
+                            <input class="text-input" type="text" id="achternaam" name="achternaam" value="${admin.achternaam}" required>
+
+                            <label for="login">Email / login</label>
+                            <input class="text-input" type="email" id="login" name="login" value="${admin.email}" required>
+
+                            <label for="password">Wachtwoord</label>
+                            <input class="text-input" type="password" id="password" name="password" placeholder="Nieuw wachtwoord (optioneel)">
+
+                            <input class="btn" type="submit" name="submit" value="Opslaan">
+                            <input class="btn" type="submit" name="submit" value="Verwijderen">
+                        </form>
+                </div>
+            `;
+
+    document.body.appendChild(modal);
+    modal.style.display = "flex";
+    });
+}
+
 window.addEventListener('load', function() {
     setInterval(function() {
         fetch('/admin/beheer?fetch=adminData')
@@ -20,7 +60,7 @@ window.addEventListener('load', function() {
                 <td> ${admin.voornaam} ${admin.achternaam}</td>
                 <td>${admin.email}</td>
                 <td>
-                    <button class="btn" id=${admin.beheerder_id}>Details</button>
+                    <button class="btn" onclick="openEditModal(${admin.beheerder_id})">Details</button>
                 </td>
                 `;
                 tbody.appendChild(row)
@@ -36,8 +76,6 @@ document.getElementById('createAdmin').addEventListener('submit', function(event
     const last_name = document.getElementById("last_name").value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-
-    console.log(first_name)
 
     fetch('/admin/beheer', {
         method: 'POST',

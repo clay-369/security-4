@@ -23,5 +23,9 @@ class Users:
 
 
     def get_admins(self):
-        admins = self.cursor.execute('SELECT * from beheerders').fetchall()
+        admins = self.cursor.execute('SELECT * FROM beheerders').fetchall()
         return admins
+
+    def get_single_admin(self, admin_id):
+        admin = self.cursor.execute('SELECT * FROM beheerders WHERE beheerder_id = ?', (admin_id,)).fetchone()
+        return admin
