@@ -1,36 +1,42 @@
 import {closeResearchModal, showResearchModal} from "../experts-dashboard.js";
+import {get_enlistments_by_expert} from "./enlistments.js";
 
 
 // TODO: Switch to sessions
 const expertId = 1;
 
 // TODO: Only show researches that have not been interacted with by this user
+// TODO: Only show available
+// TODO: Only show accepted
+// TODO: Implement interval rendering
 export async function renderResearchPage() {
     // Get all research items from server
-    const response = await fetch('/api/onderzoeken', {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json'
-        }
-    })
+    const response = await fetch('/api/onderzoeken')
     const allResearchItems = await response.json();
+
+    // Create list with ids of research items that expert already interacted with
+    const enlistments_by_expert = await get_enlistments_by_expert(expertId);
+    const enlistedResearchIds = [];
+    enlistments_by_expert.forEach(enlistment => enlistedResearchIds.push(enlistment.onderzoek_id));
 
     // Generate the HTML
     let html = '';
     allResearchItems.forEach(researchItem => {
-        html += `
-            <div class="research-container js-research-container" data-research-id="${researchItem.onderzoek_id}">
-                <h2 class="research-title">${researchItem.titel}</h2>
-                <div class="research-details">
-                    <p><time>${researchItem.datum_vanaf}</time> tot <time>${researchItem.datum_tot}</time></p>
-                    <p>${researchItem.onderzoek_type.toLowerCase()}</p>
+        if (!enlistedResearchIds.includes(researchItem.onderzoek_id)) {
+            html += `
+                <div class="research-container js-research-container" data-research-id="${researchItem.onderzoek_id}">
+                    <h2 class="research-title">${researchItem.titel}</h2>
+                    <div class="research-details">
+                        <p><time>${researchItem.datum_vanaf}</time> tot <time>${researchItem.datum_tot}</time></p>
+                        <p>${researchItem.onderzoek_type.toLowerCase()}</p>
+                    </div>
+                    <div class="research-details">
+                        <p>${researchItem.met_beloning ? 'Met beloning' : 'Zonder beloning'}</p>
+                        <p>${researchItem.organisatie_naam}</p>
+                    </div>
                 </div>
-                <div class="research-details">
-                    <p>${researchItem.met_beloning ? 'Met beloning' : 'Zonder beloning'}</p>
-                    <p>${researchItem.organisatie_naam}</p>
-                </div>
-            </div>
-        `;
+            `;
+        }
     });
 
     // Setting the HTML
@@ -48,15 +54,9 @@ export async function renderResearchPage() {
     });
 }
 
-// Research Modal
 async function renderResearchModal(researchId) {
     // Getting research item from server
-    const response = await fetch(`api/onderzoeken?research_id=${researchId}`, {
-        method: 'GET',
-        headers: {
-            'Accept': 'apllication/json'
-        }
-    })
+    const response = await fetch(`api/onderzoeken?research_id=${researchId}`)
     const researchItem = await response.json();
 
     document.querySelector('.js-research-modal-background')
@@ -95,6 +95,7 @@ async function renderResearchModal(researchId) {
         })
 }
 
+// Create enlistment in DB
 function enlist(researchId) {
     fetch('/api/onderzoeken/inschrijvingen', {
             method: 'POST',
@@ -103,5 +104,9 @@ function enlist(researchId) {
             },
             body: JSON.stringify({research_id: researchId, expert_id: expertId})
         })
-            .then(closeResearchModal);
+        .then(() => {
+            closeResearchModal();
+            renderResearchPage();
+        });
 }
+

@@ -7,7 +7,7 @@ class Enlistment:
 
     def create_enlistment(self, research_id:int, expert_id:int) -> int:
         # Create new enlistment
-        self.cursor.execute(
+        result = self.cursor.execute(
             """
             INSERT INTO inschrijvingen 
             (deskundige_id, onderzoek_id, status) 
@@ -25,15 +25,17 @@ class Enlistment:
         self.cursor.execute("SELECT * FROM inschrijvingen WHERE inschrijving_id = ?", (enlistment_id,))
         return self.cursor.fetchone()
 
-    def get_all_formatted_enlistments(self):
-        """ Gets enlistment corresponding research title and converts Rows to dict """
+    def get_formatted_enlistments_by_expert(self, expert_id):
+        """ Gets enlistments with corresponding research title, then converts Rows to dict """
         result = self.cursor.execute(
             """
             SELECT 
             inschrijvingen.*, onderzoeken.titel
             FROM inschrijvingen
             JOIN onderzoeken USING(onderzoek_id)
-            """
+            WHERE deskundige_id = ?
+            """,
+            (expert_id,)
         ).fetchall()
 
         all_enlistments = [dict(row) for row in result]
@@ -51,4 +53,6 @@ class Enlistment:
         self.conn.commit()
         return deleted_item
 
-
+    def get_enlistments_by_expert(self, expert_id:int):
+        self.cursor.execute("SELECT * FROM inschrijvingen WHERE deskundige_id = ?", (expert_id,))
+        return self.cursor.fetchall()

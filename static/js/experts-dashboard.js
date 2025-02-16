@@ -2,7 +2,6 @@ import {renderEnlistmentPage} from "./experts-dashboard/enlistments-page.js";
 import {renderResearchPage} from "./experts-dashboard/research-page.js";
 
 
-
 renderResearchPage();
 
 // Page toggler
@@ -44,7 +43,7 @@ export function showResearchModal() {
 
     // Close research modal event listener
     document.querySelector('.js-close-modal')
-    .addEventListener('click', closeResearchModal);
+        .addEventListener('click', closeResearchModal);
 }
 
 

@@ -1,22 +1,14 @@
 import {closeResearchModal, showResearchModal} from "../experts-dashboard.js";
+import {get_enlistments_by_expert} from "./enlistments.js";
 
 // TODO: Switch to sessions
 const expertId = 1;
 
 // Enlistment Page
-export function renderEnlistmentPage() {
-    // Getting all enlistments
-    fetch('/api/onderzoeken/inschrijvingen', {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            // Rendering each partition
-            renderPartitions(data);
-        });
+export async function renderEnlistmentPage() {
+    const enlistments = await get_enlistments_by_expert(expertId);
+    // Rendering each partition
+    renderPartitions(enlistments);
 }
 
 function renderPartitions(enlistments) {
@@ -87,12 +79,7 @@ function renderPartitions(enlistments) {
 
 async function renderEnlistmentModal(researchId, status) {
     // Get research item information from server
-    const response = await fetch(`api/onderzoeken?research_id=${researchId}`, {
-        method: 'GET',
-        headers: {
-            'Accept': 'apllication/json'
-        }
-    })
+    const response = await fetch(`api/onderzoeken?research_id=${researchId}`)
     const researchItem = await response.json();
 
     // Generate the HTML
@@ -149,6 +136,8 @@ function delist(researchId) {
             },
             body: JSON.stringify({expert_id: expertId, research_id: researchId})
         })
-            .then(closeResearchModal)
-            .then(() => renderEnlistmentPage());
+        .then(() => {
+            closeResearchModal();
+            renderEnlistmentPage();
+        })
 }
