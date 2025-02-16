@@ -5,17 +5,16 @@ import {get_enlistments_by_expert} from "./enlistments.js";
 // TODO: Switch to sessions
 const expertId = 1;
 
-// TODO: Only show researches that have not been interacted with by this user
-// TODO: Only show available
-// TODO: Only show accepted
 // TODO: Implement interval rendering
 export async function renderResearchPage() {
     // Get all research items from server
-    const response = await fetch('/api/onderzoeken')
+    // Set parameters to which research items you need: available, status
+    const response = await fetch('/api/onderzoeken?available=true&status=goedgekeurd');
     const allResearchItems = await response.json();
 
     // Create list with ids of research items that expert already interacted with
     const enlistments_by_expert = await get_enlistments_by_expert(expertId);
+
     const enlistedResearchIds = [];
     enlistments_by_expert.forEach(enlistment => enlistedResearchIds.push(enlistment.onderzoek_id));
 

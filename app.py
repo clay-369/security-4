@@ -56,12 +56,21 @@ def get_research_items():
     # All research items
     all_research_items = research_model.get_all_research_items()
 
-    all_formatted_research_items = []
+    formatted_research_items = []
     for research_item in all_research_items:
         formatted_research_item = research_model.format_research_item(research_item)
-        all_formatted_research_items.append(formatted_research_item)
+        formatted_research_items.append(formatted_research_item)
 
-    return all_formatted_research_items, 200
+    # Filter for available research items
+    if request.args.get('available') == 'true':
+        formatted_research_items = list(filter(lambda item: item['beschikbaar'], formatted_research_items))
+
+    # Filter for status: NIEUW, GOEDGEKEURD, AFGEKEURD, GESLOTEN
+    if request.args.get('status'):
+        status = request.args.get('status').upper()
+        formatted_research_items = list(filter(lambda item: item['status'] == status, formatted_research_items))
+
+    return formatted_research_items, 200
 
 
 @app.route('/api/onderzoeken/inschrijvingen', methods=['POST'])
