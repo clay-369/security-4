@@ -1,13 +1,17 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask_session import Session
 
 from lib.model.users import Users
 
 
 app = Flask(__name__)
 
-
-@app.route('/', methods=['GET','POST'])
+@app.route('/login')
 def login():
+    return render_template('log-in.html')
+
+@app.route('/api/login', methods=['GET','POST'])
+def api_login():
     users_model = Users()
     if request.method == 'POST':
         data = request.get_json()
@@ -24,11 +28,12 @@ def login():
         else:
             return jsonify({"success": False})
 
-    else:
-        return render_template('log-in.html')
+@app.route('/admin/beheer')
+def admin_beheer():
+    return render_template('beheerder-beheer.html')
 
-@app.route('/admin/beheer', methods=['GET','POST'])
-def beheer():
+@app.route('/api/admin/beheer', methods=['GET','POST'])
+def api_admin_beheer():
     users_model = Users()
 
     if request.method == 'POST':
@@ -53,8 +58,6 @@ def beheer():
             email = data.get('email')
             password = data.get('password')
             admin_id = data.get('admin_id')
-
-            print(first_name, last_name, email, password, admin_id)
 
             edit_admin = users_model.admin_edit(admin_id, first_name, last_name, email, password)
             if edit_admin:
@@ -82,9 +85,6 @@ def beheer():
         single_admin_dict = dict(admin_info)
 
         return jsonify(single_admin_dict)
-
-    else:
-        return render_template('beheerder-beheer.html')
 
 @app.route('/user')
 def user():

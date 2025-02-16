@@ -7,7 +7,7 @@ function closeModal(modalType) {
 }
 
 function openEditModal(adminID) {
-    fetch(`/admin/beheer?id=${adminID}`)
+    fetch(`/api/admin/beheer?id=${adminID}`)
         .then(response => response.json())
         .then(admin => {
             const openedModal = document.getElementById("editModal");
@@ -53,7 +53,7 @@ function openEditModal(adminID) {
                     const email = document.getElementById('edit_email').value;
                     const password = document.getElementById('edit_password').value;
 
-                       fetch('/admin/beheer', {
+                       fetch('/api/admin/beheer', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -75,7 +75,7 @@ function openEditModal(adminID) {
 
                     const request = 'delete'
 
-                       fetch('/admin/beheer', {
+                       fetch('/api/admin/beheer', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -100,7 +100,7 @@ function openEditModal(adminID) {
 
 window.addEventListener('load', function() {
     setInterval(function() {
-        fetch('/admin/beheer?fetch=adminData')
+        fetch('/api/admin/beheer?fetch=adminData')
         .then(response => response.json())
         .then(data => {
             const tbody = document.querySelector("table tbody");
@@ -130,7 +130,7 @@ document.getElementById('createAdmin').addEventListener('submit', function(event
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    fetch('/admin/beheer', {
+    fetch('/api/admin/beheer', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
