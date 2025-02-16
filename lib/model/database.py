@@ -1,7 +1,7 @@
 import sqlite3
 
 class Database:
-    def init(self, db_path):
+    def __init__(self, db_path):
         self.path = db_path
 
 
