@@ -41,3 +41,9 @@ class Deskundige:
         print(deskundige_id)
         self.cursor.execute("SELECT * FROM deskundigen WHERE deskundige_id = ?", (deskundige_id,))
         return self.cursor.fetchone()
+    
+    def update_deskundige(self, deskundige):
+        self.cursor.execute("UPDATE deskundigen SET email = ?, wachtwoord = ?, voornaam = ?, achternaam = ?, postcode = ?, telefoonnummer = ?, geboortedatum = ?, hulpmiddelen = ?, bijzonderheden = ?, bijzonderheden_beschikbaarheid = ?, introductie = ?, voorkeur_benadering = ?, type_beperking = ?, type_onderzoeken = ?, toezichthouder = ?, toezichthouder_naam = ?, toezichthouder_email = ?, toezichthouder_telefoonnummer = ? WHERE deskundige_id = ?", (deskundige["email"], deskundige["wachtwoord"], deskundige["voornaam"], deskundige["achternaam"], deskundige["postcode"], deskundige["telefoonnummer"], deskundige["geboortedatum"], deskundige["hulpmiddelen"], deskundige["bijzonderheden"], deskundige["bijzonderheden_beschikbaarheid"], deskundige["introductie"], deskundige["voorkeur_benadering"], deskundige["type_beperking"], deskundige["type_onderzoek"], deskundige["toezichthouder"], deskundige["toezichthouder_naam"], deskundige["toezichthouder_email"], deskundige["toezichthouder_telefoonnummer"], deskundige["deskundige_id"]))
+        self.conn.commit()
+        self.conn.close()
+        return True

@@ -99,12 +99,11 @@ def deskundige_details():
     return render_template('deskundige_details.html')
 
 # Api voor registreer deskundige
-@app.route("/api/deskundige", methods=["GET", "POST"])
+@app.route("/api/deskundige", methods=["GET", "POST", "PUT"])
 def deskundige_api():
     deskundige = Deskundige()
     if request.method == 'POST':
         data = request.get_json()
-        print("In deze functie")
         create_admin = deskundige.create_deskundige(data)
 
         if create_admin:
@@ -113,13 +112,22 @@ def deskundige_api():
             return jsonify({"success": False})
 
     if request.method == 'GET' and request.args.get('id'):
-        print("In deze functie")
         deskundige_id = request.args.get('id')
         deskundige_info = deskundige.get_single_deskundige(deskundige_id)
         single_deskundige_dict = dict(deskundige_info)
 
         if deskundige_info:
             return jsonify({"success": True, "deskundige": single_deskundige_dict})
+        else:
+            return jsonify({"success": False})
+        
+    if request.method == 'PUT' and request.args.get('id'):
+        deskundige_id = request.args.get('id')
+        data = request.get_json()
+        update_deskundige = deskundige.update_deskundige(data)
+
+        if update_deskundige:
+            return jsonify({"success": True})
         else:
             return jsonify({"success": False})
 
