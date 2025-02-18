@@ -58,8 +58,6 @@ document
       bijzonderheden_beschikbaarheid: bijzonderheden_beschikbaarheid,
     }
 
-    console.log("deskundige_data", deskundige_data)
-
     fetch("/api/deskundige", {
       method: "POST",
       headers: {
@@ -79,3 +77,56 @@ document
         console.error("Error:", error)
       })
   })
+
+window.addEventListener("load", function () {
+  fetch("/api/deskundige?id=1", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        console.log("Deskundige gevonden!")
+        console.log(data.deskundige)
+        document.getElementById("voornaam").value = data.deskundige.voornaam
+        document.getElementById("achternaam").value = data.deskundige.achternaam
+        document.getElementById("email").value = data.deskundige.email
+        document.getElementById("wachtwoord").value = data.deskundige.wachtwoord
+        document.getElementById("postcode").value = data.deskundige.postcode
+        document.getElementById("telefoonnummer").value =
+          data.deskundige.telefoonnummer
+        document.getElementById("geboortedatum").value =
+          data.deskundige.geboortedatum
+        document.getElementById("geslacht").value = data.deskundige.geslacht
+        document.getElementById("type-beperking").value =
+          data.deskundige.type_beperking
+        document.getElementById("hulpmiddelen").value =
+          data.deskundige.hulpmiddelen
+        document.getElementById("introductie").value =
+          data.deskundige.introductie
+        document.getElementById("bijzonderheden").value =
+          data.deskundige.bijzonderheden
+        document.getElementById("toezichthouder").value =
+          data.deskundige.toezichthouder
+        document.getElementById("toezichthouder-naam").value =
+          data.deskundige.toezichthouder_naam
+        document.getElementById("toezichthouder-email").value =
+          data.deskundige.toezichthouder_email
+        document.getElementById("toezichthouder-telefoonnummer").value =
+          data.deskundige.toezichthouder_telefoonnummer
+        document.getElementById("type-onderzoek").value =
+          data.deskundige.type_onderzoek
+        document.getElementById("voorkeur-benadering").value =
+          data.deskundige.voorkeur_benadering
+        document.getElementById("bijzonderheden-beschikbaarheid").value =
+          data.deskundige.bijzonderheden_beschikbaarheid
+      } else {
+        console.log("Error!")
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error)
+    })
+})

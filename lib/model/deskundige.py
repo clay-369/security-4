@@ -1,4 +1,4 @@
-from model.database import Database
+from lib.model.database import Database
 
 
 class Deskundige:
@@ -33,3 +33,11 @@ class Deskundige:
         self.conn.close()
         return True
 
+    def get_deskundigen(self):
+        self.cursor.execute("SELECT * FROM deskundigen")
+        return self.cursor.fetchall()
+    
+    def get_single_deskundige(self, deskundige_id):
+        print(deskundige_id)
+        self.cursor.execute("SELECT * FROM deskundigen WHERE deskundige_id = ?", (deskundige_id,))
+        return self.cursor.fetchone()

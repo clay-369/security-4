@@ -94,9 +94,13 @@ def user():
 def registreer_deskundige():
     return render_template('registreer_deskundige.html')
 
+@app.route('/deskundige_details')
+def deskundige_details():
+    return render_template('deskundige_details.html')
+
 # Api voor registreer deskundige
-@app.route("/api/deskundige", methods=["POST"])
-def create_deskundige():
+@app.route("/api/deskundige", methods=["GET", "POST"])
+def deskundige_api():
     deskundige = Deskundige()
     if request.method == 'POST':
         data = request.get_json()
@@ -105,6 +109,17 @@ def create_deskundige():
 
         if create_admin:
             return jsonify({"success": True})
+        else:
+            return jsonify({"success": False})
+
+    if request.method == 'GET' and request.args.get('id'):
+        print("In deze functie")
+        deskundige_id = request.args.get('id')
+        deskundige_info = deskundige.get_single_deskundige(deskundige_id)
+        single_deskundige_dict = dict(deskundige_info)
+
+        if deskundige_info:
+            return jsonify({"success": True, "deskundige": single_deskundige_dict})
         else:
             return jsonify({"success": False})
 
