@@ -2,8 +2,7 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_session import Session
 
 from lib.model.users import Users
-
-
+from lib.model.deskundige import Deskundige
 app = Flask(__name__)
 
 @app.route('/login')
@@ -90,5 +89,25 @@ def api_admin_beheer():
 def user():
     return render_template('experts-dashboard.html')
 
+# Registreer deskundige
+@app.route('/registreer_deskundige')
+def registreer_deskundige():
+    return render_template('registreer_deskundige.html')
+
+# Api voor registreer deskundige
+@app.route("/api/deskundige", methods=["POST"])
+def create_deskundige():
+    deskundige = Deskundige()
+    if request.method == 'POST':
+        data = request.get_json()
+        print("In deze functie")
+        create_admin = deskundige.create_deskundige(data)
+
+        if create_admin:
+            return jsonify({"success": True})
+        else:
+            return jsonify({"success": False})
+
 if __name__ == "__main__":
+    deskundige = Deskundige()
     app.run(debug=True)
