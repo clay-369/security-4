@@ -120,8 +120,8 @@ window.addEventListener("load", function () {
           data.deskundige.toezichthouder_telefoonnummer
         document.getElementById("type-onderzoek").value =
           data.deskundige.type_onderzoek
-        document.getElementById("voorkeur-benadering").value =
-          data.deskundige.voorkeur_benadering
+        // document.getElementById("voorkeur-benadering").value =
+        //   data.deskundige.voorkeur_benadering
         document.getElementById("bijzonderheden-beschikbaarheid").value =
           data.deskundige.bijzonderheden_beschikbaarheid
       } else {

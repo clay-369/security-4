@@ -31,6 +31,11 @@ def api_login():
 def admin_beheer():
     return render_template('beheerder-beheer.html')
 
+@app.route('/account_beheer')
+def account_beheer():
+    return render_template('account_beheer.html')
+
+
 @app.route('/api/admin/beheer', methods=['GET','POST'])
 def api_admin_beheer():
     users_model = Users()
@@ -112,6 +117,7 @@ def deskundige_api():
             return jsonify({"success": False})
 
     if request.method == 'GET' and request.args.get('id'):
+        print("test")
         deskundige_id = request.args.get('id')
         deskundige_info = deskundige.get_single_deskundige(deskundige_id)
         single_deskundige_dict = dict(deskundige_info)
