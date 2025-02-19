@@ -4,10 +4,10 @@ if (document.getElementById("createDeskundige")) {
     .addEventListener("submit", function (event) {
       event.preventDefault()
 
-      const firstName = document.getElementById("voornaam").value
-      const lastName = document.getElementById("achternaam").value
+      const voornaam = document.getElementById("voornaam").value
+      const achternaam = document.getElementById("achternaam").value
       const email = document.getElementById("email").value
-      const password = document.getElementById("wachtwoord").value
+      const wachtwoord = document.getElementById("wachtwoord").value
       const postcode = document.getElementById("postcode").value
       const telefoonnummer = document.getElementById("telefoonnummer").value
       const geboortedatum = document.getElementById("geboortedatum").value
@@ -38,10 +38,10 @@ if (document.getElementById("createDeskundige")) {
       ).value
 
       deskundige_data = {
-        first_name: firstName,
-        last_name: lastName,
+        voornaam: voornaam,
+        achternaam: achternaam,
         email: email,
-        password: password,
+        wachtwoord: wachtwoord,
         postcode: postcode,
         telefoonnummer: telefoonnummer,
         geboortedatum: geboortedatum,
@@ -79,61 +79,61 @@ if (document.getElementById("createDeskundige")) {
         })
     })
 }
-
-window.addEventListener("load", function () {
-  fetch("/api/deskundige?id=1", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        console.log("Deskundige gevonden!")
-        console.log(data.deskundige)
-        document.getElementById("voornaam").value = data.deskundige.voornaam
-        document.getElementById("achternaam").value = data.deskundige.achternaam
-        document.getElementById("email").value = data.deskundige.email
-        document.getElementById("wachtwoord").value = data.deskundige.wachtwoord
-        document.getElementById("postcode").value = data.deskundige.postcode
-        document.getElementById("telefoonnummer").value =
-          data.deskundige.telefoonnummer
-        document.getElementById("geboortedatum").value =
-          data.deskundige.geboortedatum
-        document.getElementById("geslacht").value = data.deskundige.geslacht
-        document.getElementById("type-beperking").value =
-          data.deskundige.type_beperking
-        document.getElementById("hulpmiddelen").value =
-          data.deskundige.hulpmiddelen
-        document.getElementById("introductie").value =
-          data.deskundige.introductie
-        document.getElementById("bijzonderheden").value =
-          data.deskundige.bijzonderheden
-        document.getElementById("toezichthouder").value =
-          data.deskundige.toezichthouder
-        document.getElementById("toezichthouder-naam").value =
-          data.deskundige.toezichthouder_naam
-        document.getElementById("toezichthouder-email").value =
-          data.deskundige.toezichthouder_email
-        document.getElementById("toezichthouder-telefoonnummer").value =
-          data.deskundige.toezichthouder_telefoonnummer
-        document.getElementById("type-onderzoek").value =
-          data.deskundige.type_onderzoek
-        // document.getElementById("voorkeur-benadering").value =
-        //   data.deskundige.voorkeur_benadering
-        document.getElementById("bijzonderheden-beschikbaarheid").value =
-          data.deskundige.bijzonderheden_beschikbaarheid
-      } else {
-        console.log("Error!")
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error)
-    })
-})
-
 if (document.getElementById("updateDeskundige")) {
+  window.addEventListener("load", function () {
+    fetch("/api/deskundige?id=1", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          console.log("Deskundige gevonden!")
+          console.log(data.deskundige)
+          document.getElementById("voornaam").value = data.deskundige.voornaam
+          document.getElementById("achternaam").value =
+            data.deskundige.achternaam
+          document.getElementById("email").value = data.deskundige.email
+          document.getElementById("wachtwoord").value =
+            data.deskundige.wachtwoord
+          document.getElementById("postcode").value = data.deskundige.postcode
+          document.getElementById("telefoonnummer").value =
+            data.deskundige.telefoonnummer
+          document.getElementById("geboortedatum").value =
+            data.deskundige.geboortedatum
+          document.getElementById("geslacht").value = data.deskundige.geslacht
+          document.getElementById("type-beperking").value =
+            data.deskundige.type_beperking
+          document.getElementById("hulpmiddelen").value =
+            data.deskundige.hulpmiddelen
+          document.getElementById("introductie").value =
+            data.deskundige.introductie
+          document.getElementById("bijzonderheden").value =
+            data.deskundige.bijzonderheden
+          document.getElementById("toezichthouder").value =
+            data.deskundige.toezichthouder
+          document.getElementById("toezichthouder-naam").value =
+            data.deskundige.toezichthouder_naam
+          document.getElementById("toezichthouder-email").value =
+            data.deskundige.toezichthouder_email
+          document.getElementById("toezichthouder-telefoonnummer").value =
+            data.deskundige.toezichthouder_telefoonnummer
+          document.getElementById("type-onderzoek").value =
+            data.deskundige.type_onderzoek
+          // document.getElementById("voorkeur-benadering").value =
+          //   data.deskundige.voorkeur_benadering
+          document.getElementById("bijzonderheden-beschikbaarheid").value =
+            data.deskundige.bijzonderheden_beschikbaarheid
+        } else {
+          console.log("Error!")
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error)
+      })
+  })
   document
     .getElementById("updateDeskundige")
     .addEventListener("submit", function (event) {
