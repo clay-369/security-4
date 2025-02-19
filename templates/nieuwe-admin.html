@@ -1,0 +1,21 @@
+ <link rel="stylesheet" href="{{ url_for('static', filename='create-update.css') }}">
+<section>
+    <h1>Nieuwe gebruiker</h1>
+
+    <form method="POST">
+        <label for="display_name">Naam</label>
+        <input class="text-input" type="text" id="display_name" name="display_name" required>
+
+        <label for="login">Email / login</label>
+        <input class="text-input" type="email" id="login" name="login" required>
+
+        <label for="password">Wachtwoord</label>
+        <input class="text-input" type="text" id="password" name="password" required>
+
+        <label for="admin">Is admin?</label>
+        <input class="checkbox" type="checkbox" id="admin" name="admin" value="1">
+
+        <input class="btn" type="submit" value="Opslaan">
+    </form>
+    <script src="../static/js/nieuwe-admin.js"></script>
+</section>

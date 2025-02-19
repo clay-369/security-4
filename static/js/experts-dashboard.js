@@ -1,5 +1,21 @@
-// Page toggler
+import {renderEnlistmentPage} from "./experts-dashboard/enlistments-page.js";
+import {renderResearchPage} from "./experts-dashboard/research-page.js";
 
+
+renderResearchPage();
+
+let intervalId;
+// Render every 5 seconds
+intervalId = setInterval(renderResearchPage, 5000);
+
+function loadAjaxPage(renderFunc) {
+    renderFunc(); //Load page immediately
+
+    clearInterval(intervalId); // Clear interval currently active
+    intervalId = setInterval(renderFunc, 5000); // Set interval for 5 sec
+}
+
+// Page toggler
 document.querySelectorAll('.js-page-toggler')
     .forEach(togglerElement => {
         togglerElement.addEventListener('click' , () => {
@@ -14,24 +30,37 @@ function toggleSections() {
     if (researchSection.classList.contains('hide')) {
         researchSection.classList.remove('hide');
         enlistmentsSection.classList.add('hide');
+
+        loadAjaxPage(renderResearchPage)
     } else {
         researchSection.classList.add('hide');
         enlistmentsSection.classList.remove('hide');
+
+        loadAjaxPage(renderEnlistmentPage);
     }
 }
 
-// Close research modal
-document.querySelector('.js-close-modal')
-    .addEventListener('click', () => {
-        document.querySelector('.js-research-modal-background')
-           .classList.add('hide');
-    });
+export function closeResearchModal() {
+    const modal = document.querySelector('.js-research-modal-background')
+    modal.classList.add('hide');
+    // Empty the modal
+    modal.innerHTML = '';
+}
 
-// Open research modal
-document.querySelectorAll('.js-research-container')
-    .forEach(containerElement => {
-        containerElement.addEventListener('click', () => {
-            document.querySelector('.js-research-modal-background')
-                .classList.remove('hide');
-        });
-    });
+export function showResearchModal() {
+    // Show the modal visually
+    document.querySelector('.js-research-modal-background')
+        .classList.remove('hide');
+
+    // Close research modal event listener
+    document.querySelector('.js-close-modal')
+        .addEventListener('click', closeResearchModal);
+}
+
+
+
+
+
+
+
+
