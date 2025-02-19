@@ -1,15 +1,168 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
+from flask_session import Session
+
 # DB Models
 from lib.model.research import Research
 from lib.model.enlistments import Enlistment
+from lib.model.organisatie import Organisatie
+
+from lib.model.users import Users
+from lib.model.deskundige import Deskundige
 
 app = Flask(__name__)
 
-
-# Webpages
-@app.route('/')
+@app.route('/login')
 def login():
     return render_template('log-in.html')
+
+
+@app.route('/organisatie_registratie', methods=['GET', 'POST'])
+def organisatie_registratie():
+    if request.method == 'POST':
+        naam = request.form['naam']
+        organisatie_type = request.form['type']
+        website = request.form['website']
+        contactpersoon = request.form['contactpersoon']
+        beschrijving = request.form['beschrijving']
+        email = request.form['email']
+        telefoonnummer = request.form['telefoonnummer']
+        details = request.form['details']
+
+        organisatie = Organisatie()
+        organisatie.create_organisatie(naam, organisatie_type, website, beschrijving, contactpersoon, email,
+                                       telefoonnummer, details)
+
+        return jsonify({"message": "Organisatie succesvol geregistreerd!", "success": True})
+
+    return render_template('organisatie_registratie.html')
+
+@app.route('/api/login', methods=['GET','POST'])
+def api_login():
+    users_model = Users()
+    if request.method == 'POST':
+        data = request.get_json()
+        email = data.get('email')
+        password = data.get('password')
+
+        login = users_model.login(email, password)
+        if login == ('user', True):
+            return jsonify({"success": True, "type": "user"})
+
+        elif login == ('admin', True):
+            return jsonify({"success": True, "type": "admin"})
+
+        else:
+            return jsonify({"success": False})
+
+@app.route('/admin/beheer')
+def admin_beheer():
+    return render_template('beheerder-beheer.html')
+
+@app.route('/account_beheer')
+def account_beheer():
+    return render_template('account_beheer.html')
+
+
+@app.route('/api/admin/beheer', methods=['GET','POST'])
+def api_admin_beheer():
+    users_model = Users()
+
+    if request.method == 'POST':
+        data = request.get_json()
+        request_type = data.get('request')
+
+        if request_type == 'create':
+            first_name = data.get('first_name')
+            last_name = data.get('last_name')
+            email = data.get('email')
+            password = data.get('password')
+
+            create_admin = users_model.admin_create(first_name, last_name, email, password)
+            if create_admin:
+                return jsonify({"success": True})
+            else:
+                return jsonify({"success": False})
+
+        elif request_type == 'update':
+            first_name = data.get('first_name')
+            last_name = data.get('last_name')
+            email = data.get('email')
+            password = data.get('password')
+            admin_id = data.get('admin_id')
+
+            edit_admin = users_model.admin_edit(admin_id, first_name, last_name, email, password)
+            if edit_admin:
+                return jsonify({"success": True})
+            else:
+                return jsonify({"success": False})
+
+        elif request_type == 'delete':
+            admin_id = data.get('admin_id')
+
+            delete_admin = users_model.admin_delete(admin_id)
+            if delete_admin:
+                return jsonify({"success": True})
+            else:
+                return jsonify({"success": False})
+
+    elif request.method == 'GET' and request.args.get('fetch') == 'adminData':
+        admin_data = users_model.get_admins()
+        admin_dict = [dict(row) for row in admin_data]
+        return jsonify(admin_dict)
+
+    elif request.method == 'GET' and request.args.get('id') is not None:
+        admin_id = request.args.get('id')
+        admin_info = users_model.get_single_admin(admin_id)
+        single_admin_dict = dict(admin_info)
+
+        return jsonify(single_admin_dict)
+
+@app.route('/user')
+def user():
+    return render_template('experts-dashboard.html')
+
+# Registreer deskundige
+@app.route('/registreer_deskundige')
+def registreer_deskundige():
+    return render_template('registreer_deskundige.html')
+
+@app.route('/deskundige_details')
+def deskundige_details():
+    return render_template('deskundige_details.html')
+
+# Api voor registreer deskundige
+@app.route("/api/deskundige", methods=["GET", "POST", "PUT"])
+def deskundige_api():
+    deskundige = Deskundige()
+    if request.method == 'POST':
+        data = request.get_json()
+        create_admin = deskundige.create_deskundige(data)
+
+        if create_admin:
+            return jsonify({"success": True})
+        else:
+            return jsonify({"success": False})
+
+    if request.method == 'GET' and request.args.get('id'):
+        print("test")
+        deskundige_id = request.args.get('id')
+        deskundige_info = deskundige.get_single_deskundige(deskundige_id)
+        single_deskundige_dict = dict(deskundige_info)
+
+        if deskundige_info:
+            return jsonify({"success": True, "deskundige": single_deskundige_dict})
+        else:
+            return jsonify({"success": False})
+
+    if request.method == 'PUT' and request.args.get('id'):
+        deskundige_id = request.args.get('id')
+        data = request.get_json()
+        update_deskundige = deskundige.update_deskundige(data)
+
+        if update_deskundige:
+            return jsonify({"success": True})
+        else:
+            return jsonify({"success": False})
 
 
 @app.route('/test')
@@ -111,4 +264,5 @@ def delist():
 
 
 if __name__ == "__main__":
+    deskundige = Deskundige()
     app.run(debug=True)

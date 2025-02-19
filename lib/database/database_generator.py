@@ -41,6 +41,7 @@ class WP3DatabaseGenerator:
             introductie TEXT,
             type_onderzoeken TEXT,
             voorkeur_benadering TEXT,
+            type_beperking TEXT,
             toezichthouder INTEGER NOT NULL,
             toezichthouder_naam TEXT,
             toezichthouder_email TEXT,
@@ -125,6 +126,7 @@ class WP3DatabaseGenerator:
         CREATE TABLE IF NOT EXISTS onderzoeken (
             onderzoek_id INTEGER PRIMARY KEY AUTOINCREMENT,
             organisatie_id INTEGER NOT NULL,
+            beschrijving TEXT NOT NULL,
             titel TEXT NOT NULL,
             beschrijving TEXT,
             beschikbaar INTEGER NOT NULL,

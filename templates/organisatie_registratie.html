@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <link rel="stylesheet" href="../static/css/organisatie_registratie.css">
+    <meta charset="UTF-8">
+    <title>Organisatie Registratie</title>
+</head>
+<body>
+<div class="container-registratie">
+    <div class="title">
+        <h1>
+            Maak hier een organisatie aan!
+        </h1>
+    </div>
+    <form action="/organisatie_registratie" method="POST">
+        <div class="form-group">
+            <div class="form-items">
+                <label for="naam">Naam Organisatie:</label>
+                <input type="text" id="naam" name="naam" required>
+            </div>
+            <div class="form-items">
+                <label for="type">Type Organisatie:</label>
+                <input type="text" id="type" name="type" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-items">
+                <label for="website">Website:</label>
+                <input type="url" id="website" name="website">
+            </div>
+            <div class="form-items">
+                <label for="contactpersoon">Contactpersoon:</label>
+                <input type="text" id="contactpersoon" name="contactpersoon" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-items">
+                <label for="beschrijving">Beschrijving:</label>
+                <input type="text" id="beschrijving" name="beschrijving">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-items">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-items">
+                <label for="telefoonnummer">Telefoonnummer:</label>
+                <input type="tel" id="telefoonnummer" name="telefoonnummer">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-items">
+                <label for="details">Overige Details:</label>
+                <input type="text" id="details" name="details">
+            </div>
+        </div>
+
+        <button type="submit">Verzenden</button>
+    </form>
+</div>
+</body>
+</html>
