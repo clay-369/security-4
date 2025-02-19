@@ -114,7 +114,7 @@ class WP3DatabaseGenerator:
             beperking_id INTEGER NOT NULL,
             onderzoek_id INTEGER NOT NULL,
             FOREIGN KEY (beperking_id) REFERENCES beperkingen(beperking_id),
-            FOREIGN KEY (onderzoek_id) REFERENCES onderdoeken(onderzoek_id)
+            FOREIGN KEY (onderzoek_id) REFERENCES onderzoeken(onderzoek_id)
             );
         """
         self.__execute_transaction_statement(create_statement)
@@ -125,6 +125,7 @@ class WP3DatabaseGenerator:
         CREATE TABLE IF NOT EXISTS onderzoeken (
             onderzoek_id INTEGER PRIMARY KEY AUTOINCREMENT,
             organisatie_id INTEGER NOT NULL,
+            beschrijving TEXT NOT NULL,
             titel TEXT NOT NULL,
             beschikbaar INTEGER NOT NULL,
             datum_vanaf DATE NOT NULL,

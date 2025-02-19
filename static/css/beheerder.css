@@ -47,6 +47,10 @@ table th {
     font-weight: bold;
 }
 
+table tb {
+    background-color: #FFFFFF;
+}
+
 table td {
     background-color: #F9F9F9;
     font-size: 16px;
