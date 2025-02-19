@@ -4,6 +4,17 @@ import {renderResearchPage} from "./experts-dashboard/research-page.js";
 
 renderResearchPage();
 
+let intervalId;
+// Render every 5 seconds
+intervalId = setInterval(renderResearchPage, 5000);
+
+function loadAjaxPage(renderFunc) {
+    renderFunc(); //Load page immediately
+
+    clearInterval(intervalId); // Clear interval currently active
+    intervalId = setInterval(renderFunc, 5000); // Set interval for 5 sec
+}
+
 // Page toggler
 document.querySelectorAll('.js-page-toggler')
     .forEach(togglerElement => {
@@ -20,12 +31,12 @@ function toggleSections() {
         researchSection.classList.remove('hide');
         enlistmentsSection.classList.add('hide');
 
-        renderResearchPage();
+        loadAjaxPage(renderResearchPage)
     } else {
         researchSection.classList.add('hide');
         enlistmentsSection.classList.remove('hide');
 
-        renderEnlistmentPage();
+        loadAjaxPage(renderEnlistmentPage);
     }
 }
 
