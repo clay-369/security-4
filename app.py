@@ -264,5 +264,4 @@ def delist():
 
 
 if __name__ == "__main__":
-    deskundige = Deskundige()
     app.run(debug=True)

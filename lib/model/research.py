@@ -19,6 +19,7 @@ class Research:
         #     'organisatie_id': int,
         #     'titel': str,
         #     'beschikbaar': bool,
+        #     'beschrijving': str,
         #     'datum_vanaf': date,
         #     'datum_tot': date,
         #     'onderzoek_type': str,
@@ -60,13 +61,13 @@ class Research:
             """
             INSERT INTO onderzoeken 
             (
-                organisatie_id, titel, beschikbaar, datum_vanaf, datum_tot, onderzoek_type, locatie, 
+                organisatie_id, titel, beschrijving, beschikbaar, datum_vanaf, datum_tot, onderzoek_type, locatie, 
                 met_beloning, beloning, leeftijd_vanaf, leeftijd_tot, status
             ) 
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
             """,
             (
-                research_item['organisatie_id'], research_item['titel'], research_item['beschikbaar'],
+                research_item['organisatie_id'], research_item['titel'], research_item['beschrijving'], research_item['beschikbaar'],
                 research_item['datum_vanaf'], research_item['datum_tot'], research_item['onderzoek_type'],
                 research_item['locatie'], research_item['met_beloning'], research_item['beloning'],
                 research_item['leeftijd_vanaf'], research_item['leeftijd_tot'], research_item['status']

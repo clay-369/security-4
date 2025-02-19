@@ -128,7 +128,6 @@ class WP3DatabaseGenerator:
             organisatie_id INTEGER NOT NULL,
             beschrijving TEXT NOT NULL,
             titel TEXT NOT NULL,
-            beschrijving TEXT,
             beschikbaar INTEGER NOT NULL,
             datum_vanaf DATE NOT NULL,
             datum_tot DATE NOT NULL,
