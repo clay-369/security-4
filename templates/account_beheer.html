@@ -6,8 +6,8 @@
     <link rel="stylesheet" href="/static/accountbeheer.css" />
   </head>
   <body>
-    <h1>Welkom ...</h1>
-    <form action="/registreer deskundige">
+    <h1>Welkom</h1>
+    <form id="updateDeskundige">
       <div class="form-header">
         <div class="form-header-left">
           <img src="/static/images/logo.png" alt="logo" />
@@ -26,13 +26,18 @@
       <div class="account-info-wrapper">
         <h3>Persoonlijke gegevens</h3>
         <div class="label-column">
-          <label for="fname">Voornaam</label>
-          <input type="text" id="fname" name="fname" />
+          <label for="voornaam">Voornaam</label>
+          <input type="text" id="voornaam" name="voornaam" />
         </div>
 
         <div class="label-column">
-          <label for="lname">Achternaam</label>
-          <input type="text" id="lname" name="lname" />
+          <label for="achternaam">Achternaam</label>
+          <input type="text" id="achternaam" name="achternaam" />
+        </div>
+
+        <div class="label-column">
+          <label for="wachtwoord">Wachtwoord</label>
+          <input type="password" id="wachtwoord" name="wachtwoord" />
         </div>
 
         <div class="full-width-form-element label-column">
@@ -55,8 +60,8 @@
         </div>
 
         <div class="label-column full-width-form-element">
-          <label for="kort-voorstel">Kort voorstel</label>
-          <textarea name="kort-voorstel" id="kort-voorstel"></textarea>
+          <label for="introductie">Kort voorstel</label>
+          <textarea name="introductie" id="introductie"></textarea>
         </div>
       </div>
 
@@ -69,8 +74,8 @@
         </div>
 
         <div class="label-column">
-          <label for="telefoon">Telefoon</label>
-          <input type="text" id="telefoon" name="telefoon" />
+          <label for="telefoonnummer">Telefoon</label>
+          <input type="text" id="telefoonnummer" name="telefoonnummer" />
         </div>
       </div>
 
@@ -80,32 +85,43 @@
         <div class="label-column">
           <label class="checkbox-container"
             >Toezichthouder
-            <input type="checkbox" checked="checked" />
+            <input
+              type="checkbox"
+              id="toezichthouder"
+              name="toezichthouder"
+              checked="checked"
+            />
             <span class="checkmark"></span>
           </label>
         </div>
 
         <div class="label-column">
-          <label for="toezichthouder_naam">Naam toezichthouder </label>
+          <label for="toezichthouder-naam">Naam toezichthouder </label>
           <input
             type="text"
-            id="toezichthouder_naam"
-            name="toezichthouder_naam"
+            id="toezichthouder-naam"
+            name="toezichthouder-naam"
           />
         </div>
 
         <div class="label-column">
-          <label for="toezichthouder_email">Email toezichthouder </label>
+          <label for="toezichthouder-email">Email toezichthouder </label>
           <input
             type="email"
-            id="toezichthouder_email"
-            name="toezichthouder_email"
+            id="toezichthouder-email"
+            name="toezichthouder-email"
           />
         </div>
 
         <div class="label-column">
-          <label for="toezichthouder_tel">Telefoonnummer toezichthouder </label>
-          <input type="tel" id="toezichthouder_tel" name="toezichthouder_tel" />
+          <label for="toezichthouder-telefoonnummer"
+            >Telefoonnummer toezichthouder
+          </label>
+          <input
+            type="tel"
+            id="toezichthouder-telefoonnummer"
+            name="toezichthouder-telefoonnummer"
+          />
         </div>
       </div>
 
@@ -132,25 +148,25 @@
         </div>
 
         <div class="label-column">
-          <label for="toezichthouder_bijzonderheden"
+          <label for="bijzonderheden-beschikbaarheid"
             >Bijzonderheden beschikbaarheid
           </label>
           <input
             type="text"
-            name="toezichthouder_bijzonderheden"
-            id="toezichthouder_bijzonderheden"
+            name="bijzonderheden-beschikbaarheid"
+            id="bijzonderheden-beschikbaarheid"
           />
         </div>
 
         <div class="label-column">
-          <label for="voorkeur-benadering">Voorkeur benadering </label>
+          <label>Voorkeur benadering </label>
           <div class="radio-container">
-            <input type="radio" name="telefoon" value="telefoon" />
-            <label for="telefoon">telefoonisch</label>
+            <input type="radio" name="voorkeur-benadering" value="Telefoon" />
+            <label>Telefoonisch</label>
           </div>
           <div class="radio-container">
-            <input type="radio" name="email" value="email" />
-            <label for="email">E-mail</label>
+            <input type="radio" name="voorkeur-benadering" value="E-mail" />
+            <label>E-mail</label>
           </div>
         </div>
 
@@ -168,5 +184,6 @@
         <input type="submit" value="Opslaan" />
       </div>
     </form>
+    <script src="../static/js/deskundige.js"></script>
   </body>
 </html>

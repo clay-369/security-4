@@ -4,8 +4,7 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_session import Session
 
 from lib.model.users import Users
-
-
+from lib.model.deskundige import Deskundige
 app = Flask(__name__)
 
 @app.route('/login')
@@ -54,6 +53,11 @@ def api_login():
 @app.route('/admin/beheer')
 def admin_beheer():
     return render_template('beheerder-beheer.html')
+
+@app.route('/account_beheer')
+def account_beheer():
+    return render_template('account_beheer.html')
+
 
 @app.route('/api/admin/beheer', methods=['GET','POST'])
 def api_admin_beheer():
@@ -113,5 +117,49 @@ def api_admin_beheer():
 def user():
     return render_template('experts-dashboard.html')
 
+# Registreer deskundige
+@app.route('/registreer_deskundige')
+def registreer_deskundige():
+    return render_template('registreer_deskundige.html')
+
+@app.route('/deskundige_details')
+def deskundige_details():
+    return render_template('deskundige_details.html')
+
+# Api voor registreer deskundige
+@app.route("/api/deskundige", methods=["GET", "POST", "PUT"])
+def deskundige_api():
+    deskundige = Deskundige()
+    if request.method == 'POST':
+        data = request.get_json()
+        create_admin = deskundige.create_deskundige(data)
+
+        if create_admin:
+            return jsonify({"success": True})
+        else:
+            return jsonify({"success": False})
+
+    if request.method == 'GET' and request.args.get('id'):
+        print("test")
+        deskundige_id = request.args.get('id')
+        deskundige_info = deskundige.get_single_deskundige(deskundige_id)
+        single_deskundige_dict = dict(deskundige_info)
+
+        if deskundige_info:
+            return jsonify({"success": True, "deskundige": single_deskundige_dict})
+        else:
+            return jsonify({"success": False})
+        
+    if request.method == 'PUT' and request.args.get('id'):
+        deskundige_id = request.args.get('id')
+        data = request.get_json()
+        update_deskundige = deskundige.update_deskundige(data)
+
+        if update_deskundige:
+            return jsonify({"success": True})
+        else:
+            return jsonify({"success": False})
+
 if __name__ == "__main__":
+    deskundige = Deskundige()
     app.run(debug=True)
