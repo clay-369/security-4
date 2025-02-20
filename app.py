@@ -263,5 +263,13 @@ def delist():
 
 
 
+@app.route('/beheerder_beheer')
+def beheerder():
+    return render_template('beheerder-beheer.html')
+
+@app.route('/dashboard_beheer')
+def dashboard_beheer():
+    return render_template('dashboard-beheer.html')
+
 if __name__ == "__main__":
     app.run(debug=True)
