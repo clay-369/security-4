@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 
+
 # Routes
-from routes import admin, expert, research
+from routes import admin, expert, research, public
 
 from lib.model.users import Users
 
@@ -11,10 +12,13 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+app.config['SECRET_KEY'] = ';)'
+
 # Register routes
 app.register_blueprint(admin.admin_bp)
 app.register_blueprint(expert.expert_bp)
 app.register_blueprint(research.research_bp)
+app.register_blueprint(public.public_bp)
 
 
 @app.before_request
@@ -100,6 +104,8 @@ def beheerder():
 @app.route('/dashboard_beheer')
 def dashboard_beheer():
     return render_template('dashboard-beheer.html')
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -34,7 +34,7 @@ class WP3DatabaseGenerator:
             achternaam TEXT NOT NULL,
             postcode TEXT,
             telefoonnummer TEXT,
-            geboortedatum DATETIME,
+            geboortedatum TEXT,
             hulpmiddelen TEXT,
             bijzonderheden TEXT,
             bijzonderheden_beschikbaarheid TEXT,
@@ -78,7 +78,8 @@ class WP3DatabaseGenerator:
             contactpersoon TEXT NOT NULL,
             email TEXT NOT NULL,
             telefoonnummer TEXT NOT NULL,
-            overige_details TEXT
+            overige_details TEXT,
+            wachtwoord TEXT NOT NULL
             );
         """
         self.__execute_transaction_statement(create_statement)
@@ -128,9 +129,10 @@ class WP3DatabaseGenerator:
             organisatie_id INTEGER NOT NULL,
             beschrijving TEXT NOT NULL,
             titel TEXT NOT NULL,
+            aanmaak_datum TEXT DEFAULT CURRENT_TIMESTAMP,
             beschikbaar INTEGER NOT NULL,
-            datum_vanaf DATE NOT NULL,
-            datum_tot DATE NOT NULL,
+            datum_vanaf TEXT NOT NULL,
+            datum_tot TEXT NOT NULL,
             onderzoek_type TEXT NOT NULL,
             locatie TEXT,
             met_beloning INTEGER NOT NULL,

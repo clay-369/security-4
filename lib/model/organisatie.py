@@ -12,3 +12,11 @@ class Organisatie:
         """, (naam, organisatie_type, website, beschrijving, contactpersoon, email, telefoonnummer, overige_details))
         self.conn.commit()
         return True
+
+    def validate_credentials(self, name, password):
+        result = self.cursor.execute("SELECT * FROM organisaties WHERE wachtwoord = ? AND naam = ?", (password, name)).fetchone()
+        if result:
+            return True
+        return False
+
+

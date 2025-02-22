@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request
 
+from lib.model.organisatie import Organisatie
 from lib.model.research import Research
 from lib.model.enlistments import Enlistment
 
@@ -40,21 +41,25 @@ def get_research_items():
 
 @research_bp.route('/api/onderzoeken', methods=['POST'])
 def create_research_item():
-    research_model = Research()
-
-    auth_token = request.headers.get('Authorization')
-    print(auth_token)
-    # TODO: Authorization
+    organisation_model = Organisatie()
 
     research_item = request.json
+    token = request.authorization
+    print(token)
+    # Authorization
+    is_authorized = organisation_model.validate_api_token(token, research_item['organisatie_id'])
+    if is_authorized:
+        research_model = Research()
 
-    new_research_id = research_model.create_research(research_item)
-    if not new_research_id:
-        return 500
+        new_research_id = research_model.create_research(research_item)
+        if not new_research_id:
+            return {"message": "Could not create item", "success": False}, 500 # Server error
 
-    new_research_item = research_model.get_research_by_id(new_research_id)
+        new_research_item = research_model.get_research_by_id(new_research_id)
 
-    return dict(new_research_item), 201
+        return dict(new_research_item), 201 # Created
+
+    return {"message": "Invalid API key", "success": False}, 401 # Unauthorized
 
 
 ## Enlistments
