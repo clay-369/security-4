@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button class="login">Log in als organisatie via api</button>
+<button class="test">Test de token</button>
+<button class="whoami">Who Am I</button>
+
+<script>
+    document.querySelector('.login')
+        .addEventListener('click', () => {
+            login();
+        });
+
+    document.querySelector('.test')
+        .addEventListener('click', () => {
+            test();
+        });
+
+    document.querySelector('.whoami')
+        .addEventListener('click',  () => {
+            whoami();
+        });
+
+    let token = '';
+
+    function test() {
+        fetch('/onderzoeken', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => console.log(data));
+    }
+
+    function login() {
+        fetch('/api/organisaties/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({'naam': 'Stichting accessibility', 'wachtwoord': 'ABC'})
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                token = data['tokens']['access'];
+            })
+    }
+
+    function whoami() {
+        fetch('/whoami', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => console.log(data));
+    }
+</script>
+</body>
+</html>
