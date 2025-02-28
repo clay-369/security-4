@@ -1,4 +1,5 @@
 from lib.model.database import Database
+from hashlib import sha256
 
 class Users:
     def __init__(self):
@@ -16,6 +17,7 @@ class Users:
 
 
     def admin_create(self, first_name, last_name, email, password):
+        password = hash_password(password)
         self.cursor.execute('INSERT into beheerders (voornaam, achternaam, email, wachtwoord) VALUES (?, ?, ?, ?)',
                             (first_name, last_name, email, password))
         self.conn.commit()
@@ -33,6 +35,7 @@ class Users:
 
 
     def admin_edit(self, admin_id, first_name, last_name, email, password):
+        password = hash_password(password)
         self.cursor.execute('UPDATE beheerders '
                             'SET voornaam = ?, achternaam = ?, email = ?, wachtwoord = ?  '
                             'WHERE beheerder_id = ?', (first_name, last_name, email, password, admin_id))
@@ -44,3 +47,7 @@ class Users:
         self.cursor.execute('DELETE FROM beheerders WHERE beheerder_id = ?', (admin_id,))
         self.conn.commit()
         return True
+
+
+def hash_password(password):
+    return sha256(password.encode('utf-8')).hexdigest()
