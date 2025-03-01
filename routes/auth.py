@@ -1,28 +1,33 @@
+from types import NoneType
+
 from flask import Blueprint, request
-from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt, get_current_user
+from flask_jwt_extended import (create_access_token,
+                                create_refresh_token,
+                                jwt_required, current_user,
+                                get_jwt_identity, get_jwt)
 
 from lib.model.organisatie import Organisatie
+from lib.model.token_blocklist import TokenBlocklist
 
 auth_bp = Blueprint('auth', __name__)
+
 
 
 # JWT API Authorization
 @auth_bp.route('/api/organisaties/login', methods=['POST'])
 def login_organisation():
-    # Accepts {"naam": <name>, "wachtwoord": <password>} in JSON
+    # Accepts {"email": <email>, "password": <password>} in JSON
     data = request.get_json()
     organisations_model = Organisatie()
 
-    organisation_name = data['naam']
-    password = data['wachtwoord']
+    email = data['email']
+    password = data['password']
 
-    is_validated = organisations_model.validate_credentials(organisation_name, password)
-    # Maybe set identity to email, so this can also be used for the experts
-    # emails have to be unique in the db then
-    # That would be good for sensitive information protection
+    is_validated = organisations_model.validate_credentials(email, password)
+
     if is_validated:
-        access_token = create_access_token(identity=organisation_name)
-        refresh_token = create_refresh_token(identity=organisation_name)
+        access_token = create_access_token(identity=email)
+        refresh_token = create_refresh_token(identity=email)
 
         return {
             "message": "Login successful",
@@ -34,8 +39,32 @@ def login_organisation():
 
     return {"error": "Invalid credentials"}, 401
 
+
 @auth_bp.route('/whoami', methods=['GET'])
 @jwt_required()
 def whoami():
-    claims = get_jwt()
-    return {"claims": claims}, 200
+    return {"user_details": dict(current_user)}, 200
+
+
+@auth_bp.route('/refresh', methods=['GET'])
+@jwt_required(refresh=True) # Accepts refresh token, not access token
+def refresh_access_token():
+    identity = get_jwt_identity()
+
+    new_access_token = create_access_token(identity=identity)
+
+    return {"access_token": new_access_token}, 200
+
+
+@auth_bp.route('/logout', methods=['GET'])
+@jwt_required(verify_type=False)
+def logout_organisation():
+    jwt = get_jwt()
+
+    jti = jwt['jti']
+    token_type = jwt['type']
+
+    token_blocklist_model = TokenBlocklist()
+    token_blocklist_model.add_token(jti)
+
+    return {"message": f"Successfully revoked {token_type} token"}, 200

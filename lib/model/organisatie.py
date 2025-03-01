@@ -1,3 +1,5 @@
+from types import NoneType
+
 from lib.model.database import Database
 
 class Organisatie:
@@ -13,10 +15,10 @@ class Organisatie:
         self.conn.commit()
         return True
 
-    def validate_credentials(self, name, password):
-        result = self.cursor.execute("SELECT * FROM organisaties WHERE wachtwoord = ? AND naam = ?", (password, name)).fetchone()
-        if result:
-            return True
-        return False
+    def validate_credentials(self, email, password):
+        result = self.cursor.execute("SELECT email FROM organisaties WHERE wachtwoord = ? AND email = ?", (password, email)).fetchone()
+        return bool(result)
 
-
+    def get_organisation_by_email(self, email):
+        result = self.cursor.execute("SELECT * FROM organisaties WHERE email = ?", (email,)).fetchone()
+        return dict(result)
