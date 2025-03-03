@@ -16,3 +16,8 @@ class Disabilities:
         ).fetchone()['beperking_id']
 
         return disability_id
+    
+    def get_all_disabilities(self):
+        self.cursor.execute("SELECT * FROM beperkingen")
+        rows = self.cursor.fetchall()
+        return [dict(row) for row in rows]

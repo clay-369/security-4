@@ -19,7 +19,7 @@ app.register_blueprint(research.research_bp)
 
 @app.before_request
 def before_request():
-    open_routes = ['login', '/', 'static', 'api_login', 'api_admin_beheer', 'expert.register', 'expert.deskundige_api']
+    open_routes = ['login', '/', 'static', 'api_login', 'api_admin_beheer', 'expert.register', 'expert.deskundige_api', 'expert.disabilities']
     admin_routes = ['admin.manage']
     expert_routes = ['expert.dashboard', 'expert.register', 'expert.edit', 'expert.details']
     logged_in = session.get('user_id')

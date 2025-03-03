@@ -15,6 +15,7 @@ function showSnackbar(message, type = "error") {
   }, 3000)
 }
 
+// Toezichthouder checkbox
 document
   .getElementById("toezichthouder")
   .addEventListener("change", function () {
@@ -25,6 +26,32 @@ document
       document.getElementById("toezichthouder-container").style.display = "none"
     }
   })
+
+// Load type of disablities
+window.addEventListener("load", function () {
+  fetch("/api/disabilities", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        data.disabilities.forEach((disability) => {
+          const option = document.createElement("option")
+          option.value = disability.beperking_id
+          option.textContent = disability.beperking
+          document.getElementById("type-beperking").appendChild(option)
+        })
+      } else {
+        console.error(data.message)
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error)
+    })
+})
 
 if (document.getElementById("createDeskundige")) {
   document

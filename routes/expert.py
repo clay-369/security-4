@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request
 
 from lib.model.deskundige import Deskundige
+from lib.model.disabilities import Disabilities
 
 expert_bp = Blueprint('expert', __name__)
 
@@ -38,7 +39,6 @@ def deskundige_api():
             return {"success": False, "message": message}
 
     if request.method == 'GET' and request.args.get('id'):
-        print("test")
         deskundige_id = request.args.get('id')
         deskundige_info = deskundige.get_single_deskundige(deskundige_id)
         single_deskundige_dict = dict(deskundige_info)
@@ -57,4 +57,14 @@ def deskundige_api():
             return {"success": True}
         else:
             return {"success": False}
+        
+@expert_bp.route("/api/disabilities", methods=["GET"])
+def disabilities():
+    disabilities = Disabilities()
+    if request.method == 'GET':
+        all_disabilities = disabilities.get_all_disabilities()
+        if all_disabilities:
+            return {"success": True, "disabilities": all_disabilities, "message": "Beperkingen gevonden"}
+        else:
+            return {"success": False, "message": "Geen beperkingen gevonden"}
 
