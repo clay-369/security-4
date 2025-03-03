@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request
 
 from lib.model.deskundige import Deskundige
 from lib.model.disabilities import Disabilities
-
+from lib.model.research import Research
 expert_bp = Blueprint('expert', __name__)
 
 @expert_bp.route('/deskundige')
@@ -67,4 +67,12 @@ def disabilities():
             return {"success": True, "disabilities": all_disabilities, "message": "Beperkingen gevonden"}
         else:
             return {"success": False, "message": "Geen beperkingen gevonden"}
+        
+@expert_bp.route("/api/research", methods=["GET"])
+def research():
+    research = Research()
+    if request.method == 'GET':
+        all_research = research.get_all_research_items()
+        return {"success": True, "research": all_research, "message": "Onderzoeken gevonden"}
+
 
