@@ -30,12 +30,12 @@ def deskundige_api():
     deskundige = Deskundige()
     if request.method == 'POST':
         data = request.get_json()
-        create_admin = deskundige.create_deskundige(data)
+        success, message = deskundige.create_deskundige(data)
 
-        if create_admin:
-            return {"success": True}
-        else:
-            return {"success": False}
+        if success:
+            return {"success": True, "message": message}
+        else: 
+            return {"success": False, "message": message}
 
     if request.method == 'GET' and request.args.get('id'):
         print("test")

@@ -19,7 +19,7 @@ app.register_blueprint(research.research_bp)
 
 @app.before_request
 def before_request():
-    open_routes = ['login', '/', 'static', 'api_login', 'api_admin_beheer']
+    open_routes = ['login', '/', 'static', 'api_login', 'api_admin_beheer', 'expert.register', 'expert.deskundige_api']
     admin_routes = ['admin.manage']
     expert_routes = ['expert.dashboard', 'expert.register', 'expert.edit', 'expert.details']
     logged_in = session.get('user_id')
@@ -39,9 +39,9 @@ def index():
     if not session.get('user_id'):
         return redirect(url_for('login'))
     # Logged in:
-    elif session.get('admin'):
-        return redirect(url_for('admin.manage'))
     elif not session.get('admin'):
+        return redirect(url_for('admin.manage'))
+    elif session.get('admin'):
         return redirect(url_for('expert.dashboard'))
 
 

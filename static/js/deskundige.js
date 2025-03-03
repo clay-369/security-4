@@ -17,6 +17,7 @@ if (document.getElementById("createDeskundige")) {
       const introductie = document.getElementById("introductie").value
       const bijzonderheden = document.getElementById("bijzonderheden").value
       const toezichthouder = document.getElementById("toezichthouder").value
+      const akkoord = document.getElementById("akkoord").checked
       const toezichthouder_naam = document.getElementById(
         "toezichthouder-naam"
       ).value
@@ -37,7 +38,7 @@ if (document.getElementById("createDeskundige")) {
         "bijzonderheden-beschikbaarheid"
       ).value
 
-      deskundige_data = {
+      let deskundige_data = {
         voornaam: voornaam,
         achternaam: achternaam,
         email: email,
@@ -57,6 +58,7 @@ if (document.getElementById("createDeskundige")) {
         type_onderzoek: type_onderzoek,
         voorkeur_benadering: voorkeur_benadering,
         bijzonderheden_beschikbaarheid: bijzonderheden_beschikbaarheid,
+        akkoord: akkoord,
       }
 
       fetch("/api/deskundige", {
@@ -69,9 +71,10 @@ if (document.getElementById("createDeskundige")) {
         .then((response) => response.json())
         .then((data) => {
           if (data.success) {
-            console.log("Deskundige gemaakt!")
+            console.log(data.message)
           } else {
             console.log("Error!")
+            console.log(data.message)
           }
         })
         .catch((error) => {
@@ -79,6 +82,7 @@ if (document.getElementById("createDeskundige")) {
         })
     })
 }
+
 if (document.getElementById("updateDeskundige")) {
   window.addEventListener("load", function () {
     fetch("/api/deskundige?id=1", {
