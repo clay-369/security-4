@@ -1,3 +1,19 @@
+function showSnackbar(message, type = "error") {
+  // Snackbar
+  let snackbar = document.getElementById("snackbar")
+  snackbar.className = "show"
+  snackbar.innerHTML = message
+  if (type === "error") {
+    snackbar.style.backgroundColor = "#ff4444"
+  } else if (type === "success") {
+    snackbar.style.backgroundColor = "#3dbb56"
+  }
+
+  setTimeout(function () {
+    snackbar.className = snackbar.className.replace("show", "")
+  }, 3000)
+}
+
 if (document.getElementById("createDeskundige")) {
   document
     .getElementById("createDeskundige")
@@ -72,13 +88,18 @@ if (document.getElementById("createDeskundige")) {
         .then((data) => {
           if (data.success) {
             console.log(data.message)
+            showSnackbar(data.message, "success")
           } else {
-            console.log("Error!")
-            console.log(data.message)
+            console.error(data.message)
+            showSnackbar(data.message, "error")
           }
         })
         .catch((error) => {
           console.error("Error:", error)
+          showSnackbar(
+            "Er is een fout opgetreden bij het registreren.",
+            "error"
+          )
         })
     })
 }
