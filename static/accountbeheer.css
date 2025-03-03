@@ -270,3 +270,8 @@ button:hover {
     opacity: 1;
   }
 }
+
+#toezichthouder-container {
+  display: none;
+  display: flex;
+}

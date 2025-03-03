@@ -11,42 +11,42 @@
     <form id="createDeskundige" method="POST">
       <h2 class="form-title">Vul de onderstaande gegevens in</h2>
       <div class="label-column">
-        <label for="voornaam">Voornaam</label>
+        <label for="voornaam" class="required">Voornaam <span class="required-field">*</span></label>
         <input type="text" id="voornaam" name="voornaam" />
       </div>
 
       <div class="label-column">
-        <label for="achternaam">Achternaam</label>
+        <label for="achternaam" class="required">Achternaam <span class="required-field">*</span></label>
         <input type="text" id="achternaam" name="achternaam" />
       </div>
 
       <div class="label-column">
-        <label for="email">E-mail</label>
+        <label for="email" class="required">E-mail <span class="required-field">*</span></label>
         <input type="email" id="email" name="email" />
       </div>
 
       <div class="label-column">
-        <label for="wachtwoord">Wachtwoord</label>
+        <label for="wachtwoord" class="required">Wachtwoord <span class="required-field">*</span></label>
         <input type="password" id="wachtwoord" name="wachtwoord" />
       </div>
 
       <div class="label-column">
-        <label for="telefoonnummer">Telefoonnummer</label>
+        <label for="telefoonnummer" class="required">Telefoonnummer <span class="required-field">*</span></label>
         <input type="text" id="telefoonnummer" name="telefoonnummer" />
       </div>
 
       <div class="label-column">
-        <label for="postcode">Postcode</label>
+        <label for="postcode" class="required">Postcode <span class="required-field">*</span></label>
         <input type="text" id="postcode" name="postcode" />
       </div>
 
       <div class="label-column">
-        <label for="geboortedatum">Geboortedatum</label>
+        <label for="geboortedatum" class="required">Geboortedatum <span class="required-field">*</span></label>
         <input type="date" id="geboortedatum" name="geboortedatum" />
       </div>
 
       <div class="label-column dropdown">
-        <label for="geslacht">Geslacht</label>
+        <label for="geslacht" class="required">Geslacht <span class="required-field">*</span></label>
         <select name="geslacht" id="geslacht">
           <option value="man">Man</option>
           <option value="vrouw">Vrouw</option>
@@ -55,7 +55,7 @@
       </div>
 
       <div class="label-column dropdown">
-        <label for="type-beperking">Type beperking</label>
+        <label for="type-beperking" class="required">Type beperking <span class="required-field">*</span></label>
         <select name="type-beperking" id="type-beperking">
           <option value="blind">Blind</option>
           <option value="dikbeklede">Dikbeklede</option>
@@ -69,7 +69,7 @@
       </div>
 
       <div class="label-column full-width-form-element">
-        <label for="introductie ">Introductie</label>
+        <label for="introductie" class="required">Introductie <span class="required-field">*</span></label>
         <textarea name="introductie" id="introductie"></textarea>
       </div>
 
@@ -91,33 +91,35 @@
         </label>
       </div>
 
-      <div class="label-column">
-        <label for="toezichthouder-naam">Naam toezichthouder </label>
-        <input
-          type="text"
-          id="toezichthouder-naam"
-          name="toezichthouder-naam"
-        />
-      </div>
+      <div id="toezichthouder-container" class="full-width-form-element">
+        <div class="label-column">
+          <label for="toezichthouder-naam">Naam toezichthouder </label>
+          <input
+            type="text"
+            id="toezichthouder-naam"
+            name="toezichthouder-naam"
+          />
+        </div>
 
-      <div class="label-column">
-        <label for="toezichthouder-email">Email toezichthouder </label>
-        <input
-          type="email"
-          id="toezichthouder-email"
-          name="toezichthouder-email"
-        />
-      </div>
+        <div class="label-column">
+          <label for="toezichthouder-email">Email toezichthouder </label>
+          <input
+            type="email"
+            id="toezichthouder-email"
+            name="toezichthouder-email"
+          />
+        </div>
 
-      <div class="label-column full-width-form-element">
-        <label for="toezichthouder-telefoonnummer"
-          >Telefoonnummer toezichthouder
-        </label>
-        <input
-          type="tel"
-          id="toezichthouder-telefoonnummer"
-          name="toezichthouder-telefoonnummer"
-        />
+        <div class="label-column full-width-form-element">
+          <label for="toezichthouder-telefoonnummer"
+            >Telefoonnummer toezichthouder
+          </label>
+          <input
+            type="tel"
+            id="toezichthouder-telefoonnummer"
+            name="toezichthouder-telefoonnummer"
+          />
+        </div>
       </div>
 
       <div class="label-column">

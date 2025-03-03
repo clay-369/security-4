@@ -1,3 +1,4 @@
+// Show snackbar method
 function showSnackbar(message, type = "error") {
   // Snackbar
   let snackbar = document.getElementById("snackbar")
@@ -13,6 +14,17 @@ function showSnackbar(message, type = "error") {
     snackbar.className = snackbar.className.replace("show", "")
   }, 3000)
 }
+
+document
+  .getElementById("toezichthouder")
+  .addEventListener("change", function () {
+    if (this.checked) {
+      document.getElementById("toezichthouder-container").style.display =
+        "block"
+    } else {
+      document.getElementById("toezichthouder-container").style.display = "none"
+    }
+  })
 
 if (document.getElementById("createDeskundige")) {
   document
@@ -32,7 +44,7 @@ if (document.getElementById("createDeskundige")) {
       const hulpmiddelen = document.getElementById("hulpmiddelen").value
       const introductie = document.getElementById("introductie").value
       const bijzonderheden = document.getElementById("bijzonderheden").value
-      const toezichthouder = document.getElementById("toezichthouder").value
+      const toezichthouder = document.getElementById("toezichthouder").checked
       const akkoord = document.getElementById("akkoord").checked
       const toezichthouder_naam = document.getElementById(
         "toezichthouder-naam"

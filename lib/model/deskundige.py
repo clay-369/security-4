@@ -8,9 +8,15 @@ class Deskundige:
 
     def create_deskundige(self, deskundige):
         neccesary_fields = ["email", "wachtwoord", "voornaam", "achternaam", "postcode", "telefoonnummer", "geboortedatum"]
+        
         # Check if the user has agreed to the terms and conditions
         if deskundige["akkoord"] == False:
             return False, "U moet akkoord gaan met de voorwaarden en privacy."
+        
+        if deskundige["toezichthouder"] == True:
+            neccesary_fields.append("toezichthouder_naam")
+            neccesary_fields.append("toezichthouder_email")
+            neccesary_fields.append("toezichthouder_telefoonnummer")
         
         # Check if all neccesary fields are filled
         for field in deskundige:
