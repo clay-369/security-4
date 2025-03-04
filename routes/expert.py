@@ -51,12 +51,12 @@ def deskundige_api():
     if request.method == 'PUT' and request.args.get('id'):
         deskundige_id = request.args.get('id')
         data = request.get_json()
-        update_deskundige = deskundige.update_deskundige(data)
+        update_deskundige, message = deskundige.update_deskundige(data)
 
         if update_deskundige:
-            return {"success": True}
+            return {"success": True, "message": message}
         else:
-            return {"success": False}
+            return {"success": False, "message": message}
         
 @expert_bp.route("/api/disabilities", methods=["GET"])
 def disabilities():
