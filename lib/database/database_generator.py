@@ -22,6 +22,7 @@ class WP3DatabaseGenerator:
         if self.create_initial_data:
             self.insert_beperkingen()
             self.insert_beheerders()
+            self.insert_defaults_into_tables()
 
 
     def create_table_deskundigen(self):
@@ -78,7 +79,8 @@ class WP3DatabaseGenerator:
             contactpersoon TEXT NOT NULL,
             email TEXT NOT NULL,
             telefoonnummer TEXT NOT NULL,
-            overige_details TEXT
+            overige_details TEXT,
+            wachtwoord TEXT NOT NULL
             );
         """
         self.__execute_transaction_statement(create_statement)
@@ -205,7 +207,41 @@ class WP3DatabaseGenerator:
         ]
         insert_statement = "INSERT INTO beheerders (voornaam, achternaam, email, wachtwoord) VALUES (?, ?, ?, ?)"
         self.__execute_many_transaction_statement(insert_statement, beheerders)
-        print("✅ Filled default admin accounts")
+        print("✅ Filled default admin account")
+
+
+    def insert_defaults_into_tables(self):
+        insert_statement_experts = ("INSERT INTO deskundigen "
+                                    "(email, wachtwoord, voornaam, achternaam, postcode, telefoonnummer, "
+                                    "geboortedatum, hulpmiddelen, bijzonderheden, bijzonderheden_beschikbaarheid, "
+                                    "introductie, type_onderzoeken, voorkeur_benadering, toezichthouder, "
+                                    "toezichthouder_naam, toezichthouder_email, toezichthouder_telefoonnummer, "
+                                    "status, beheerder_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+        values_experts = ("vried@hr.nl", "geheimer", "Diederik", "de Vries", "1234AA", "06958388583",
+                          "1-1-1800", "Rollator", "heel oud", "alleen woensdag", "Hallo ik ben Diekerik",
+                          "TELEFONISCH", "nee", 1, "Jan", "jan@email.com", "06122222", "NIEUW", None)
+        self.__execute_transaction_statement(insert_statement_experts, values_experts)
+        print("✅ Filled default expert account")
+
+        insert_statement_research = ("""INSERT INTO onderzoeken 
+            (organisatie_id, titel, beschrijving, beschikbaar, datum_vanaf, datum_tot, onderzoek_type, locatie, 
+                met_beloning, beloning, leeftijd_vanaf, leeftijd_tot, status) 
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""")
+
+        values_research = (1, 'Onderzoeken 2222', "Oke", True, '01-02-2025', '01-04-2025', 'OP LOCATIE',
+                           'Abbenbroek', True, '$1', 19, 77, 'GEACCEPTEERD')
+        self.__execute_transaction_statement(insert_statement_research, values_research)
+        print("✅ Filled default research item")
+
+        insert_statement_organisation = ("""INSERT INTO organisaties
+            (naam, organisatie_type, website, beschrijving, contactpersoon, email, telefoonnummer, overige_details, wachtwoord)
+            VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)""")
+        values_organisation = ('Stichting accessibility', 'non-profit', 'www.google.com', 'ja ok', 'peter', 'peter@email.com', '06', 'geef geld', 'ABC')
+        self.__execute_transaction_statement(insert_statement_organisation, values_organisation)
+        print("✅ Filled default organisation account")
+
+
+
 
 
     # Transacties zijn duur, dat wil zeggen, ze kosten veel tijd en CPU kracht. Als je veel insert doet
