@@ -1,3 +1,6 @@
+const disabilities = []
+const research = []
+
 // Show snackbar method
 function showSnackbar(message, type = "error") {
   // Snackbar
@@ -39,6 +42,7 @@ window.addEventListener("load", function () {
     .then((data) => {
       if (data.success) {
         data.disabilities.forEach((disability) => {
+          disabilities.push(disability)
           const option = document.createElement("option")
           option.value = disability.beperking_id
           option.textContent = disability.beperking
@@ -63,6 +67,7 @@ window.addEventListener("load", function () {
       console.log(data)
       const addedTypes = new Set()
       data.research.forEach((research) => {
+        research.push(research)
         if (!addedTypes.has(research.onderzoek_type)) {
           const option = document.createElement("option")
           option.value = research.onderzoek_id

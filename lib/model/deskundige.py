@@ -11,6 +11,14 @@ class Deskundige:
     def create_deskundige(self, deskundige):
         neccesary_fields = ["email", "wachtwoord", "voornaam", "achternaam", "postcode", "telefoonnummer", "geboortedatum", "introductie", "voorkeur_benadering", "bijzonderheden_beschikbaarheid", "type_onderzoek", "type_beperking"]
         
+        # Temporary solution to check if there are "onderzoeken"
+        if deskundige["type_onderzoek"] == "":
+            return False, "Er zijn geen onderzoeken gevonden. U kunt pas registreren als er onderzoeken zijn!"
+        
+        # Temporary solution to check if there are "beperkingen"
+        if deskundige["type_beperking"] == "":
+            return False, "Er zijn geen beperkingen gevonden."
+        
         if len(deskundige["introductie"]) < 10:
             return False, "Vertel wat meer in je introductie."
         
