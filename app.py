@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
+from lib.model.users import hash_password
 
 # Routes
 from routes import admin, expert, research
@@ -19,12 +20,13 @@ app.register_blueprint(research.research_bp)
 
 @app.before_request
 def before_request():
-    open_routes = ['login', '/', 'static', 'api_login', 'api_admin_beheer']
+    open_routes = ['login', '/', 'static', 'api_login', 'api_admin_beheer', 'expert.register', 'expert.deskundige_api', 'expert.disabilities', 'expert.research']
+    temp_routes = ['expert.edit', 'expert.deskundige_api']
     admin_routes = ['admin.manage']
     expert_routes = ['expert.dashboard', 'expert.register', 'expert.edit', 'expert.details']
     logged_in = session.get('user_id')
 
-    if logged_in is None and request.endpoint not in open_routes:
+    if logged_in is None and request.endpoint not in open_routes and request.endpoint not in temp_routes:
         return redirect(url_for('login'))
 
     if logged_in is not None:
@@ -59,6 +61,7 @@ def api_login():
         email = data.get('email')
         password = data.get('password')
 
+        password = hash_password(password)
         login = users_model.login(email)
         if 'user' in login:
             user = login[0]
@@ -69,12 +72,14 @@ def api_login():
                 return {"success": True, "type": "user"}
 
         elif 'admin' in login:
+            print('Admin found')
             admin = login[0]
-            session['user_id'] = admin[0]
-            session['name'] = admin[1]
-            session['admin'] = True
-            return {"success": True, "type": "admin"}
-
+            if password == admin[4]:
+                print('Password correct')
+                session['user_id'] = admin[0]
+                session['name'] = admin[1]
+                session['admin'] = True
+                return {"success": True, "type": "admin"}
         else:
             return {"success": False}
 

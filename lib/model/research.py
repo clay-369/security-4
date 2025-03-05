@@ -92,6 +92,11 @@ class Research:
         self.conn.commit()
         return new_research_id
 
+    def get_all_research_items(self):
+        self.cursor.execute("SELECT * FROM onderzoeken")
+        rows = self.cursor.fetchall()
+        return [dict(row) for row in rows]
+
     def get_all_available_research_items(self):
         self.cursor.execute("SELECT * FROM onderzoeken WHERE status = ? AND beschikbaar = ?",
                             ('GOEDGEKEURD', True))

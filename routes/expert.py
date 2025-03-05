@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request
 
 from lib.model.deskundige import Deskundige
-
+from lib.model.disabilities import Disabilities
+from lib.model.research import Research
 expert_bp = Blueprint('expert', __name__)
 
 @expert_bp.route('/deskundige')
@@ -30,15 +31,14 @@ def deskundige_api():
     deskundige = Deskundige()
     if request.method == 'POST':
         data = request.get_json()
-        create_admin = deskundige.create_deskundige(data)
+        success, message = deskundige.create_deskundige(data)
 
-        if create_admin:
-            return {"success": True}
-        else:
-            return {"success": False}
+        if success:
+            return {"success": True, "message": message}
+        else: 
+            return {"success": False, "message": message}
 
     if request.method == 'GET' and request.args.get('id'):
-        print("test")
         deskundige_id = request.args.get('id')
         deskundige_info = deskundige.get_single_deskundige(deskundige_id)
         single_deskundige_dict = dict(deskundige_info)
@@ -51,10 +51,28 @@ def deskundige_api():
     if request.method == 'PUT' and request.args.get('id'):
         deskundige_id = request.args.get('id')
         data = request.get_json()
-        update_deskundige = deskundige.update_deskundige(data)
+        update_deskundige, message = deskundige.update_deskundige(data)
 
         if update_deskundige:
-            return {"success": True}
+            return {"success": True, "message": message}
         else:
-            return {"success": False}
+            return {"success": False, "message": message}
+        
+@expert_bp.route("/api/disabilities", methods=["GET"])
+def disabilities():
+    disabilities = Disabilities()
+    if request.method == 'GET':
+        all_disabilities = disabilities.get_all_disabilities()
+        if all_disabilities:
+            return {"success": True, "disabilities": all_disabilities, "message": "Beperkingen gevonden"}
+        else:
+            return {"success": False, "message": "Geen beperkingen gevonden"}
+        
+@expert_bp.route("/api/research", methods=["GET"])
+def research():
+    research = Research()
+    if request.method == 'GET':
+        all_research = research.get_all_research_items()
+        return {"success": True, "research": all_research, "message": "Onderzoeken gevonden"}
+
 

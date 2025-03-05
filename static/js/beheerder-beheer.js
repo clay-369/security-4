@@ -47,18 +47,17 @@ function openEditModal(adminID) {
                event.preventDefault();
                 if (event.submitter.value === "Opslaan") {
 
-                    const request = 'update'
                     const firstName = document.getElementById("edit_first_name").value;
                     const lastName = document.getElementById("edit_last_name").value;
                     const email = document.getElementById('edit_email').value;
                     const password = document.getElementById('edit_password').value;
 
                        fetch('/api/admin/beheer', {
-                            method: 'POST',
+                            method: 'PATCH',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify({request: request, first_name: firstName, last_name: lastName,
+                            body: JSON.stringify({first_name: firstName, last_name: lastName,
                                 email: email, password: password, admin_id: adminID})
                        })
                         .then(response => response.json())
@@ -70,17 +69,16 @@ function openEditModal(adminID) {
                                 console.log('Error!');
                             }
                         })
+                    loadTable()
                }
                 else if (event.submitter.value === "Verwijderen") {
 
-                    const request = 'delete'
-
                        fetch('/api/admin/beheer', {
-                            method: 'POST',
+                            method: 'DELETE',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify({request: request, admin_id: adminID})
+                            body: JSON.stringify({admin_id: adminID})
                        })
                         .then(response => response.json())
                         .then(data => {
@@ -91,11 +89,33 @@ function openEditModal(adminID) {
                                 console.log('Error!');
                             }
                         })
+                    loadTable()
 
 
                 }
            });
     });
+}
+
+function loadTable() {
+        fetch('/api/admin/beheer?fetch=adminData')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector("table tbody");
+            tbody.innerHTML = '';
+
+            data.forEach(admin => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td> ${admin.voornaam} ${admin.achternaam}</td>
+                <td>${admin.email}</td>
+                <td>
+                    <button class="btn" onclick="openEditModal(${admin.beheerder_id})">Details</button>
+                </td>
+                `;
+                tbody.appendChild(row)
+            });
+        })
 }
 
 window.addEventListener('load', function() {
@@ -145,5 +165,8 @@ document.getElementById('createAdmin').addEventListener('submit', function(event
         } else {
             console.log('Error!');
         }
+    loadTable()
     })
 });
+
+loadTable()

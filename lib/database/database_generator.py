@@ -1,6 +1,8 @@
 import sqlite3
 from pathlib import Path
 
+from lib.model.users import hash_password
+
 
 class WP3DatabaseGenerator:
     def __init__(self, database_file, overwrite=False, initial_data=False):
@@ -203,7 +205,7 @@ class WP3DatabaseGenerator:
 
     def insert_beheerders(self):
         beheerders = [
-            ("Gerry", "van Kruiningen", "krugw@hr.nl", "geheim")
+            ("Gerry", "van Kruiningen", "krugw@hr.nl", hash_password("geheim"))
         ]
         insert_statement = "INSERT INTO beheerders (voornaam, achternaam, email, wachtwoord) VALUES (?, ?, ?, ?)"
         self.__execute_many_transaction_statement(insert_statement, beheerders)

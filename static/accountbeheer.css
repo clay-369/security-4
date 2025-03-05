@@ -51,6 +51,7 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-left: 10px;
 }
 
 .form-header-left {
@@ -269,4 +270,38 @@ button:hover {
     top: 30px;
     opacity: 1;
   }
+}
+
+#toezichthouder-container {
+  display: none;
+  display: flex;
+}
+
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  color: white;
+  text-align: center;
+  border-radius: 4px;
+  padding: 16px;
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: fadein 1s;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  transition: opacity 0.5s;
+}
+
+input[type="submit"] {
+  cursor: pointer;
+}
+
+#annuleren-button {
+  cursor: pointer;
 }

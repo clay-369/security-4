@@ -6,14 +6,15 @@
     <link rel="stylesheet" href="/static/accountbeheer.css" />
   </head>
   <body>
+    <div id="snackbar"></div>
     <h1>Welkom</h1>
     <form id="updateDeskundige">
       <div class="form-header">
         <div class="form-header-left">
-          <img src="/static/images/logo.png" alt="logo" />
+          <img src="/static/icons/profile_picture.svg" alt="logo" />
           <div class="form-header-text">
-            <h2>Naam</h2>
-            <h2>E-mail</h2>
+            <h2 id="voornaam-title"></h2>
+            <h2 id="achternaam-title"></h2>
           </div>
         </div>
 
@@ -130,11 +131,7 @@
 
         <div class="label-column dropdown">
           <label for="type-beperking">Type beperking</label>
-          <select name="type-beperking" id="type-beperking">
-            <option value="blind">Blind</option>
-            <option value="dikbeklede">Dikbeklede</option>
-            <option value="andere">Andere</option>
-          </select>
+          <select name="type-beperking" id="type-beperking"></select>
         </div>
 
         <div class="label-column">
@@ -172,18 +169,14 @@
 
         <div class="label-column dropdown">
           <label for="type-onderzoek">Type onderzoek</label>
-          <select name="type-onderzoek" id="type-onderzoek">
-            <option value="man">Man</option>
-            <option value="vrouw">Vrouw</option>
-            <option value="anders">Anders</option>
-          </select>
+          <select name="type-onderzoek" id="type-onderzoek"></select>
         </div>
       </div>
       <div class="button-container">
-        <input type="text" value="Annuleren" />
+        <input type="text" value="Annuleren" id="annuleren-button" />
         <input type="submit" value="Opslaan" />
       </div>
     </form>
-    <script src="../static/js/deskundige.js"></script>
+    <script src="/static/js/account_beheer.js"></script>
   </body>
 </html>
