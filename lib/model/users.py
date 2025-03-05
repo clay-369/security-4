@@ -9,7 +9,7 @@ class Users:
     def login(self, email):
         expert = self.cursor.execute('SELECT * FROM deskundigen WHERE email = ?', (email,)).fetchone()
         if expert is not None:
-            return {"user": expert, "account_type": 'user'}
+            return {"user": expert, "account_type": 'expert'}
         else:
             admin = self.cursor.execute('SELECT * FROM beheerders WHERE email = ?', (email,)).fetchone()
             if admin is not None:
