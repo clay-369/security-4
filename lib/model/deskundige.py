@@ -26,6 +26,16 @@ class Deskundige:
             neccesary_fields.append("toezichthouder_email")
             neccesary_fields.append("toezichthouder_telefoonnummer")
 
+            if deskundige["toezichthouder_naam"] == "":
+                return False, "U moet een naam invullen voor de toezichthouder omdat u toezichthouder heeft geselecteerd."
+            
+            if deskundige["toezichthouder_email"] == "":
+                return False, "U moet een e-mailadres invullen voor de toezichthouder omdat u toezichthouder heeft geselecteerd."
+            
+            if deskundige["toezichthouder_telefoonnummer"] == "":
+                return False, "U moet een telefoonnummer invullen voor de toezichthouder omdat u toezichthouder heeft geselecteerd."
+            
+
         # Check if the email is valid
         valid = re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', deskundige["email"])
         if not valid:
