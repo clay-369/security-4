@@ -114,9 +114,14 @@ document
     let voorkeur_benadering = ""
     if (document.getElementsByName("voorkeur-benadering")[0].checked) {
       voorkeur_benadering = "Telefoon"
-    } else {
+    } else if (document.getElementsByName("voorkeur-benadering")[1].checked) {
       voorkeur_benadering = "E-mail"
+    } else {
+      voorkeur_benadering = ""
     }
+
+    console.log("Voorkeur benadering: " + voorkeur_benadering)
+
     const bijzonderheden_beschikbaarheid = document.getElementById(
       "bijzonderheden-beschikbaarheid"
     ).value

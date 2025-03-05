@@ -11,14 +11,9 @@ class Deskundige:
     def create_deskundige(self, deskundige):
         neccesary_fields = ["email", "wachtwoord", "voornaam", "achternaam", "postcode", "telefoonnummer", "geboortedatum", "introductie", "voorkeur_benadering", "bijzonderheden_beschikbaarheid", "type_onderzoek", "type_beperking"]
         
-        # Temporary solution to check if there are "onderzoeken"
-        if deskundige["type_onderzoek"] == "":
-            return False, "Er zijn geen onderzoeken gevonden. U kunt pas registreren als er onderzoeken zijn!"
-        
-        # Temporary solution to check if there are "beperkingen"
-        if deskundige["type_beperking"] == "":
-            return False, "Er zijn geen beperkingen gevonden."
-        
+        if deskundige["voorkeur_benadering"] == "":
+            return False, "U moet een voorkeur benadering selecteren."
+
         if len(deskundige["introductie"]) < 10:
             return False, "Vertel wat meer in je introductie."
         
@@ -46,10 +41,19 @@ class Deskundige:
         if not valid:
             return False, "U moet een geldige postcode invullen."
         
+          # Temporary solution to check if there are "onderzoeken"
+        if deskundige["type_onderzoek"] == "":
+            return False, "Er zijn geen onderzoeken gevonden. U kunt pas registreren als er onderzoeken zijn!"
+        
+        # Temporary solution to check if there are "beperkingen"
+        if deskundige["type_beperking"] == "":
+            return False, "Er zijn geen beperkingen gevonden."
+        
         # Check if all neccesary fields are filled
         for field in deskundige:
             if field in neccesary_fields and deskundige[field] == "":
                 return False, f"Het veld {field} is verplicht.\n"
+            
         self.cursor.execute("INSERT into deskundigen (email,wachtwoord,voornaam,achternaam,postcode,telefoonnummer,geboortedatum,hulpmiddelen,bijzonderheden, bijzonderheden_beschikbaarheid, introductie, voorkeur_benadering, type_beperking, type_onderzoeken, toezichthouder, toezichthouder_naam, toezichthouder_email, toezichthouder_telefoonnummer, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
         (deskundige["email"], hash_password(deskundige["wachtwoord"]), deskundige["voornaam"], deskundige["achternaam"], deskundige["postcode"], deskundige["telefoonnummer"], deskundige["geboortedatum"], deskundige["hulpmiddelen"], deskundige["bijzonderheden"], deskundige["bijzonderheden_beschikbaarheid"], deskundige["introductie"], deskundige["voorkeur_benadering"], deskundige["type_beperking"], deskundige["type_onderzoek"], deskundige["toezichthouder"], deskundige["toezichthouder_naam"], deskundige["toezichthouder_email"], deskundige["toezichthouder_telefoonnummer"], "Nieuw"))
         # Wijzigingen opslaan
