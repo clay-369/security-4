@@ -41,9 +41,9 @@ def index():
     if not session.get('user_id'):
         return redirect(url_for('login'))
     # Logged in:
-    elif not session.get('admin'):
-        return redirect(url_for('admin.manage'))
     elif session.get('admin'):
+        return redirect(url_for('admin.manage'))
+    elif not session.get('admin'):
         return redirect(url_for('expert.dashboard'))
 
 
