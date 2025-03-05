@@ -69,6 +69,7 @@ function openEditModal(adminID) {
                                 console.log('Error!');
                             }
                         })
+                    loadTable()
                }
                 else if (event.submitter.value === "Verwijderen") {
 
@@ -88,11 +89,33 @@ function openEditModal(adminID) {
                                 console.log('Error!');
                             }
                         })
+                    loadTable()
 
 
                 }
            });
     });
+}
+
+function loadTable() {
+        fetch('/api/admin/beheer?fetch=adminData')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector("table tbody");
+            tbody.innerHTML = '';
+
+            data.forEach(admin => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td> ${admin.voornaam} ${admin.achternaam}</td>
+                <td>${admin.email}</td>
+                <td>
+                    <button class="btn" onclick="openEditModal(${admin.beheerder_id})">Details</button>
+                </td>
+                `;
+                tbody.appendChild(row)
+            });
+        })
 }
 
 window.addEventListener('load', function() {
@@ -142,5 +165,8 @@ document.getElementById('createAdmin').addEventListener('submit', function(event
         } else {
             console.log('Error!');
         }
+    loadTable()
     })
 });
+
+loadTable()
