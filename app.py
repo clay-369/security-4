@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 from flask_jwt_extended import JWTManager
 
+from lib.model.users import hash_password
 from lib.model.organisatie import Organisatie
 from lib.model.token_blocklist import TokenBlocklist
 # Routes
@@ -28,11 +29,12 @@ app.register_blueprint(auth.auth_bp)
 app.register_blueprint(organisation.organisation_bp)
 
 
-OPEN_ROUTES = ['login', '/', 'static', 'api_login', 'api_admin_beheer', 'test2', 'auth.login_organisation']
+OPEN_ROUTES = ['login', '/', 'static', 'api_login', 'api_admin_beheer', 'test2', 'auth.login_organisation', 'expert.register', 'expert.deskundige_api', 'expert.disabilities', 'expert.research']
 PROTECTED_ROUTES = ['organisation.get_research', 'auth.whoami', 'auth.refresh_access_token', 'auth.logout_organisation']
 ADMIN_ROUTES = ['admin.manage']
 EXPERT_ROUTES = ['expert.dashboard', 'expert.register', 'expert.edit', 'expert.details']
 
+temp_routes = ['expert.edit', 'expert.deskundige_api']
 
 @app.before_request
 def before_request():
@@ -43,6 +45,10 @@ def before_request():
 
     if request.endpoint in PROTECTED_ROUTES:
         return # Let jwt function handle protection
+
+    # TEMP
+    if request.endpoint in temp_routes:
+        return
 
     if logged_in is None:
         return redirect(url_for('login')), 401
@@ -79,6 +85,7 @@ def api_login():
         email = data.get('email')
         password = data.get('password')
 
+        password = hash_password(password)
         login = users_model.login(email)
         if 'user' in login:
             user = login[0]
@@ -90,11 +97,12 @@ def api_login():
 
         elif 'admin' in login:
             admin = login[0]
-            session['user_id'] = admin[0]
-            session['name'] = admin[1]
-            session['admin'] = True
-            return {"success": True, "type": "admin"}
-
+            if password == admin[4]:
+                print('Password correct')
+                session['user_id'] = admin[0]
+                session['name'] = admin[1]
+                session['admin'] = True
+                return {"success": True, "type": "admin"}
         else:
             return {"success": False}
 

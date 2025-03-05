@@ -1,5 +1,6 @@
-import {closeResearchModal, showResearchModal} from "../experts-dashboard.js";
-import {get_enlistments_by_expert} from "./enlistments.js";
+import {closeResearchModal, showResearchModal, intervalId} from "../experts-dashboard.js";
+import {get_enlistments_by_expert, get_filtered_enlistments_by_expert} from "./enlistments.js";
+
 
 // TODO: Switch to sessions
 const expertId = 1;
@@ -8,6 +9,11 @@ const expertId = 1;
 export async function renderEnlistmentPage() {
     const enlistments = await get_enlistments_by_expert(expertId);
     // Rendering each partition
+    renderPartitions(enlistments);
+}
+
+async function renderFilteredEnlistmentPage(search_words) {
+    const enlistments = await get_filtered_enlistments_by_expert(expertId, search_words);
     renderPartitions(enlistments);
 }
 
@@ -20,39 +26,15 @@ function renderPartitions(enlistments) {
     enlistments.forEach((enlistment) => {
         // Pending
         if (enlistment['deskundige_id'] === expertId && enlistment['status'] === 'NIEUW') {
-            pendingHTML += `
-                <div class="enlistment">
-                    <h3 class="enlistment-name">${enlistment['titel']}</h3>
-                    <button class="enlistment-details-button js-enlistment-details-button" 
-                        data-research-id="${enlistment['onderzoek_id']}"
-                        data-status="${enlistment['status']}"
-                    >Details</button>
-                </div>
-            `;
+            pendingHTML += renderEnlistment(enlistment)
         }
         // Accpeted
         else if (enlistment['deskundige_id'] === expertId && enlistment['status'] === 'GOEDGEKEURD') {
-            acceptedHTML += `
-                <div class="enlistment">
-                    <h3 class="enlistment-name">${enlistment['titel']}</h3>
-                    <button class="enlistment-details-button js-enlistment-details-button" 
-                        data-research-id="${enlistment['onderzoek_id']}"
-                        data-status="${enlistment['status']}"
-                    >Details</button>
-                </div>
-            `;
+            acceptedHTML += renderEnlistment(enlistment);
         }
         // Rejected
         else if (enlistment['deskundige_id'] === expertId && enlistment['status'] === 'AFGEKEURD') {
-            rejectedHTML += `
-                <div class="enlistment">
-                    <h3 class="enlistment-name">${enlistment['titel']}</h3>
-                    <button class="enlistment-details-button js-enlistment-details-button" 
-                        data-research-id="${enlistment['onderzoek_id']}"
-                        data-status="${enlistment['status']}"
-                    >Details</button>
-                </div>
-            `;
+            rejectedHTML += renderEnlistment(enlistment);
         }
     })
 
@@ -77,9 +59,21 @@ function renderPartitions(enlistments) {
         });
 }
 
+function renderEnlistment(enlistment) {
+    return `
+                <div class="enlistment">
+                    <h3 class="enlistment-name">${enlistment['titel']}</h3>
+                    <button class="enlistment-details-button js-enlistment-details-button" 
+                        data-research-id="${enlistment['onderzoek_id']}"
+                        data-status="${enlistment['status']}"
+                    >Details</button>
+                </div>
+            `;
+}
+
 async function renderEnlistmentModal(researchId, status) {
     // Get research item information from server
-    const response = await fetch(`api/onderzoeken?research_id=${researchId}`)
+    const response = await fetch(`api/onderzoeken/${researchId}`)
     const researchItem = await response.json();
 
     // Generate the HTML
@@ -141,3 +135,13 @@ function delist(researchId) {
             renderEnlistmentPage();
         })
 }
+
+// Search Bar functionality
+const searchInputElem = document.querySelector('#enlistments-input');
+searchInputElem.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+        clearInterval(intervalId);
+        const searchWords = searchInputElem.value;
+        renderFilteredEnlistmentPage(searchWords)
+    }
+});

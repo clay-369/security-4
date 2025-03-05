@@ -1,17 +1,16 @@
 import {renderEnlistmentPage} from "./experts-dashboard/enlistments-page.js";
 import {renderResearchPage} from "./experts-dashboard/research-page.js";
 
-
 renderResearchPage();
 
-let intervalId;
+export let intervalId;
 // Render every 5 seconds
 intervalId = setInterval(renderResearchPage, 5000);
 
 function loadAjaxPage(renderFunc) {
-    renderFunc(); //Load page immediately
-
     clearInterval(intervalId); // Clear interval currently active
+
+    renderFunc(); //Load page immediately
     intervalId = setInterval(renderFunc, 5000); // Set interval for 5 sec
 }
 
@@ -30,12 +29,10 @@ function toggleSections() {
     if (researchSection.classList.contains('hide')) {
         researchSection.classList.remove('hide');
         enlistmentsSection.classList.add('hide');
-
         loadAjaxPage(renderResearchPage)
     } else {
         researchSection.classList.add('hide');
         enlistmentsSection.classList.remove('hide');
-
         loadAjaxPage(renderEnlistmentPage);
     }
 }
