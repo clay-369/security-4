@@ -9,7 +9,10 @@ class Deskundige:
         self.conn, self.cursor = database.connect_db()
 
     def create_deskundige(self, deskundige):
-        neccesary_fields = ["email", "wachtwoord", "voornaam", "achternaam", "postcode", "telefoonnummer", "geboortedatum"]
+        neccesary_fields = ["email", "wachtwoord", "voornaam", "achternaam", "postcode", "telefoonnummer", "geboortedatum", "introductie", "voorkeur_benadering", "bijzonderheden_beschikbaarheid", "type_onderzoek", "type_beperking"]
+        
+        if len(deskundige["introductie"]) < 10:
+            return False, "Vertel wat meer in je introductie."
         
         # Check if the user has agreed to the terms and conditions
         if deskundige["akkoord"] == False:
