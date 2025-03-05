@@ -20,7 +20,7 @@ app.register_blueprint(research.research_bp)
 
 @app.before_request
 def before_request():
-    open_routes = ['login', '/', 'static', 'api_login', 'api_admin_beheer']
+    open_routes = ['login', '/', 'static', 'api_login', 'api_admin_beheer', 'api_edit_research', 'research_test']
     admin_routes = ['admin.manage']
     expert_routes = ['expert.dashboard', 'expert.register', 'expert.edit', 'expert.details']
     logged_in = session.get('user_id')
@@ -104,6 +104,10 @@ def beheerder():
 @app.route('/dashboard_beheer')
 def dashboard_beheer():
     return render_template('dashboard-beheer.html')
+
+@app.route('/edit/research')
+def research_test():
+    return render_template('edit_research_test.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

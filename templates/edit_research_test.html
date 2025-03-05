@@ -10,7 +10,7 @@
   const research = {
       'onderzoek_id': 1,
     'organisatie_id': 2,
-    'titel': 'Onderzoeken 2222',
+    'titel': 'Onderzoeken 3',
     'beschikbaar': false,
     'beschrijving': 'onderzoek leofesp',
     'datum_vanaf': '01-02-2025',
@@ -25,7 +25,7 @@
   };
 
   fetch('/api/onderzoeken/edit', {
-    method: 'PUT',
+      method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
     },
