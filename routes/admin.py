@@ -31,51 +31,31 @@ def organisatie_registratie():
     return render_template('organisatie_registratie.html')
 
 # API's
-@admin_bp.route('/api/admin/beheer', methods=['GET','POST'])
-def api_admin_beheer():
+@admin_bp.route('/api/admin/beheer', methods=['POST'])
+def api_create_admin():
     users_model = Users()
 
     if request.method == 'POST':
         data = request.get_json()
-        request_type = data.get('request')
+        first_name = data.get('first_name')
+        last_name = data.get('last_name')
+        email = data.get('email')
+        password = data.get('password')
 
-        if request_type == 'create':
-            first_name = data.get('first_name')
-            last_name = data.get('last_name')
-            email = data.get('email')
-            password = data.get('password')
+        create_admin = users_model.admin_create(first_name, last_name, email, password)
+        if create_admin:
+            return {"success": True}
+        else:
+            return {"success": False}
 
-            create_admin = users_model.admin_create(first_name, last_name, email, password)
-            if create_admin:
-                return {"success": True}
-            else:
-                return {"success": False}
+@admin_bp.route('/api/admin/beheer', methods=['GET'])
+def api_get_admin():
+    users_model = Users()
 
-        elif request_type == 'update':
-            first_name = data.get('first_name')
-            last_name = data.get('last_name')
-            email = data.get('email')
-            password = data.get('password')
-            admin_id = data.get('admin_id')
-
-            edit_admin = users_model.admin_edit(admin_id, first_name, last_name, email, password)
-            if edit_admin:
-                return {"success": True}
-            else:
-                return {"success": False}
-
-        elif request_type == 'delete':
-            admin_id = data.get('admin_id')
-
-            delete_admin = users_model.admin_delete(admin_id)
-            if delete_admin:
-                return {"success": True}
-            else:
-                return {"success": False}
-
-    elif request.method == 'GET' and request.args.get('fetch') == 'adminData':
+    if request.method == 'GET' and request.args.get('fetch') == 'adminData':
         admin_data = users_model.get_admins()
         admin_dict = [dict(row) for row in admin_data]
+
         return admin_dict
 
     elif request.method == 'GET' and request.args.get('id') is not None:
@@ -84,3 +64,35 @@ def api_admin_beheer():
         single_admin_dict = dict(admin_info)
 
         return single_admin_dict
+
+@admin_bp.route('/api/admin/beheer', methods=['PATCH'])
+def api_edit_admin():
+    users_model = Users()
+
+    if request.method == 'PATCH':
+        data = request.get_json()
+        admin_id = data.get('admin_id')
+        first_name = data.get('first_name')
+        last_name = data.get('last_name')
+        email = data.get('email')
+        password = data.get('password')
+
+        edit_admin = users_model.admin_edit(admin_id, first_name, last_name, email, password)
+        if edit_admin:
+            return {"success": True}
+        else:
+            return {"success": False}
+
+@admin_bp.route('/api/admin/beheer', methods=['DELETE'])
+def api_delete_admin():
+    users_model = Users()
+
+    if request.method == 'DELETE':
+        data = request.get_json()
+        admin_id = data.get('admin_id')
+
+        delete_admin = users_model.admin_delete(admin_id)
+        if delete_admin:
+            return {"success": True}
+        else:
+            return {"success": False}
