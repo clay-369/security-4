@@ -231,7 +231,7 @@ class WP3DatabaseGenerator:
             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""")
 
         values_research = (1, 'Onderzoeken 2222', "Oke", True, '01-02-2025', '01-04-2025', 'OP LOCATIE',
-                           'Abbenbroek', True, '$1', 19, 77, 'GEACCEPTEERD')
+                           'Abbenbroek', True, '$1', 19, 77, 'GOEDGEKEURD')
         self.__execute_transaction_statement(insert_statement_research, values_research)
         print("✅ Filled default research item")
 

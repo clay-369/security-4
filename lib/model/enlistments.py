@@ -23,9 +23,9 @@ class Enlistment:
 
     def get_enlistment_by_id(self, enlistment_id:int):
         self.cursor.execute("SELECT * FROM inschrijvingen WHERE inschrijving_id = ?", (enlistment_id,))
-        return self.cursor.fetchone()
+        return dict(self.cursor.fetchone())
 
-    def get_formatted_enlistments_by_expert(self, expert_id):
+    def get_formatted_enlistments_by_expert(self, expert_id, search_words):
         """ Gets enlistments with corresponding research title, then converts Rows to dict """
         result = self.cursor.execute(
             """
@@ -34,8 +34,9 @@ class Enlistment:
             FROM inschrijvingen
             JOIN onderzoeken USING(onderzoek_id)
             WHERE deskundige_id = ?
+            AND (onderzoeken.titel LIKE ? OR onderzoeken.beschrijving LIKE ?)
             """,
-            (expert_id,)
+            (expert_id, f"%{search_words}%", f"%{search_words}%")
         ).fetchall()
 
         all_enlistments = [dict(row) for row in result]
@@ -51,7 +52,7 @@ class Enlistment:
             (expert_id, research_id)
         )
         self.conn.commit()
-        return deleted_item
+        return dict(deleted_item)
 
     def get_enlistments_by_expert(self, expert_id:int):
         self.cursor.execute("SELECT * FROM inschrijvingen WHERE deskundige_id = ?", (expert_id,))
