@@ -1,5 +1,6 @@
 from lib.model.database import Database
 from lib.model.users import hash_password
+import re
 
 
 class Deskundige:
@@ -18,6 +19,21 @@ class Deskundige:
             neccesary_fields.append("toezichthouder_naam")
             neccesary_fields.append("toezichthouder_email")
             neccesary_fields.append("toezichthouder_telefoonnummer")
+
+        # Check if the email is valid
+        valid = re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', deskundige["email"])
+        if not valid:
+            return False, "U moet een geldig e-mailadres invullen."
+
+        # Check if the phone number is valid
+        valid = re.match(r'^[0-9]{10}$', deskundige["telefoonnummer"])
+        if not valid:
+            return False, "U moet een geldig telefoonnummer invullen."
+
+        # Check if the postcode is valid
+        valid = re.match(r'^[1-9][0-9]{3} ?[A-Z]{2}$', deskundige["postcode"])
+        if not valid:
+            return False, "U moet een geldige postcode invullen."
         
         # Check if all neccesary fields are filled
         for field in deskundige:
