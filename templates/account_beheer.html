@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="nl">
   <head>
     <meta charset="UTF-8" />
@@ -12,10 +11,10 @@
     <form id="updateDeskundige">
       <div class="form-header">
         <div class="form-header-left">
-          <img src="/static/images/logo.png" alt="logo" />
+          <img src="/static/icons/profile_picture.svg" alt="logo" />
           <div class="form-header-text">
-            <h2>Naam</h2>
-            <h2>E-mail</h2>
+            <h2 id="voornaam-title"></h2>
+            <h2 id="achternaam-title"></h2>
           </div>
         </div>
 
@@ -243,7 +242,6 @@
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log(data)
             const addedTypes = new Set()
             data.research.forEach((research) => {
               if (!addedTypes.has(research.onderzoek_type)) {
@@ -270,7 +268,10 @@
           .then((response) => response.json())
           .then((data) => {
             if (data.success) {
-              console.log("Deskundige data: ", data)
+              document.getElementById("voornaam-title").textContent =
+                data.deskundige.voornaam
+              document.getElementById("achternaam-title").textContent =
+                data.deskundige.achternaam
               document.getElementById("voornaam").value =
                 data.deskundige.voornaam
               document.getElementById("achternaam").value =
