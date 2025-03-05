@@ -21,6 +21,7 @@ class WP3DatabaseGenerator:
         self.create_table_beperking_deskundige()
         self.create_table_beperking_onderzoek()
         self.create_table_inschrijvingen()
+        self.create_table_token_blocklist()
         if self.create_initial_data:
             self.insert_beperkingen()
             self.insert_beheerders()
@@ -31,13 +32,13 @@ class WP3DatabaseGenerator:
         create_statement = """
         CREATE TABLE IF NOT EXISTS deskundigen (
             deskundige_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            email TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
             wachtwoord TEXT NOT NULL,
             voornaam TEXT NOT NULL,
             achternaam TEXT NOT NULL,
             postcode TEXT,
             telefoonnummer TEXT,
-            geboortedatum DATETIME,
+            geboortedatum TEXT,
             hulpmiddelen TEXT,
             bijzonderheden TEXT,
             bijzonderheden_beschikbaarheid TEXT,
@@ -79,7 +80,7 @@ class WP3DatabaseGenerator:
             website TEXT NOT NULL,
             beschrijving TEXT NOT NULL,
             contactpersoon TEXT NOT NULL,
-            email TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL ,
             telefoonnummer TEXT NOT NULL,
             overige_details TEXT,
             wachtwoord TEXT NOT NULL
@@ -132,9 +133,10 @@ class WP3DatabaseGenerator:
             organisatie_id INTEGER NOT NULL,
             beschrijving TEXT NOT NULL,
             titel TEXT NOT NULL,
+            aanmaak_datum TEXT DEFAULT CURRENT_TIMESTAMP,
             beschikbaar INTEGER NOT NULL,
-            datum_vanaf DATE NOT NULL,
-            datum_tot DATE NOT NULL,
+            datum_vanaf TEXT NOT NULL,
+            datum_tot TEXT NOT NULL,
             onderzoek_type TEXT NOT NULL,
             locatie TEXT,
             met_beloning INTEGER NOT NULL,
@@ -165,6 +167,17 @@ class WP3DatabaseGenerator:
         """
         self.__execute_transaction_statement(create_statement)
         print("✅ Beperkingen table created")
+
+    def create_table_token_blocklist(self):
+        create_statement = """
+        CREATE TABLE IF NOT EXISTS token_blocklist (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            jti TEXT NOT NULL,
+            created_date TEXT DEFAULT current_timestamp
+            );
+        """
+        self.__execute_transaction_statement(create_statement)
+        print("✅ Token Blocklist table created")
 
 
     def insert_beperkingen(self):
