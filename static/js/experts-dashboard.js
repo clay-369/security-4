@@ -53,11 +53,3 @@ export function showResearchModal() {
     document.querySelector('.js-close-modal')
         .addEventListener('click', closeResearchModal);
 }
-
-
-
-
-
-
-
-
