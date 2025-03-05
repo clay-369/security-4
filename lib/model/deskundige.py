@@ -9,7 +9,7 @@ class Deskundige:
         self.conn, self.cursor = database.connect_db()
 
     def create_deskundige(self, deskundige):
-        neccesary_fields = ["email", "wachtwoord", "voornaam", "achternaam", "postcode", "telefoonnummer", "geboortedatum", "introductie", "voorkeur_benadering", "bijzonderheden_beschikbaarheid", "type_onderzoek", "type_beperking"]
+        neccesary_fields = ["email", "wachtwoord", "voornaam", "achternaam", "postcode", "telefoonnummer", "geboortedatum", "introductie", "voorkeur_benadering", "type_onderzoek", "type_beperking"]
         
         if deskundige["voorkeur_benadering"] == "":
             return False, "U moet een voorkeur benadering selecteren."
