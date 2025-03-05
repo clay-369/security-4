@@ -90,3 +90,14 @@ def delete_enlistment():
     deleted_item = enlistment_model.delete_enlistment(expert_id, research_id)
 
     return dict(deleted_item), 200
+
+@research_bp.route('/api/onderzoeken/edit', methods=['PATCH'])
+def edit_research():
+    print('yes')
+    research = request.json['research']
+    research_model = Research()
+    research_edit = research_model.research_edit(research)
+    if research_edit:
+        print('Succes')
+    else:
+        print('Failed')

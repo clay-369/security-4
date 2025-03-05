@@ -219,7 +219,7 @@ class WP3DatabaseGenerator:
                                     "introductie, type_onderzoeken, voorkeur_benadering, toezichthouder, "
                                     "toezichthouder_naam, toezichthouder_email, toezichthouder_telefoonnummer, "
                                     "status, beheerder_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
-        values_experts = ("vried@hr.nl", "geheimer", "Diederik", "de Vries", "1234AA", "06958388583",
+        values_experts = ("vried@hr.nl", hash_password("geheimer"), "Diederik", "de Vries", "1234AA", "06958388583",
                           "1-1-1800", "Rollator", "heel oud", "alleen woensdag", "Hallo ik ben Diekerik",
                           "TELEFONISCH", "nee", 1, "Jan", "jan@email.com", "06122222", "NIEUW", None)
         self.__execute_transaction_statement(insert_statement_experts, values_experts)

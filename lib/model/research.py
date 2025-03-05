@@ -107,3 +107,13 @@ class Research:
         research_item['organisatie_naam'] = organisation_name
 
         return research_item
+
+    def research_edit(self, research):
+        self.cursor.execute('UPDATE onderzoeken '
+                            'SET titel = ?, beschikbaar = ?, beschrijving = ?, datum_vanaf = ?, '
+                            'datum_tot = ?, beloning = ? WHERE onderzoek_id = ?',
+                            (research['titel'], research['beschikbaar'], research['beschrijving'],
+                             research['datum_vanaf'], research['datum_tot'], research['beloning'],
+                             research['onderzoek_id']))
+        self.conn.commit()
+        return True
