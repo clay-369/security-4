@@ -130,10 +130,17 @@ section {
     font-size: 24px;
 }
 
+.enlistment-search-label {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
 .enlistments-search-bar {
     margin-bottom: 10px;
     display: flex;
     align-items: center;
+    justify-content: center;
+    flex-flow: column;
 }
 
 .enlistments-search-input {
@@ -143,7 +150,7 @@ section {
     border-radius: 5px;
     margin-left: 15px;
     transition-duration: 0.2s;
-    width: 60%;
+    width: 30%;
 }
 .enlistments-search-input:focus {
     outline: none;

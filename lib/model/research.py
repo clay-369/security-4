@@ -9,7 +9,7 @@ class Research:
 
     def get_research_by_id(self, research_id:int):
         result = self.cursor.execute("SELECT * FROM onderzoeken WHERE onderzoek_id = ?", (research_id,)).fetchone()
-        return result
+        return dict(result)
 
     def create_research(self, research_item:dict):
 
@@ -92,8 +92,9 @@ class Research:
         self.conn.commit()
         return new_research_id
 
-    def get_all_research_items(self):
-        self.cursor.execute("SELECT * FROM onderzoeken")
+    def get_all_available_research_items(self):
+        self.cursor.execute("SELECT * FROM onderzoeken WHERE status = ? AND beschikbaar = ?",
+                            ('GOEDGEKEURD', True))
         return self.cursor.fetchall()
 
     def format_research_item(self, research_item) -> dict:

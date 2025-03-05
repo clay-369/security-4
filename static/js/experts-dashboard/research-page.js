@@ -5,11 +5,10 @@ import {get_enlistments_by_expert} from "./enlistments.js";
 // TODO: Switch to sessions
 const expertId = 1;
 
-// TODO: Implement interval rendering
 export async function renderResearchPage() {
     // Get all research items from server
     // Set parameters to which research items you need: available, status
-    const response = await fetch('/api/onderzoeken?available=true&status=goedgekeurd');
+    const response = await fetch('/api/onderzoeken');
     const allResearchItems = await response.json();
 
     // Create list with ids of research items that expert already interacted with
@@ -55,7 +54,7 @@ export async function renderResearchPage() {
 
 async function renderResearchModal(researchId) {
     // Getting research item from server
-    const response = await fetch(`api/onderzoeken?research_id=${researchId}`)
+    const response = await fetch(`api/onderzoeken/${researchId}`)
     const researchItem = await response.json();
 
     document.querySelector('.js-research-modal-background')
