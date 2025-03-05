@@ -27,113 +27,108 @@ document
     }
   })
 
+// Load type of disablities
 window.addEventListener("load", function () {
-  console.log("Wel in deze functie!")
+  fetch("/api/disabilities", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        data.disabilities.forEach((disability) => {
+          const option = document.createElement("option")
+          option.value = disability.beperking_id
+          option.textContent = disability.beperking
+          document.getElementById("type-beperking").appendChild(option)
+        })
+      } else {
+        console.error(data.message)
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error)
+    })
+
+  fetch("/api/research", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const addedTypes = new Set()
+      data.research.forEach((research) => {
+        if (!addedTypes.has(research.onderzoek_type)) {
+          const option = document.createElement("option")
+          option.value = research.onderzoek_id
+          option.textContent = research.onderzoek_type
+          document.getElementById("type-onderzoek").appendChild(option)
+          addedTypes.add(research.onderzoek_type)
+        }
+      })
+    })
+    .catch((error) => {
+      console.error("Error:", error)
+    })
 })
 
-// Load type of disablities
-// window.addEventListener("load", function () {
-//   console.log("Wel in deze functie!")
-//   fetch("/api/disabilities", {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   })
-//     .then((response) => response.json())
-//     .then((data) => {
-//       if (data.success) {
-//         data.disabilities.forEach((disability) => {
-//           const option = document.createElement("option")
-//           option.value = disability.beperking_id
-//           option.textContent = disability.beperking
-//           document.getElementById("type-beperking").appendChild(option)
-//         })
-//       } else {
-//         console.error(data.message)
-//       }
-//     })
-//     .catch((error) => {
-//       console.error("Error:", error)
-//     })
-
-//   fetch("/api/research", {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   })
-//     .then((response) => response.json())
-//     .then((data) => {
-//       console.log(data)
-//       const addedTypes = new Set()
-//       data.research.forEach((research) => {
-//         if (!addedTypes.has(research.onderzoek_type)) {
-//           const option = document.createElement("option")
-//           option.value = research.onderzoek_id
-//           option.textContent = research.onderzoek_type
-//           document.getElementById("type-onderzoek").appendChild(option)
-//           addedTypes.add(research.onderzoek_type)
-//         }
-//       })
-//     })
-//     .catch((error) => {
-//       console.error("Error:", error)
-//     })
-// })
-
 window.addEventListener("load", function () {
-  console.log("Wel in deze functie!")
-  // fetch("/api/deskundige?id=1", {
-  //   method: "GET",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  // })
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     if (data.success) {
-  //       console.log("Deskundige gevonden!")
-  //       console.log(data.deskundige)
-  //       document.getElementById("voornaam").value = data.deskundige.voornaam
-  //       document.getElementById("achternaam").value = data.deskundige.achternaam
-  //       document.getElementById("email").value = data.deskundige.email
-  //       document.getElementById("wachtwoord").value = data.deskundige.wachtwoord
-  //       document.getElementById("postcode").value = data.deskundige.postcode
-  //       document.getElementById("telefoonnummer").value =
-  //         data.deskundige.telefoonnummer
-  //       document.getElementById("geboortedatum").value =
-  //         data.deskundige.geboortedatum
-  //       document.getElementById("geslacht").value = data.deskundige.geslacht
-  //       document.getElementById("type-beperking").value =
-  //         data.deskundige.type_beperking
-  //       document.getElementById("hulpmiddelen").value =
-  //         data.deskundige.hulpmiddelen
-  //       document.getElementById("introductie").value =
-  //         data.deskundige.introductie
-  //       document.getElementById("bijzonderheden").value =
-  //         data.deskundige.bijzonderheden
-  //       document.getElementById("toezichthouder").value =
-  //         data.deskundige.toezichthouder
-  //       document.getElementById("toezichthouder-naam").value =
-  //         data.deskundige.toezichthouder_naam
-  //       document.getElementById("toezichthouder-email").value =
-  //         data.deskundige.toezichthouder_email
-  //       document.getElementById("toezichthouder-telefoonnummer").value =
-  //         data.deskundige.toezichthouder_telefoonnummer
-  //       document.getElementById("type-onderzoek").value =
-  //         data.deskundige.type_onderzoek
-  //       // document.getElementById("voorkeur-benadering").value =
-  //       //   data.deskundige.voorkeur_benadering
-  //       document.getElementById("bijzonderheden-beschikbaarheid").value =
-  //         data.deskundige.bijzonderheden_beschikbaarheid
-  //     } else {
-  //       console.log("Error!")
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error:", error)
-  //   })
+  fetch("/api/deskundige?id=1", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        document.getElementById("voornaam-title").textContent =
+          data.deskundige.voornaam
+        document.getElementById("achternaam-title").textContent =
+          data.deskundige.achternaam
+        document.getElementById("voornaam").value = data.deskundige.voornaam
+        document.getElementById("achternaam").value = data.deskundige.achternaam
+        document.getElementById("email").value = data.deskundige.email
+        document.getElementById("wachtwoord").value = data.deskundige.wachtwoord
+        document.getElementById("postcode").value = data.deskundige.postcode
+        document.getElementById("telefoonnummer").value =
+          data.deskundige.telefoonnummer
+        document.getElementById("geboortedatum").value =
+          data.deskundige.geboortedatum
+        document.getElementById("geslacht").value = data.deskundige.geslacht
+        document.getElementById("type-beperking").value =
+          data.deskundige.type_beperking
+        document.getElementById("hulpmiddelen").value =
+          data.deskundige.hulpmiddelen
+        document.getElementById("introductie").value =
+          data.deskundige.introductie
+        document.getElementById("bijzonderheden").value =
+          data.deskundige.bijzonderheden
+        document.getElementById("toezichthouder").value =
+          data.deskundige.toezichthouder
+        document.getElementById("toezichthouder-naam").value =
+          data.deskundige.toezichthouder_naam
+        document.getElementById("toezichthouder-email").value =
+          data.deskundige.toezichthouder_email
+        document.getElementById("toezichthouder-telefoonnummer").value =
+          data.deskundige.toezichthouder_telefoonnummer
+        document.getElementById("type-onderzoek").value =
+          data.deskundige.type_onderzoek
+        // document.getElementById("voorkeur-benadering").value =
+        //   data.deskundige.voorkeur_benadering
+        document.getElementById("bijzonderheden-beschikbaarheid").value =
+          data.deskundige.bijzonderheden_beschikbaarheid
+      } else {
+        console.log("Error!")
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error)
+    })
 })
 document
   .getElementById("updateDeskundige")
@@ -152,7 +147,7 @@ document
     const hulpmiddelen = document.getElementById("hulpmiddelen").value
     const introductie = document.getElementById("introductie").value
     const bijzonderheden = document.getElementById("bijzonderheden").value
-    const toezichthouder = document.getElementById("toezichthouder").value
+    const toezichthouder = document.getElementById("toezichthouder").checked
     const toezichthouder_naam = document.getElementById(
       "toezichthouder-naam"
     ).value
@@ -206,9 +201,9 @@ document
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          console.log("Deskundige gewijzigd!")
+          showSnackbar("Deskundige gewijzigd!", "success")
         } else {
-          console.log("Error!")
+          showSnackbar("Error!", "error")
         }
       })
       .catch((error) => {
