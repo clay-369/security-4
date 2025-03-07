@@ -51,7 +51,7 @@ def before_request():
         return
 
     if logged_in is None:
-        return redirect(url_for('login')), 401
+        return redirect(url_for('login_page')), 401
 
     if logged_in is not None:
         if request.endpoint in ADMIN_ROUTES and session.get('admin') == False:
@@ -91,7 +91,7 @@ def api_login():
             session['user_id'] = expert_account['deskundige_id']
             session['name'] = expert_account['voornaam']
             session['admin'] = False
-            return {"success": True, "account_type": "user"}
+            return {"success": True, "account_type": "expert"}
 
     elif login['account_type'] == 'admin':
         admin_account = login['user']
