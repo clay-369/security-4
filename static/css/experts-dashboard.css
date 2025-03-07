@@ -9,12 +9,14 @@
     color: #212121;
     font-family: Roboto, serif;
 }
+html,
+body {
+    height: 100%;
+}
 
 body {
     margin: 0;
     padding: 0;
-    min-height: 100vh;
-    background-color: #f0f2f5;
 }
 
 h1 {
@@ -41,20 +43,23 @@ a {
     color: inherit;
 }
 
+main {
+    height: calc(100% - 120px);
+}
+
 section {
-    max-width: 1200px;
+    width: 73%;
     margin: 0 auto;
-    padding: 20px;
-    background-color: #FFF;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 0 20px;
+    height: 100%;
 }
 
 .section-header {
     display: flex;
     justify-content: space-between;
     align-items: end;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .section-title {
@@ -62,12 +67,7 @@ section {
 }
 
 .page-toggler {
-    font-size: 20px;
-    font-weight: bold;
     cursor: pointer;
-}
-.page-toggler:hover {
-    text-decoration: underline;
 }
 
 .hide {
@@ -113,21 +113,28 @@ section {
 /* Enlistments section */
 .enlistments-grid-container {
     margin: 0 auto;
-
     display: grid;
     grid-template-columns: 33% 33% 33%;
-    column-gap: 10px;
+    column-gap: 15px;
+    height: 70%;
 }
 
 .enlistment-category-container {
     border-radius: 10px;
+}
+
+.enlistments-container {
+    background-color: #D9EBF7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.17);
     padding: 10px;
-    box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    height: 100%;
 }
 
 .enlistment-category-header {
     text-align: center;
-    font-size: 24px;
+    font-size: 27px;
+    margin-bottom: 8px;
 }
 
 .enlistment-search-label {
@@ -144,18 +151,22 @@ section {
 }
 
 .enlistments-search-input {
-    height: 25px;
-    padding: 8px;
-    border: 2px solid var(--border-color);
-    border-radius: 5px;
+    height: 45px;
+    border-radius: 300px;
+    padding: 10px;
+    border: 2px solid var(--prm-color);
     margin-left: 15px;
     transition-duration: 0.2s;
     width: 30%;
+    color: var(--prm-color);
+    font-size: 18px;
 }
 .enlistments-search-input:focus {
     outline: none;
-    border: 2px solid var(--prm-color);
-    padding: 8px;
+}
+.enlistments-search-input::placeholder {
+    color: var(--prm-color);
+    font-size: 18px;
 }
 
 .enlistment {

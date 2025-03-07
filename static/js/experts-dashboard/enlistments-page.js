@@ -142,6 +142,6 @@ searchInputElem.addEventListener('keydown', event => {
     if (event.key === 'Enter') {
         clearInterval(intervalId);
         const searchWords = searchInputElem.value;
-        renderFilteredEnlistmentPage(searchWords)
+        renderFilteredEnlistmentPage(searchWords);
     }
 });
