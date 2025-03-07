@@ -12,7 +12,7 @@ auth_bp = Blueprint('auth', __name__)
 
 
 # JWT API Authorization
-@auth_bp.route('/api/organisaties/login', methods=['POST'])
+@auth_bp.route('/organisatie/login', methods=['POST'])
 def login_organisation():
     # Accepts {"email": <email>, "password": <password>} in JSON
     data = request.get_json()
@@ -54,7 +54,7 @@ def refresh_access_token():
     return {"access_token": new_access_token}, 200
 
 
-@auth_bp.route('/logout', methods=['GET'])
+@auth_bp.route('/organisatie/logout', methods=['GET'])
 @jwt_required(verify_type=False)
 def logout_organisation():
     jwt = get_jwt()
