@@ -23,6 +23,11 @@ header nav {
     margin: 0 auto;
 }
 
+.header-logo-container {
+    display: flex;
+    align-items: center;
+}
+
 .header-logo {
     width: 345px;
 }
