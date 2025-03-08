@@ -31,7 +31,7 @@ app.register_blueprint(organisation.organisation_bp)
 
 OPEN_ROUTES = ['login_page', 'logout', '/', 'static', 'api_login', 'api_admin_beheer', 'test2', 'auth.login_organisation', 'expert.register', 'expert.deskundige_api', 'expert.disabilities', 'expert.research']
 PROTECTED_ROUTES = ['organisation.get_research', 'auth.whoami', 'auth.refresh_access_token', 'auth.logout_organisation']
-ADMIN_ROUTES = ['admin.manage']
+ADMIN_ROUTES = ['admin.manage', 'admin.dashboard_beheer', 'admin.organisatie_registratie']
 EXPERT_ROUTES = ['expert.dashboard', 'expert.register', 'expert.edit', 'expert.details']
 
 temp_routes = ['expert.edit', 'expert.deskundige_api']
@@ -51,13 +51,13 @@ def before_request():
         return
 
     if logged_in is None:
-        return redirect(url_for('login_page')), 401
+        return redirect(url_for('login_page'))
 
-    if logged_in is not None:
+    if logged_in:
         if request.endpoint in ADMIN_ROUTES and session.get('admin') == False:
-            return redirect(url_for('index')), 403
+            return redirect(url_for('index'))
         elif request.endpoint in EXPERT_ROUTES and session.get('admin') == True:
-            return redirect(url_for('admin.manage')), 403   # Needs to redirect to admin dashboard when it's ready
+            return redirect(url_for('admin.dashboard_beheer'))   # Needs to redirect to admin dashboard when it's ready
 
 
 @app.route('/')
@@ -66,7 +66,7 @@ def index():
         return redirect(url_for('login'))
     # Logged in:
     elif session.get('admin'):
-        return redirect(url_for('admin.manage'))
+        return redirect(url_for('admin.dashboard_beheer'))
     elif not session.get('admin'):
         return redirect(url_for('expert.dashboard'))
 
@@ -126,9 +126,6 @@ def test2():
 def beheerder():
     return render_template('beheerder-beheer.html')
 
-@app.route('/dashboard_beheer')
-def dashboard_beheer():
-    return render_template('dashboard-beheer.html')
 
 # JWT
 

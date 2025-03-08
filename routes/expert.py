@@ -14,13 +14,13 @@ def dashboard():
 def register():
     return render_template('registreer_deskundige.html')
 
-
-@expert_bp.route('/deskundige/profiel')
+# Hier nog ff naar kijken
+@expert_bp.route('/deskundige/profiel2')
 def details():
     return render_template('deskundige_details.html')
 
 
-@expert_bp.route('/deskundige/bewerk')
+@expert_bp.route('/deskundige/profiel')
 def edit():
     return render_template('account_beheer.html')
 
@@ -28,7 +28,7 @@ def edit():
 # API
 @expert_bp.route("/api/deskundige", methods=["POST"])
 def create_expert():
-    expert_model = Deskundige()
+    expert_model = Experts()
     data = request.get_json()
     success, message = expert_model.create_deskundige(data)
 
@@ -40,7 +40,7 @@ def create_expert():
 
 @expert_bp.route("/api/deskundige", methods=["GET"])
 def get_expert():
-    expert_model = Deskundige()
+    expert_model = Experts()
     if request.args.get('id'):
         deskundige_id = request.args.get('id')
         deskundige_info = expert_model.get_single_deskundige(deskundige_id)
@@ -54,7 +54,7 @@ def get_expert():
 
 @expert_bp.route("/api/deskundige", methods=["PUT"])
 def update_expert():
-    expert_model = Deskundige()
+    expert_model = Experts()
     if request.args.get('id'):
         expert_id = request.args.get('id')
         data = request.get_json()

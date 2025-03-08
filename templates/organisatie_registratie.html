@@ -1,11 +1,16 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <link rel="stylesheet" href="../static/css/organisatie_registratie.css">
-    <meta charset="UTF-8">
-    <title>Organisatie Registratie</title>
-</head>
-<body>
+{% extends 'base.html'%}
+{% block title %}Organisatie Registratie{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="../static/css/organisatie_registratie.css">
+{% endblock %}
+
+{% block nav_links %}
+<a href="/admin">Verzoeken</a>
+<a href="/admin/beheer">Beheerders</a>
+<a href="/admin/organisatie">Organisatie</a>
+{% endblock %}
+
+{% block content%}
 <div class="container-registratie">
     <div class="title">
         <h1>
@@ -63,5 +68,4 @@
         <button type="submit">Verzenden</button>
     </form>
 </div>
-</body>
-</html>
+{% endblock %}
