@@ -14,11 +14,6 @@ def dashboard():
 def register():
     return render_template('registreer_deskundige.html')
 
-# Hier nog ff naar kijken
-@expert_bp.route('/deskundige/profiel2')
-def details():
-    return render_template('deskundige_details.html')
-
 
 @expert_bp.route('/deskundige/profiel')
 def edit():

@@ -1,9 +1,7 @@
-from heapq import merge
-
 from flask import Blueprint, render_template, request
 
 from lib.model.users import Users
-from lib.model.organisatie import Organisatie
+from lib.model.organisation import Organisation
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -98,7 +96,7 @@ def create_organisation():
     telefoonnummer = request.form['telefoonnummer']
     details = request.form['details']
 
-    organisatie = Organisatie()
+    organisatie = Organisation()
     organisatie.create_organisatie(naam, organisatie_type, website, beschrijving, contactpersoon, email,
                                    telefoonnummer, details)
 

@@ -4,7 +4,7 @@ from flask_jwt_extended import (create_access_token,
                                 jwt_required, current_user,
                                 get_jwt_identity, get_jwt)
 
-from lib.model.organisatie import Organisatie
+from lib.model.organisation import Organisation
 from lib.model.token_blocklist import TokenBlocklist
 
 auth_bp = Blueprint('auth', __name__)
@@ -16,7 +16,7 @@ auth_bp = Blueprint('auth', __name__)
 def login_organisation():
     # Accepts {"email": <email>, "password": <password>} in JSON
     data = request.get_json()
-    organisations_model = Organisatie()
+    organisations_model = Organisation()
 
     email = data['email']
     password = data['password']

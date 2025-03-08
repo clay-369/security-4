@@ -3,7 +3,7 @@ from flask_session import Session
 from flask_jwt_extended import JWTManager
 
 from lib.model.users import hash_password
-from lib.model.organisatie import Organisatie
+from lib.model.organisation import Organisatie
 from lib.model.token_blocklist import TokenBlocklist
 # Routes
 from routes import admin, expert, research, auth, organisation
@@ -120,11 +120,6 @@ def test():
 @app.route('/test/organisatie/login')
 def test2():
     return render_template('public-api-test.html')
-
-
-@app.route('/beheerder_beheer')
-def beheerder():
-    return render_template('beheerder-beheer.html')
 
 
 # JWT

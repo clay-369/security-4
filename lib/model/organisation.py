@@ -1,8 +1,6 @@
-from types import NoneType
-
 from lib.model.database import Database
 
-class Organisatie:
+class Organisation:
     def __init__(self):
         database = Database('./databases/database.db')
         self.conn, self.cursor = database.connect_db()
