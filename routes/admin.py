@@ -1,3 +1,5 @@
+from heapq import merge
+
 from flask import Blueprint, render_template, request
 
 from lib.model.users import Users
@@ -5,29 +7,18 @@ from lib.model.organisatie import Organisatie
 
 admin_bp = Blueprint('admin', __name__)
 
+
+@admin_bp.route('/admin')
+def dashboard_beheer():
+    return render_template('dashboard-beheer.html')
+
 @admin_bp.route('/admin/beheer')
 def manage():
     return render_template('beheerder-beheer.html')
 
 
-@admin_bp.route('/organisatie_registratie', methods=['GET', 'POST'])
+@admin_bp.route('/admin/organisatie', methods=['GET'])
 def organisatie_registratie():
-    if request.method == 'POST':
-        naam = request.form['naam']
-        organisatie_type = request.form['type']
-        website = request.form['website']
-        contactpersoon = request.form['contactpersoon']
-        beschrijving = request.form['beschrijving']
-        email = request.form['email']
-        telefoonnummer = request.form['telefoonnummer']
-        details = request.form['details']
-
-        organisatie = Organisatie()
-        organisatie.create_organisatie(naam, organisatie_type, website, beschrijving, contactpersoon, email,
-                                       telefoonnummer, details)
-
-        return {"message": "Organisatie succesvol geregistreerd!", "success": True}
-
     return render_template('organisatie_registratie.html')
 
 # API's
@@ -94,3 +85,21 @@ def api_delete_admin():
         return {"success": True}
     else:
         return {"success": False}
+
+@admin_bp.route('/api/organisatie', methods=['POST'])
+def create_organisation():
+    # TODO: make work with javascript
+    naam = request.form['naam']
+    organisatie_type = request.form['type']
+    website = request.form['website']
+    contactpersoon = request.form['contactpersoon']
+    beschrijving = request.form['beschrijving']
+    email = request.form['email']
+    telefoonnummer = request.form['telefoonnummer']
+    details = request.form['details']
+
+    organisatie = Organisatie()
+    organisatie.create_organisatie(naam, organisatie_type, website, beschrijving, contactpersoon, email,
+                                   telefoonnummer, details)
+
+    return {"message": "Organisatie succesvol geregistreerd!", "success": True}
