@@ -8,11 +8,20 @@
     <link rel="icon" type="image/x-icon" href="https://www.accessibility.nl/themes/sa/images/logo.svg">
     <link rel="stylesheet" href="{{ url_for('static', filename='log-in.css') }}" >
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/header.css">
 </head>
 <body>
-    <div class="header">
-            <img src="https://www.accessibility.nl/themes/sa/images/logo.svg">
-    </div>
+    <header>
+        <nav>
+            <a href="/">
+                <img class="header-logo" src="https://www.accessibility.nl/themes/sa/images/logo.svg" alt="Logo van Stichting Accessibility">
+            </a>
+            <div class="nav-links">
+                <a href="/deskundige/registreer">Registreren</a>
+            </div>
+        </nav>
+    </header>
+
 <form id="loginForm">
     <h1>Log hier in</h1>
     <label for="email">Email of gebruikersnaam:</label>
