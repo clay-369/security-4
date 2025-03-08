@@ -5,6 +5,10 @@
     <title>Registratie ervaringsdeskundige</title>
     <link rel="stylesheet" href="/static/registreer_deskundige.css" />
     <link rel="stylesheet" href="../static/css/header.css">
+     <!-- Code for Roboto font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   </head>
   <body>
   <header>
@@ -12,6 +16,9 @@
             <a href="/">
                 <img class="header-logo" src="https://www.accessibility.nl/themes/sa/images/logo.svg" alt="Logo van Stichting Accessibility">
             </a>
+            <div class="nav-links">
+              <a href="/login">Login</a>
+            </div>
         </nav>
     </header>
     <div id="snackbar"></div>
@@ -91,7 +98,7 @@
             id="toezichthouder"
             name="toezichthouder"
             value="true"
-            checked 
+            checked
           />
           <span class="checkmark"></span>
         </label>

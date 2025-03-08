@@ -3,7 +3,7 @@ from flask_session import Session
 from flask_jwt_extended import JWTManager
 
 from lib.model.users import hash_password
-from lib.model.organisation import Organisatie
+from lib.model.organisation import Organisation
 from lib.model.token_blocklist import TokenBlocklist
 # Routes
 from routes import admin, expert, research, auth, organisation
@@ -131,7 +131,7 @@ def user_lookup_callback(_jwt_headers, jwt_data):
     account_type = jwt_data['account_type']
 
     if account_type == 'organisation':
-        organisation_model = Organisatie()
+        organisation_model = Organisation()
         org = organisation_model.get_organisation_by_email(identity_email)
         return org
     # Else if expert
