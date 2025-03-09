@@ -7,13 +7,13 @@ class Disabilities:
 
     def get_disability_id(self, disability_name):
         disability_id = self.cursor.execute(
-            """
-            SELECT beperking_id
-            FROM beperkingen
-            WHERE beperking = ?
-            """,
-            (disability_name,)
-        ).fetchone()['beperking_id']
+                """
+                SELECT beperking_id
+                FROM beperkingen
+                WHERE beperking = ?
+                """,
+                (disability_name,)
+            ).fetchone()['beperking_id']
 
         return disability_id
     

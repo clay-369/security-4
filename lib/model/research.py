@@ -33,27 +33,38 @@ class Research:
 
         research_item['status'] = 'NIEUW'
 
-        # Filter optional fields
-        try:
-            research_item['locatie']
-        except KeyError:
-            research_item['locatie'] = None
-
-        try:
-            research_item['beloning']
-        except KeyError:
-            research_item['beloning'] = None
-
         # Filter onderzoek_type
         if research_item['onderzoek_type'].upper() not in ['ONLINE', 'OP LOCATIE', 'TELEFONISCH']:
             return False
 
+        # Filter optional fields
+        try:
+            research_item['locatie']
+        except KeyError:
+            if research_item['onderzoek_type'] == 'OP LOCATIE':
+                return {"error": "Field <locatie> missing"}
+            else:
+                research_item['locatie'] = None
+
+        try:
+            research_item['beloning']
+        except KeyError:
+            if research_item['met_beloning'] == 1:
+                return {"error": "Field <beloning> missing"}
+            else:
+                research_item['beloning'] = None
+
+
+
         # Check if disabilities exist in database
         disability_model = Disabilities()
         for disability_name in research_item['beperkingen']:
-            disability_id = disability_model.get_disability_id(disability_name.lower())
-            if not disability_id:
-                return False
+            disability_id = None
+            try:
+                disability_id = disability_model.get_disability_id(disability_name.lower())
+            finally:
+                if not disability_id:
+                    return {"error": f"Disability <{disability_name}> does not exist in the database"}
 
         # Create new research
         self.cursor.execute(
@@ -89,7 +100,9 @@ class Research:
             )
 
         self.conn.commit()
-        return new_research_id
+
+        new_research_item = self.get_research_by_id(new_research_id)
+        return new_research_item
 
     def get_all_research_items_by_organisation_id(self, organisation_id):
         self.cursor.execute("SELECT * FROM onderzoeken WHERE organisatie_id = ?", (organisation_id,))

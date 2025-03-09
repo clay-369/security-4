@@ -4,25 +4,33 @@ from flask_jwt_extended import (create_access_token,
                                 jwt_required, current_user,
                                 get_jwt_identity, get_jwt)
 
+from lib.model.experts import Experts
 from lib.model.organisation import Organisation
 from lib.model.token_blocklist import TokenBlocklist
 
 auth_bp = Blueprint('auth', __name__)
-
+# Prefix = /auth
 
 
 # JWT API Authorization
-@auth_bp.route('/organisatie/login', methods=['POST'])
-def login_organisation():
+@auth_bp.route('/login/<account_type>', methods=['POST'])
+def login_jwt(account_type):
     # Accepts {"email": <email>, "password": <password>} in JSON
     data = request.get_json()
-    organisations_model = Organisation()
-
     email = data['email']
     password = data['password']
 
-    is_validated = organisations_model.validate_credentials(email, password)
+    # Validate account
+    if account_type == 'organisation':
+        organisations_model = Organisation()
+        is_validated = organisations_model.validate_credentials(email, password)
+    elif account_type == 'expert':
+        expert_model = Experts()
+        is_validated = expert_model.validate_credentials(email, password)
+    else:
+        return {"error": "Invalid account type"}, 400
 
+    # Create tokens
     if is_validated:
         access_token = create_access_token(identity=email)
         refresh_token = create_refresh_token(identity=email)
@@ -56,9 +64,9 @@ def refresh_access_token():
     return {"access_token": new_access_token}, 200
 
 
-@auth_bp.route('/organisatie/logout', methods=['GET'])
+@auth_bp.route('/logout', methods=['GET'])
 @jwt_required(verify_type=False)
-def logout_organisation():
+def logout_jwt():
     jwt = get_jwt()
 
     jti = jwt['jti']
@@ -68,3 +76,4 @@ def logout_organisation():
     token_blocklist_model.add_token(jti)
 
     return {"message": f"Successfully revoked {token_type} token"}, 200
+

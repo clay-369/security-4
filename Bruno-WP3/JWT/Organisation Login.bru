@@ -1,11 +1,11 @@
 meta {
   name: Organisation Login
   type: http
-  seq: 1
+  seq: 2
 }
 
 post {
-  url: http:127.0.0.1:5000/organisatie/login
+  url: http:127.0.0.1:5000/auth/login/organisation
   body: json
   auth: none
 }
@@ -22,5 +22,6 @@ body:json {
 }
 
 docs {
+  Log in with Email and Password
   Returns access and refresh token
 }

@@ -1,7 +1,7 @@
 meta {
   name: Create research
   type: http
-  seq: 2
+  seq: 1
 }
 
 post {
@@ -15,7 +15,7 @@ headers {
 }
 
 auth:bearer {
-  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MTUyNjAzMywianRpIjoiMDZmN2NlZjAtODU3Yi00ZGMxLTg4ZDAtMjQyNmNlMjI5MzZiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InBldGVyQGVtYWlsLmNvbSIsIm5iZiI6MTc0MTUyNjAzMywiY3NyZiI6IjZmNzM4NzQwLTUxOWItNDM4YS1hNjk5LWJmYzdjMGZjNDFhMyIsImV4cCI6MTc0MTUyNjkzMywiYWNjb3VudF90eXBlIjoib3JnYW5pc2F0aW9uIn0.-TX6Fd0r03vJvVMn1Cs0nH_2WIp6gIbis4DCp0ohIc8
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MTUzNTgyMSwianRpIjoiYjAyZmQ2NTUtNjhiYi00ZDc1LWJkYTItNmMxYjIyODM2NjY5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InBldGVyQGVtYWlsLmNvbSIsIm5iZiI6MTc0MTUzNTgyMSwiY3NyZiI6ImU1YWQzNjYzLWIwZTQtNGU5ZS05NjZlLTg4NmRmOTU5ZGVlMCIsImV4cCI6MTc0MTUzNjcyMSwiYWNjb3VudF90eXBlIjoib3JnYW5pc2F0aW9uIiwib3JnYW5pc2F0aW9uX2lkIjoxfQ.-YqsntNO8iVKAsRLGbfOGVTrbFqortPGMkvZm6bPSCA
 }
 
 body:json {
@@ -41,5 +41,25 @@ body:json {
 }
 
 docs {
+  Pass research item in body
   Access token needed in Auth
+  
+  Format:
+  {
+    "titel": String,
+    "beschikbaar": Bool,
+    "beschrijving": String,
+    "datum_vanaf": String (date),
+    "datum_tot": String (date),
+    "onderzoek_type": String (OP LOCATE, TELEFONISCH, ONLINE),
+    "locatie": String (Only if onderzoek_type is OP LOCATIE),
+    "met_beloning": true,
+    "beloning": "$1", // Optional
+    "leeftijd_vanaf": 20,
+    "leeftijd_tot": 70,
+    "beperkingen": [
+      "blind",
+      "amputatie of mismaaktheid"
+    ]
+  }
 }

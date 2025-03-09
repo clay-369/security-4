@@ -51,10 +51,11 @@ def create_research_item():
     research_item = request.json
     research_model = Research()
 
-    new_research_id = research_model.create_research(research_item, organisation_id)
-    new_research_item = research_model.get_research_by_id(new_research_id)
-    if not new_research_item:
-        return {"message": "Could not create item", "success": False}, 500 # Server error
+    new_research_item = research_model.create_research(research_item, organisation_id)
+    try:
+        if new_research_item['error']:
+            return new_research_item, 422
 
-    return new_research_item, 201 # Created
+    except KeyError:
+        return new_research_item, 201 # Created
 

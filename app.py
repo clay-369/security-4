@@ -1,3 +1,5 @@
+from sys import prefix
+
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 from flask_jwt_extended import JWTManager
@@ -9,6 +11,7 @@ from lib.model.token_blocklist import TokenBlocklist
 from routes import admin, expert, research, auth, organisation
 
 from lib.model.users import Users
+from lib.model.experts import Experts
 
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
@@ -25,12 +28,12 @@ jwt.init_app(app)
 app.register_blueprint(admin.admin_bp)
 app.register_blueprint(expert.expert_bp)
 app.register_blueprint(research.research_bp)
-app.register_blueprint(auth.auth_bp)
+app.register_blueprint(auth.auth_bp, url_prefix='/auth')
 app.register_blueprint(organisation.organisation_bp)
 
 
-OPEN_ROUTES = ['login_page', 'logout', '/', 'static', 'api_login', 'api_admin_beheer', 'test2', 'auth.login_organisation', 'expert.register', 'expert.deskundige_api', 'expert.disabilities', 'expert.research']
-PROTECTED_ROUTES = ['organisation.get_research', 'auth.whoami', 'auth.refresh_access_token', 'auth.logout_organisation', 'organisation.create_research_item', 'organisation.get_research_by_id']
+OPEN_ROUTES = ['login_page', 'logout', '/', 'static', 'api_login', 'api_admin_beheer', 'test2', 'auth.login_jwt', 'expert.register', 'expert.deskundige_api', 'expert.disabilities', 'expert.research']
+PROTECTED_ROUTES = ['organisation.get_research', 'auth.whoami', 'auth.refresh_access_token', 'auth.logout_jwt', 'organisation.create_research_item', 'organisation.get_research_by_id']
 ADMIN_ROUTES = ['admin.manage', 'admin.dashboard_beheer', 'admin.organisatie_registratie']
 EXPERT_ROUTES = ['expert.dashboard', 'expert.register', 'expert.edit', 'expert.details']
 
@@ -130,21 +133,36 @@ def user_lookup_callback(_jwt_headers, jwt_data):
     identity_email = jwt_data['sub']
     account_type = jwt_data['account_type']
 
-    if account_type == 'organisation':
+    if account_type == 'expert':
+        expert_model = Experts()
+        expert_account = expert_model.get_expert_by_email(identity_email)
+        return expert_account
+
+    elif account_type == 'organisation':
         organisation_model = Organisation()
-        org = organisation_model.get_organisation_by_email(identity_email)
-        return org
-    # Else if expert
+        organisation_account = organisation_model.get_organisation_by_email(identity_email)
+        return organisation_account
+
+    # add admin later
 
 
 ## Additional claims
 @jwt.additional_claims_loader
-def make_additional_claims(identity):
+def make_additional_claims(identity_email):
     # Can be used to block organisations from visiting expert routes and the other way around
-    if identity == 'peter@email.com': # Change to be dynamic
-        return {"account_type": "organisation", "organisation_id": 1}
-    else:
-        return {"account_type": "expert"}
+    expert_model = Experts()
+    expert_account = expert_model.get_expert_by_email(identity_email)
+    if expert_account:
+        return {"account_type": "expert", "expert_id": expert_account['deskundige_id']}
+
+    # If account is not an expert account, check if it is an organisation account
+    organisation_model = Organisation()
+    organisation_account = organisation_model.get_organisation_by_email(identity_email)
+    if organisation_account:
+        return {"account_type": "organisation", "organisation_id": organisation_account['organisatie_id']}
+
+    # Add admins later
+
 
 ## JWT error handlers
 @jwt.expired_token_loader

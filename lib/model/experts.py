@@ -79,3 +79,13 @@ class Experts:
         self.conn.commit()
         self.conn.close()
         return True, "Deskundige gewijzigd!"
+
+    def get_expert_by_email(self, email):
+        self.cursor.execute("SELECT * FROM deskundigen WHERE email = ?", (email,))
+        return self.cursor.fetchone()
+
+
+    def validate_credentials(self, email, password):
+        password = hash_password(password)
+        result = self.cursor.execute("SELECT email FROM deskundigen WHERE wachtwoord = ? AND email = ?", (password, email)).fetchone()
+        return bool(result)
