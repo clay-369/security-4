@@ -21,4 +21,4 @@ class Organisation:
 
     def get_organisation_by_email(self, email):
         result = self.cursor.execute("SELECT * FROM organisaties WHERE email = ?", (email,)).fetchone()
-        return dict(result)
+        return result

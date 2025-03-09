@@ -6,16 +6,16 @@ class Users:
         database = Database('./databases/database.db')
         self.conn, self.cursor = database.connect_db()
 
-    def login(self, email):
-        expert = self.cursor.execute('SELECT * FROM deskundigen WHERE email = ?', (email,)).fetchone()
-        if expert is not None:
+    def login(self, email, password):
+        expert = self.cursor.execute('SELECT * FROM deskundigen WHERE wachtwoord = ? AND email = ?', (password, email)).fetchone()
+        if expert:
             return {"user": expert, "account_type": 'expert'}
-        else:
-            admin = self.cursor.execute('SELECT * FROM beheerders WHERE email = ?', (email,)).fetchone()
-            if admin is not None:
-                return {"user": admin, "account_type": 'admin'}
-            else:
-                return None
+
+        admin = self.cursor.execute('SELECT * FROM beheerders WHERE wachtwoord = ? AND email = ?', (password, email)).fetchone()
+        if admin:
+            return {"user": admin, "account_type": 'admin'}
+
+        return None
 
 
     def admin_create(self, first_name, last_name, email, password):
@@ -50,6 +50,10 @@ class Users:
         self.conn.commit()
         return True
 
+
+    def get_admin_by_email(self, email):
+        self.cursor.execute("SELECT * FROM beheerders WHERE email = ?", (email,))
+        return self.cursor.fetchone()
 
 def hash_password(password):
     return sha256(password.encode('utf-8')).hexdigest()

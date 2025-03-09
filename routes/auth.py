@@ -7,28 +7,27 @@ from flask_jwt_extended import (create_access_token,
 from lib.model.experts import Experts
 from lib.model.organisation import Organisation
 from lib.model.token_blocklist import TokenBlocklist
+from lib.model.users import Users, hash_password
 
 auth_bp = Blueprint('auth', __name__)
 # Prefix = /auth
 
 
 # JWT API Authorization
-@auth_bp.route('/login/<account_type>', methods=['POST'])
-def login_jwt(account_type):
+@auth_bp.route('/login', methods=['POST'])
+def login_jwt():
     # Accepts {"email": <email>, "password": <password>} in JSON
     data = request.get_json()
     email = data['email']
     password = data['password']
+    password = hash_password(password)
 
-    # Validate account
-    if account_type == 'organisation':
+    user_model = Users()
+    is_validated = user_model.login(email, password)
+
+    if not is_validated:
         organisations_model = Organisation()
         is_validated = organisations_model.validate_credentials(email, password)
-    elif account_type == 'expert':
-        expert_model = Experts()
-        is_validated = expert_model.validate_credentials(email, password)
-    else:
-        return {"error": "Invalid account type"}, 400
 
     # Create tokens
     if is_validated:

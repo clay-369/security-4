@@ -87,31 +87,30 @@ def api_login():
     password = hash_password(password)
 
     users_model = Users()
-    login = users_model.login(email)
+    login = users_model.login(email, password)
+    if login is None:
+        return {"message": "Invalid email or password", "success": False}
+
     if login['account_type'] == 'expert':
         expert_account = login['user']
-        if password == expert_account['wachtwoord']:
-            session['user_id'] = expert_account['deskundige_id']
-            session['name'] = expert_account['voornaam']
-            session['admin'] = False
-            return {"success": True, "account_type": "expert"}
+        session['user_id'] = expert_account['deskundige_id']
+        session['name'] = expert_account['voornaam']
+        session['admin'] = False
+        return {"success": True, "account_type": "expert"}
 
     elif login['account_type'] == 'admin':
         admin_account = login['user']
-        if password == admin_account['wachtwoord']:
-            print('Password correct')
-            session['user_id'] = admin_account['beheerder_id']
-            session['name'] = admin_account['voornaam']
-            session['admin'] = True
-            return {"success": True, "account_type": "admin"}
-    else:
-        return {"message": "Invalid email or password", "success": False}
+        session['user_id'] = admin_account['beheerder_id']
+        session['name'] = admin_account['voornaam']
+        session['admin'] = True
+        return {"success": True, "account_type": "admin"}
+
 
 
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect('/')
+    return render_template('logout.html')
 
 
 # API tests
@@ -143,25 +142,34 @@ def user_lookup_callback(_jwt_headers, jwt_data):
         organisation_account = organisation_model.get_organisation_by_email(identity_email)
         return organisation_account
 
-    # add admin later
+    elif account_type == 'admin':
+        admin_model = Users()
+        admin_account = admin_model.get_admin_by_email(identity_email)
+        return admin_account
 
 
 ## Additional claims
 @jwt.additional_claims_loader
 def make_additional_claims(identity_email):
     # Can be used to block organisations from visiting expert routes and the other way around
+    # Check if expert
     expert_model = Experts()
     expert_account = expert_model.get_expert_by_email(identity_email)
     if expert_account:
         return {"account_type": "expert", "expert_id": expert_account['deskundige_id']}
 
-    # If account is not an expert account, check if it is an organisation account
+    # Check if admin
+    admin_model = Users()
+    admin_account = admin_model.get_admin_by_email(identity_email)
+    if admin_account:
+        return {"account_type": "admin", "admin_id": admin_account['beheerder_id']}
+
+    # Check if organisation
     organisation_model = Organisation()
     organisation_account = organisation_model.get_organisation_by_email(identity_email)
     if organisation_account:
         return {"account_type": "organisation", "organisation_id": organisation_account['organisatie_id']}
 
-    # Add admins later
 
 
 ## JWT error handlers

@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request
+from flask_jwt_extended import jwt_required
 
 from lib.model.experts import Experts
 from lib.model.disabilities import Disabilities
-from lib.model.research import Research
 expert_bp = Blueprint('expert', __name__)
 
 @expert_bp.route('/deskundige')

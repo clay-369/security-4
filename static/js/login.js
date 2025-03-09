@@ -1,32 +1,44 @@
-document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+document.getElementById('loginForm')
+    .addEventListener('submit', function(event) {
+        event.preventDefault();
 
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
 
 
-    fetch('/api/login', {
+        fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({email: email, password: password})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                jwtLogin(email, password);
+            } else {
+                console.log('Foktop!')
+            }
+    })
+})
+
+function jwtLogin(email, password) {
+    fetch('/auth/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({email: email, password: password})
+        body: JSON.stringify({email, password})
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            window.location.href = '/';
-            // if (data.type === 'user') {
-            //     window.location.href = '/user' // Moet verwijzen naar gebruikers dashboard
-            //     console.log('Succes voor user!')
-            // }
-            // if (data.type === 'admin') {
-            //     window.location.href = '/admin/beheer'
-            //     console.log('Succes voor admin!')
-            // }
-        } else {
-            console.log('Foktop!')
-        }
-    })
+        .then(response => response.json())
+        .then(data => {
+            const accessToken = data['tokens']['access'];
+            const refreshToken = data['tokens']['refresh'];
+            sessionStorage.setItem('accessToken', accessToken);
+            sessionStorage.setItem('refreshToken', refreshToken);
 
-})
+            // Redirect after completely logging in
+            window.location.href = '/';
+        });
+}
