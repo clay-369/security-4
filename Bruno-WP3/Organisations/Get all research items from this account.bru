@@ -1,0 +1,19 @@
+meta {
+  name: Get all research items from this account
+  type: http
+  seq: 6
+}
+
+get {
+  url: http://127.0.0.1:5000/onderzoeken
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MTUyODQxNywianRpIjoiMTg5YmJiYjUtYzlkNC00OThhLTk3OTMtNjQxOTQ1NWVmZGNkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InBldGVyQGVtYWlsLmNvbSIsIm5iZiI6MTc0MTUyODQxNywiY3NyZiI6IjQyMzNkZDNkLTAyOTktNDNiOC1hMjQ2LTM3MGE0NDJmYzcyYiIsImV4cCI6MTc0MTUyOTMxNywiYWNjb3VudF90eXBlIjoib3JnYW5pc2F0aW9uIiwib3JnYW5pc2F0aW9uX2lkIjoxfQ.nq3N3P2wxRbbh8qLvFJvF6PVLpI45flP22gWF_bviD0
+}
+
+docs {
+  Returns all research items linked to this user
+}

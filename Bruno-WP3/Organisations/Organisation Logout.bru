@@ -1,0 +1,19 @@
+meta {
+  name: Organisation Logout
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://127.0.0.1:5000/organisatie/logout
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MTUyNTE1MywianRpIjoiMWYwMmI3N2QtNTU1ZS00YzdmLTllZGEtODllODJlMTM1YTZlIiwidHlwZSI6InJlZnJlc2giLCJzdWIiOiJwZXRlckBlbWFpbC5jb20iLCJuYmYiOjE3NDE1MjUxNTMsImNzcmYiOiI0YWI1NDdmMS1kZjMzLTRhYmUtOGZjMi02ZDk3ODUzOGUwZWEiLCJleHAiOjE3NDQxMTcxNTMsImFjY291bnRfdHlwZSI6Im9yZ2FuaXNhdGlvbiJ9.RTIW-v1dOGRy32qNf9QOa9yTGG7H9EKiAIK1Uhzs5gM
+}
+
+docs {
+  Put access or refresh token into Auth to make them unusable
+}

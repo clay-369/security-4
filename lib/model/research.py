@@ -56,7 +56,7 @@ class Research:
                 return False
 
         # Create new research
-        new_research_item = self.cursor.execute(
+        self.cursor.execute(
             """
             INSERT INTO onderzoeken 
             (
@@ -73,7 +73,7 @@ class Research:
             )
         )
 
-        new_research_id = self.cursor.lastrowid()
+        new_research_id = self.cursor.lastrowid
 
         # Create beperking_onderzoek instances
         for disability_name in research_item['beperkingen']:
@@ -89,17 +89,19 @@ class Research:
             )
 
         self.conn.commit()
-        return dict(new_research_item)
+        return new_research_id
 
-    def get_all_research_items(self):
-        self.cursor.execute("SELECT * FROM onderzoeken")
+    def get_all_research_items_by_organisation_id(self, organisation_id):
+        self.cursor.execute("SELECT * FROM onderzoeken WHERE organisatie_id = ?", (organisation_id,))
         rows = self.cursor.fetchall()
         return [dict(row) for row in rows]
+
 
     def get_all_available_research_items(self):
         self.cursor.execute("SELECT * FROM onderzoeken WHERE status = ? AND beschikbaar = ?",
                             ('GOEDGEKEURD', True))
         return self.cursor.fetchall()
+
 
     def format_research_item(self, research_item) -> dict:
         """ Adds organisatie_naam to research_item and converts it to dict """

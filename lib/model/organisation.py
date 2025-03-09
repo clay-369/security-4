@@ -1,4 +1,5 @@
 from lib.model.database import Database
+from lib.model.users import hash_password
 
 class Organisation:
     def __init__(self):
@@ -14,9 +15,10 @@ class Organisation:
         return True
 
     def validate_credentials(self, email, password):
+        password = hash_password(password)
         result = self.cursor.execute("SELECT email FROM organisaties WHERE wachtwoord = ? AND email = ?", (password, email)).fetchone()
         return bool(result)
 
     def get_organisation_by_email(self, email):
         result = self.cursor.execute("SELECT * FROM organisaties WHERE email = ?", (email,)).fetchone()
-        return dict(result)
+        return dict(result)['organisatie_id']

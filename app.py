@@ -30,7 +30,7 @@ app.register_blueprint(organisation.organisation_bp)
 
 
 OPEN_ROUTES = ['login_page', 'logout', '/', 'static', 'api_login', 'api_admin_beheer', 'test2', 'auth.login_organisation', 'expert.register', 'expert.deskundige_api', 'expert.disabilities', 'expert.research']
-PROTECTED_ROUTES = ['organisation.get_research', 'auth.whoami', 'auth.refresh_access_token', 'auth.logout_organisation']
+PROTECTED_ROUTES = ['organisation.get_research', 'auth.whoami', 'auth.refresh_access_token', 'auth.logout_organisation', 'organisation.create_research_item', 'organisation.get_research_by_id']
 ADMIN_ROUTES = ['admin.manage', 'admin.dashboard_beheer', 'admin.organisatie_registratie']
 EXPERT_ROUTES = ['expert.dashboard', 'expert.register', 'expert.edit', 'expert.details']
 
@@ -142,7 +142,7 @@ def user_lookup_callback(_jwt_headers, jwt_data):
 def make_additional_claims(identity):
     # Can be used to block organisations from visiting expert routes and the other way around
     if identity == 'peter@email.com': # Change to be dynamic
-        return {"account_type": "organisation"}
+        return {"account_type": "organisation", "organisation_id": 1}
     else:
         return {"account_type": "expert"}
 

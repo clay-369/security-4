@@ -1,0 +1,21 @@
+meta {
+  name: Get research item by id
+  type: http
+  seq: 7
+}
+
+get {
+  url: http://127.0.0.1:5000/onderzoeken/1
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MTUyODg0NSwianRpIjoiMDhkMWVjMTAtZTA5Ny00NTQ0LThiMTktZjM5MjI5MDFkNTI1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InBldGVyQGVtYWlsLmNvbSIsIm5iZiI6MTc0MTUyODg0NSwiY3NyZiI6ImU2MWY1N2QyLWM0ZTEtNGFkZC1iNDBkLWQxMTNlODBmNTkyZSIsImV4cCI6MTc0MTUyOTc0NSwiYWNjb3VudF90eXBlIjoib3JnYW5pc2F0aW9uIiwib3JnYW5pc2F0aW9uX2lkIjoxfQ.06rG2cSy_Weszkk3kmxsyYzlzbNOHK5OKf-9aM5J7eA
+}
+
+docs {
+  Last number in url is the research id
+  
+  Returns reserach item with that id
+}

@@ -1,0 +1,26 @@
+meta {
+  name: Organisation Login
+  type: http
+  seq: 1
+}
+
+post {
+  url: http:127.0.0.1:5000/organisatie/login
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "peter@email.com",
+    "password": "ABC"
+  }
+}
+
+docs {
+  Returns access and refresh token
+}

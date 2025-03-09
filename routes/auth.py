@@ -41,7 +41,9 @@ def login_organisation():
 @auth_bp.route('/whoami', methods=['GET'])
 @jwt_required()
 def whoami():
-    return {"user_details": dict(current_user)}, 200
+    user_details =  dict(current_user)
+    user_details.pop('wachtwoord') # Dont show password
+    return {"user_details": user_details}, 200
 
 
 @auth_bp.route('/refresh', methods=['GET'])
