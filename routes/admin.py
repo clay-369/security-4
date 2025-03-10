@@ -1,3 +1,5 @@
+import sqlite3
+
 from flask import Blueprint, render_template, request
 
 from lib.model.users import Users
@@ -86,18 +88,13 @@ def api_delete_admin():
 
 @admin_bp.route('/api/organisatie', methods=['POST'])
 def create_organisation():
-    # TODO: make work with javascript
-    naam = request.form['naam']
-    organisatie_type = request.form['type']
-    website = request.form['website']
-    contactpersoon = request.form['contactpersoon']
-    beschrijving = request.form['beschrijving']
-    email = request.form['email']
-    telefoonnummer = request.form['telefoonnummer']
-    details = request.form['details']
+    data = request.get_json()
 
-    organisatie = Organisation()
-    organisatie.create_organisatie(naam, organisatie_type, website, beschrijving, contactpersoon, email,
-                                   telefoonnummer, details)
+    organisation_model = Organisation()
+    try:
+        new_organisation_id = organisation_model.create_organisation(data)
+        return {"message": "Organisatie succesvol geregistreerd!", "success": True, "id": new_organisation_id}, 201
+    except sqlite3.IntegrityError:
+        return {"message": "Dit e-mailadres bestaat al.", "success": False}, 400
 
-    return {"message": "Organisatie succesvol geregistreerd!", "success": True}
+

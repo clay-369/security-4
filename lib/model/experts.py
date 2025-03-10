@@ -10,7 +10,7 @@ class Experts:
 
     def create_deskundige(self, deskundige):
         neccesary_fields = ["email", "wachtwoord", "voornaam", "achternaam", "postcode", "telefoonnummer", "geboortedatum", "introductie", "voorkeur_benadering", "type_beperking"]
-        
+
         if deskundige["voorkeur_benadering"] == "":
             return False, "U moet een voorkeur benadering selecteren."
 
@@ -28,13 +28,13 @@ class Experts:
 
             if deskundige["toezichthouder_naam"] == "":
                 return False, "U moet een naam invullen voor de toezichthouder omdat u toezichthouder heeft geselecteerd."
-            
+
             if deskundige["toezichthouder_email"] == "":
                 return False, "U moet een e-mailadres invullen voor de toezichthouder omdat u toezichthouder heeft geselecteerd."
-            
+
             if deskundige["toezichthouder_telefoonnummer"] == "":
                 return False, "U moet een telefoonnummer invullen voor de toezichthouder omdat u toezichthouder heeft geselecteerd."
-            
+
 
         # Check if the email is valid
         valid = re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', deskundige["email"])
@@ -50,7 +50,7 @@ class Experts:
         valid = re.match(r'^[1-9][0-9]{3} ?[A-Z]{2}$', deskundige["postcode"])
         if not valid:
             return False, "U moet een geldige postcode invullen."
-        
+
           # Temporary solution to check if there are "onderzoeken"
         if deskundige["type_onderzoek"] == "":
             return False, "U moet een type onderzoek selecteren."
@@ -68,12 +68,11 @@ class Experts:
         existing_email = self.cursor.execute("SELECT email FROM deskundigen WHERE email = ?", (deskundige["email"],)).fetchone()
         if existing_email:
             return False, "Dit emailadres is al geregistreerd."
-            
+
         self.cursor.execute("INSERT into deskundigen (email,wachtwoord,voornaam,achternaam,postcode,telefoonnummer,geboortedatum,hulpmiddelen,bijzonderheden, bijzonderheden_beschikbaarheid, introductie, voorkeur_benadering, type_beperking, type_onderzoeken, toezichthouder, toezichthouder_naam, toezichthouder_email, toezichthouder_telefoonnummer, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
         (deskundige["email"], hash_password(deskundige["wachtwoord"]), deskundige["voornaam"], deskundige["achternaam"], deskundige["postcode"], deskundige["telefoonnummer"], deskundige["geboortedatum"], deskundige["hulpmiddelen"], deskundige["bijzonderheden"], deskundige["bijzonderheden_beschikbaarheid"], deskundige["introductie"], deskundige["voorkeur_benadering"], deskundige["type_beperking"], deskundige["type_onderzoek"], deskundige["toezichthouder"], deskundige["toezichthouder_naam"], deskundige["toezichthouder_email"], deskundige["toezichthouder_telefoonnummer"], "Nieuw"))
         # Wijzigingen opslaan
         self.conn.commit()
-        self.conn.close()
         return True, "Deskundige gemaakt!"
 
     def get_deskundigen(self):
@@ -112,5 +111,4 @@ class Experts:
              expert["toezichthouder_telefoonnummer"], expert["deskundige_id"]))
 
         self.conn.commit()
-        self.conn.close()
         return True, "Deskundige gewijzigd!"
