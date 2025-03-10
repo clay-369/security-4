@@ -55,31 +55,6 @@ window.addEventListener("load", function () {
     .catch((error) => {
       console.error("Error:", error)
     })
-
-  fetch("/api/research", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data)
-      const addedTypes = new Set()
-      data.research.forEach((research) => {
-        research.push(research)
-        if (!addedTypes.has(research.onderzoek_type)) {
-          const option = document.createElement("option")
-          option.value = research.onderzoek_id
-          option.textContent = research.onderzoek_type
-          document.getElementById("type-onderzoek").appendChild(option)
-          addedTypes.add(research.onderzoek_type)
-        }
-      })
-    })
-    .catch((error) => {
-      console.error("Error:", error)
-    })
 })
 
 document

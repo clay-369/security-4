@@ -53,7 +53,7 @@ class Experts:
         
           # Temporary solution to check if there are "onderzoeken"
         if deskundige["type_onderzoek"] == "":
-            return False, "Er zijn geen onderzoeken gevonden. U kunt pas registreren als er onderzoeken zijn!"
+            return False, "U moet een type onderzoek selecteren."
         
         # Temporary solution to check if there are "beperkingen"
         if deskundige["type_beperking"] == "":
