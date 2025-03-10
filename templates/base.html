@@ -13,6 +13,7 @@
 
     {% block styles %}{% endblock %}
     <link rel="stylesheet" href="../static/css/header.css">
+    <link rel="stylesheet" href="../static/css/snackbar.css">
 </head>
 <body>
     <header role="banner">
@@ -27,9 +28,11 @@
     </header>
 
     <main role="main">
+        <div id="snackbar"></div>
         {% block content %}{% endblock %}
     </main>
 
+    <script src="/static/js/snackbar.js"></script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

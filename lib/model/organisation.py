@@ -1,3 +1,5 @@
+import sqlite3
+
 from lib.model.database import Database
 
 class Organisation:
@@ -5,13 +7,31 @@ class Organisation:
         database = Database('./databases/database.db')
         self.conn, self.cursor = database.connect_db()
 
-    def create_organisatie(self, naam, organisatie_type, website, beschrijving, contactpersoon, email, telefoonnummer, overige_details):
-        self.cursor.execute("""
-            INSERT INTO organisaties (naam, organisatie_type, website, beschrijving, contactpersoon, email, telefoonnummer, overige_details)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, (naam, organisatie_type, website, beschrijving, contactpersoon, email, telefoonnummer, overige_details))
-        self.conn.commit()
-        return True
+    def create_organisation(self, data):
+
+        try:
+            data['description']
+        except KeyError:
+            data['description'] = None
+
+        try:
+            data['details']
+        except KeyError:
+            data['details'] = None
+
+        try:
+            self.cursor.execute(
+                """
+                INSERT INTO organisaties (naam, organisatie_type, website, beschrijving, contactpersoon, email, 
+                    telefoonnummer, overige_details, wachtwoord)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (data['name'], data['organisation_type'], data['website'], data['description'], data['contact_person'],
+                data['email'], data['phone_number'], data['details'], data['password']))
+        finally:
+            self.conn.commit()
+
+        return self.cursor.lastrowid
 
     def validate_credentials(self, email, password):
         result = self.cursor.execute("SELECT email FROM organisaties WHERE wachtwoord = ? AND email = ?", (password, email)).fetchone()

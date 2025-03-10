@@ -78,7 +78,7 @@ class WP3DatabaseGenerator:
             naam TEXT NOT NULL,
             organisatie_type TEXT NOT NULL,
             website TEXT NOT NULL,
-            beschrijving TEXT NOT NULL,
+            beschrijving TEXT,
             contactpersoon TEXT NOT NULL,
             email TEXT UNIQUE NOT NULL ,
             telefoonnummer TEXT NOT NULL,
