@@ -9,7 +9,7 @@ class Experts:
 
 
     def create_deskundige(self, deskundige):
-        neccesary_fields = ["email", "wachtwoord", "voornaam", "achternaam", "postcode", "telefoonnummer", "geboortedatum", "introductie", "voorkeur_benadering", "type_onderzoek", "type_beperking"]
+        neccesary_fields = ["email", "wachtwoord", "voornaam", "achternaam", "postcode", "telefoonnummer", "geboortedatum", "introductie", "voorkeur_benadering", "type_beperking"]
         
         if deskundige["voorkeur_benadering"] == "":
             return False, "U moet een voorkeur benadering selecteren."
@@ -50,6 +50,10 @@ class Experts:
         valid = re.match(r'^[1-9][0-9]{3} ?[A-Z]{2}$', deskundige["postcode"])
         if not valid:
             return False, "U moet een geldige postcode invullen."
+        
+          # Temporary solution to check if there are "onderzoeken"
+        if deskundige["type_onderzoek"] == "":
+            return False, "Er zijn geen onderzoeken gevonden. U kunt pas registreren als er onderzoeken zijn!"
         
         # Temporary solution to check if there are "beperkingen"
         if deskundige["type_beperking"] == "":
