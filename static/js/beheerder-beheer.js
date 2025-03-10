@@ -107,10 +107,10 @@ function loadTable() {
             data.forEach(admin => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                <td> ${admin.voornaam} ${admin.achternaam}</td>
+                <th scope="row"> ${admin.voornaam} ${admin.achternaam}</th>
                 <td>${admin.email}</td>
                 <td>
-                    <button tabindex="0" class="btn" onclick="openEditModal(${admin.beheerder_id})">Details</button>
+                    <button tabindex="0" class="details-btn" onclick="openEditModal(${admin.beheerder_id})">Details</button>
                 </td>
                 `;
                 tbody.appendChild(row)
