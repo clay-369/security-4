@@ -24,21 +24,24 @@ class Experts:
             if field in neccesary_fields and expert[field] == "":
                 return False, f"Het veld {field} is verplicht.\n"
 
-        self.cursor.execute("""
-            INSERT into deskundigen (email,wachtwoord,voornaam,achternaam,postcode,telefoonnummer,geboortedatum,
-            hulpmiddelen,bijzonderheden, bijzonderheden_beschikbaarheid, introductie, voorkeur_benadering, 
-            type_beperking, type_onderzoeken, toezichthouder, toezichthouder_naam, toezichthouder_email, 
-            toezichthouder_telefoonnummer, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-            (expert["email"], hash_password(expert["wachtwoord"]), expert["voornaam"], expert["achternaam"],
-             expert["postcode"], expert["telefoonnummer"], expert["geboortedatum"], expert["hulpmiddelen"],
-             expert["bijzonderheden"], expert["bijzonderheden_beschikbaarheid"], expert["introductie"],
-             expert["voorkeur_benadering"], expert["type_beperking"], expert["type_onderzoek"],
-             expert["toezichthouder"], expert["toezichthouder_naam"], expert["toezichthouder_email"],
-             expert["toezichthouder_telefoonnummer"], "NIEUW"))
+        try:
+            self.cursor.execute("""
+                INSERT into deskundigen (email,wachtwoord,voornaam,achternaam,postcode,telefoonnummer,geboortedatum,
+                hulpmiddelen,bijzonderheden, bijzonderheden_beschikbaarheid, introductie, voorkeur_benadering, 
+                type_beperking, type_onderzoeken, toezichthouder, toezichthouder_naam, toezichthouder_email, 
+                toezichthouder_telefoonnummer, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                (expert["email"], hash_password(expert["wachtwoord"]), expert["voornaam"], expert["achternaam"],
+                 expert["postcode"], expert["telefoonnummer"], expert["geboortedatum"], expert["hulpmiddelen"],
+                 expert["bijzonderheden"], expert["bijzonderheden_beschikbaarheid"], expert["introductie"],
+                 expert["voorkeur_benadering"], expert["type_beperking"], expert["type_onderzoek"],
+                 expert["toezichthouder"], expert["toezichthouder_naam"], expert["toezichthouder_email"],
+                 expert["toezichthouder_telefoonnummer"], "NIEUW"))
+        except:
+            return False, "Er is iets mis gegaan."
+        finally:
+            # Wijzigingen opslaan
+            self.conn.commit()
 
-        # Wijzigingen opslaan
-        self.conn.commit()
-        self.conn.close()
         return True, "Deskundige gemaakt!"
 
     def get_deskundigen(self):
@@ -63,19 +66,22 @@ class Experts:
             if field in neccesary_fields and expert[field] == "":
                 return False, f"Het veld {field} is verplicht.\n"
 
-        self.cursor.execute("""
-            UPDATE deskundigen SET email = ?, wachtwoord = ?, voornaam = ?, achternaam = ?, postcode = ?, 
-            telefoonnummer = ?, geboortedatum = ?, hulpmiddelen = ?, bijzonderheden = ?, 
-            bijzonderheden_beschikbaarheid = ?, introductie = ?, voorkeur_benadering = ?, type_beperking = ?, 
-            type_onderzoeken = ?, toezichthouder = ?, toezichthouder_naam = ?, toezichthouder_email = ?, 
-            toezichthouder_telefoonnummer = ? WHERE deskundige_id = ?""",
-            (expert["email"], expert["wachtwoord"], expert["voornaam"], expert["achternaam"],
-             expert["postcode"], expert["telefoonnummer"], expert["geboortedatum"], expert["hulpmiddelen"],
-             expert["bijzonderheden"], expert["bijzonderheden_beschikbaarheid"], expert["introductie"],
-             expert["voorkeur_benadering"], expert["type_beperking"], expert["type_onderzoek"],
-             expert["toezichthouder"], expert["toezichthouder_naam"], expert["toezichthouder_email"],
-             expert["toezichthouder_telefoonnummer"], expert["deskundige_id"]))
+        try:
+            self.cursor.execute("""
+                UPDATE deskundigen SET email = ?, wachtwoord = ?, voornaam = ?, achternaam = ?, postcode = ?, 
+                telefoonnummer = ?, geboortedatum = ?, hulpmiddelen = ?, bijzonderheden = ?, 
+                bijzonderheden_beschikbaarheid = ?, introductie = ?, voorkeur_benadering = ?, type_beperking = ?, 
+                type_onderzoeken = ?, toezichthouder = ?, toezichthouder_naam = ?, toezichthouder_email = ?, 
+                toezichthouder_telefoonnummer = ? WHERE deskundige_id = ?""",
+                (expert["email"], expert["wachtwoord"], expert["voornaam"], expert["achternaam"],
+                 expert["postcode"], expert["telefoonnummer"], expert["geboortedatum"], expert["hulpmiddelen"],
+                 expert["bijzonderheden"], expert["bijzonderheden_beschikbaarheid"], expert["introductie"],
+                 expert["voorkeur_benadering"], expert["type_beperking"], expert["type_onderzoek"],
+                 expert["toezichthouder"], expert["toezichthouder_naam"], expert["toezichthouder_email"],
+                 expert["toezichthouder_telefoonnummer"], expert["deskundige_id"]))
+        except:
+            return False, "Er is iets mis gegaan."
+        finally:
+            self.conn.commit()
 
-        self.conn.commit()
-        self.conn.close()
         return True, "Deskundige gewijzigd!"
