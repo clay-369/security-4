@@ -29,7 +29,7 @@ app.register_blueprint(auth.auth_bp)
 app.register_blueprint(organisation.organisation_bp)
 
 
-OPEN_ROUTES = ['login_page', 'logout', '/', 'static', 'api_login', 'api_admin_beheer', 'test2', 'auth.login_organisation', 'expert.register', 'expert.deskundige_api', 'expert.disabilities', 'expert.research']
+OPEN_ROUTES = ['login_page', 'logout', '/', 'static', 'api_login', 'api_admin_beheer', 'test2', 'auth.login_organisation', 'expert.register', 'expert.deskundige_api', 'expert.disabilities', 'expert.research', "expert.create_expert"]
 PROTECTED_ROUTES = ['organisation.get_research', 'auth.whoami', 'auth.refresh_access_token', 'auth.logout_organisation']
 ADMIN_ROUTES = ['admin.manage', 'admin.dashboard_beheer', 'admin.organisatie_registratie']
 EXPERT_ROUTES = ['expert.dashboard', 'expert.register', 'expert.edit', 'expert.details']

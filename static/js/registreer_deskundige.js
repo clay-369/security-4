@@ -1,3 +1,6 @@
+const disabilities = []
+const research = []
+
 // Toezichthouder checkbox
 document
   .getElementById("toezichthouder")
@@ -22,6 +25,7 @@ window.addEventListener("load", function () {
     .then((data) => {
       if (data.success) {
         data.disabilities.forEach((disability) => {
+          disabilities.push(disability)
           const option = document.createElement("option")
           option.value = disability.beperking_id
           option.textContent = disability.beperking
@@ -46,6 +50,7 @@ window.addEventListener("load", function () {
       console.log(data)
       const addedTypes = new Set()
       data.research.forEach((research) => {
+        research.push(research)
         if (!addedTypes.has(research.onderzoek_type)) {
           const option = document.createElement("option")
           option.value = research.onderzoek_id
@@ -92,9 +97,12 @@ document
     let voorkeur_benadering = ""
     if (document.getElementsByName("voorkeur-benadering")[0].checked) {
       voorkeur_benadering = "Telefoon"
-    } else {
+    } else if (document.getElementsByName("voorkeur-benadering")[1].checked) {
       voorkeur_benadering = "E-mail"
+    } else {
+      voorkeur_benadering = ""
     }
+
     const bijzonderheden_beschikbaarheid = document.getElementById(
       "bijzonderheden-beschikbaarheid"
     ).value
