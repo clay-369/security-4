@@ -120,8 +120,6 @@ document
       voorkeur_benadering = ""
     }
 
-    console.log("Voorkeur benadering: " + voorkeur_benadering)
-
     const bijzonderheden_beschikbaarheid = document.getElementById(
       "bijzonderheden-beschikbaarheid"
     ).value
