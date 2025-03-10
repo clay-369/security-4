@@ -1,26 +1,13 @@
-<html lang="nl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registratie ervaringsdeskundige</title>
+{% extends 'base.html' %}
+{% block title %} Registratie ervaringdeskundige {% endblock %}
+{% block styles %}
     <link rel="stylesheet" href="/static/registreer_deskundige.css" />
-    <link rel="stylesheet" href="../static/css/header.css">
-     <!-- Code for Roboto font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  </head>
-  <body>
-  <header>
-        <nav>
-            <a class="header-logo-container" href="/">
-                <img class="header-logo" src="https://www.accessibility.nl/themes/sa/images/logo.svg" alt="Logo van Stichting Accessibility">
-            </a>
-            <div class="nav-links">
-              <a href="/login">Login</a>
-            </div>
-        </nav>
-    </header>
+{% endblock %}
+{% block nav_links %}
+  <a href="/login">Login</a>
+{% endblock %}
+
+{% block content %}
     <div id="snackbar"></div>
     <h1>Registratie ervaringsdeskundige</h1>
     <form id="createDeskundige" method="POST">
@@ -135,13 +122,16 @@
         </div>
       </div>
 
-      <div class="label-column">
-        <label for="voorkeur-benadering">Voorkeur benadering </label>
+      <fieldset class="label-column">
+        <legend>Voorkeur benadering </legend>
         <div class="radio-container">
-          <input type="radio" name="voorkeur-benadering" value="telefoon" > Telefonisch</input>
-          <input type="radio" name="voorkeur-benadering" value="email" > E-mail</input>
+          <input id="preference-email" type="radio" name="voorkeur-benadering" value="email" checked>
+          <label for="preference-email">E-mail</label>
+
+          <input id="preference-telephone" type="radio" name="voorkeur-benadering" value="telefoon" >
+          <label for="preference-telephone" >Telefonisch</label>
         </div>
-      </div>
+      </fieldset>
 
       <div class="label-column dropdown">
         <label for="type-onderzoek">Type onderzoek</label>
@@ -170,6 +160,8 @@
 
       <input type="submit" value="Registreer" class="label-column" />
     </form>
+{% endblock %}
+
+{% block scripts %}
     <script src="../static/js/registreer_deskundige.js"></script>
-  </body>
-</html>
+{% endblock %}

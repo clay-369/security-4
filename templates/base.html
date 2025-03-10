@@ -15,19 +15,20 @@
     <link rel="stylesheet" href="../static/css/header.css">
 </head>
 <body>
-    <header>
-        <nav>
+    <header role="banner">
+        <nav role="navigation">
             <a class="header-logo-container" href="/">
                 <img class="header-logo" src="https://www.accessibility.nl/themes/sa/images/logo.svg" alt="Logo van Stichting Accessibility">
             </a>
             <div class="nav-links">
                 {% block nav_links %}{% endblock %}
-                <a href="/logout">Uitloggen</a>
             </div>
         </nav>
     </header>
 
-    {% block content %}{% endblock %}
+    <main role="main">
+        {% block content %}{% endblock %}
+    </main>
 
     {% block scripts %}{% endblock %}
 </body>

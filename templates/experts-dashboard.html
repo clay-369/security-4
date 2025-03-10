@@ -7,55 +7,55 @@
 {% endblock %}
 
 {% block nav_links %}
-<a class="page-toggler js-page-toggler">Inschrijvingen</a>
+<a href="#" class="page-toggler js-page-toggler">Inschrijvingen</a>
 <a href="/deskundige/profiel">Profiel</a>
+<a href="/logout">Uitloggen</a>
 {% endblock %}
 
 {% block content %}
 <div class="research-modal-background js-research-modal-background hide">
   <!--Research item modal-->
 </div>
-<main>
-  <section class="js-research-section">
-      <div class="section-header">
-          <h1 class="section-title">Beschikbare onderzoeken</h1>
-      </div>
-      <div class="research-grid-container js-research-grid-container">
-        <!--Research Items-->
-      </div>
-  </section>
 
-  <section class="js-enlistments-section hide">
-      <div class="section-header">
-          <h1 class="section-title">Jouw inschrijvingen</h1>
-      </div>
+<section class="js-research-section">
+  <div class="section-header">
+      <h1 class="section-title">Beschikbare onderzoeken</h1>
+  </div>
+  <div class="research-grid-container js-research-grid-container">
+    <!--Research Items-->
+  </div>
+</section>
 
-      <div class="enlistments-search-bar">
-          <input id="enlistments-input" class="enlistments-search-input" type="search" aria-label="Zoeken" placeholder="Zoeken">
-      </div>
+<section class="js-enlistments-section hide">
+  <div class="section-header">
+      <h1 class="section-title">Jouw inschrijvingen</h1>
+  </div>
 
-      <div class="enlistments-grid-container">
-          <div class="enlistment-category-container">
-              <h2 class="enlistment-category-header">Lopend</h2>
-              <div class="enlistments-container pending-enlistments js-pending-enlistments">
-                    <!--Pending Enlistments-->
-              </div>
-          </div>
-          <div class="enlistment-category-container">
-              <h2 class="enlistment-category-header">Goedgekeurd</h2>
-              <div class="enlistments-container accepted-enlistments js-accepted-enlistments">
-                    <!--Accepted Enlistments-->
-              </div>
-          </div>
-          <div class="enlistment-category-container">
-              <h2 class="enlistment-category-header">Afgekeurd</h2>
-              <div class="enlistments-container rejected-enlistments js-rejected-enlistments">
-                  <!--Rejected Enlistments-->
-              </div>
+  <div class="enlistments-search-bar">
+      <input id="enlistments-input" class="enlistments-search-input" type="search" aria-label="Zoeken" placeholder="Zoeken">
+  </div>
+
+  <div class="enlistments-grid-container">
+      <div class="enlistment-category-container">
+          <h2 class="enlistment-category-header">Lopend</h2>
+          <div class="enlistments-container pending-enlistments js-pending-enlistments">
+                <!--Pending Enlistments-->
           </div>
       </div>
-  </section>
-</main>
+      <div class="enlistment-category-container">
+          <h2 class="enlistment-category-header">Goedgekeurd</h2>
+          <div class="enlistments-container accepted-enlistments js-accepted-enlistments">
+                <!--Accepted Enlistments-->
+          </div>
+      </div>
+      <div class="enlistment-category-container">
+          <h2 class="enlistment-category-header">Afgekeurd</h2>
+          <div class="enlistments-container rejected-enlistments js-rejected-enlistments">
+              <!--Rejected Enlistments-->
+          </div>
+      </div>
+  </div>
+</section>
 {% endblock %}
 
 {% block scripts %}

@@ -7,6 +7,7 @@
 {% block nav_links %}
 <a href="/deskundige">Dashboard</a>
 <a href="/deskundige/profiel">Profiel</a>
+<a href="/logout">Uitloggen</a>
 {% endblock %}
 
 {% block content %}
@@ -15,7 +16,7 @@
 <form id="updateDeskundige">
   <div class="form-header">
     <div class="form-header-left">
-      <img src="/static/icons/profile_picture.svg" alt="logo" />
+      <img src="/static/icons/profile_picture.svg" alt="profiel icoon" />
       <div class="form-header-text">
         <h2 id="voornaam-title"></h2>
         <h2 id="achternaam-title"></h2>
@@ -159,17 +160,17 @@
       />
     </div>
 
-    <div class="label-column">
-      <label>Voorkeur benadering </label>
-      <div class="radio-container">
-        <input type="radio" name="voorkeur-benadering" value="Telefoon" />
-        <label>Telefoonisch</label>
-      </div>
-      <div class="radio-container">
-        <input type="radio" name="voorkeur-benadering" value="E-mail" />
-        <label>E-mail</label>
-      </div>
-    </div>
+      <fieldset class="label-column">
+        <legend>Voorkeur benadering </legend>
+        <div class="radio-container">
+          <input id="preference-email" type="radio" name="voorkeur-benadering" value="email" />
+          <label for="preference-email">E-mail</label>
+        </div>
+        <div class="radio-container">
+          <input id="preference-telephone" type="radio" name="voorkeur-benadering" value="telefoon" />
+          <label for="preference-telephone" >Telefonisch</label>
+        </div>
+      </fieldset>
 
     <div class="label-column dropdown">
       <label for="type-onderzoek">Type onderzoek</label>
@@ -177,7 +178,7 @@
     </div>
   </div>
   <div class="button-container">
-    <input type="text" value="Annuleren" id="annuleren-button" />
+    <input aria-label="Bewerken annuleren" type="text" value="Annuleren" id="annuleren-button" />
     <input type="submit" value="Opslaan" />
   </div>
 </form>
