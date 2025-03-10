@@ -19,18 +19,22 @@ class Organisation:
         except KeyError:
             data['details'] = None
 
-        try:
-            self.cursor.execute(
-                """
-                INSERT INTO organisaties (naam, organisatie_type, website, beschrijving, contactpersoon, email, 
-                    telefoonnummer, overige_details, wachtwoord)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """,
-                (data['name'], data['organisation_type'], data['website'], data['description'], data['contact_person'],
-                data['email'], data['phone_number'], data['details'], data['password']))
-        finally:
-            self.conn.commit()
+        # Check if the email is already in use
+        existing_email = self.cursor.execute("SELECT email FROM deskundigen WHERE email = ?",
+                                             (data["email"],)).fetchone()
+        if existing_email:
+            return False
 
+        self.cursor.execute(
+            """
+            INSERT INTO organisaties (naam, organisatie_type, website, beschrijving, contactpersoon, email, 
+                telefoonnummer, overige_details, wachtwoord)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (data['name'], data['organisation_type'], data['website'], data['description'], data['contact_person'],
+            data['email'], data['phone_number'], data['details'], data['password']))
+
+        self.conn.commit()
         return self.cursor.lastrowid
 
     def validate_credentials(self, email, password):
