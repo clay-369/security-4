@@ -1,63 +1,62 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'base.html' %}
+{% block title %}Dashboard Beheerder{% endblock %}
+{% block styles %}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/css/dashboard.css">
-    <title>Dashboard Beheerder</title>
-</head>
-<body>
+{% endblock %}
 
-    <div class="container">
-        <div class="row">
-            <header>
-                <h2>Dashboard</h2>
-            </header>
-        </div>
+{% block nav_links %}
+<a href="/admin">Verzoeken</a>
+<a href="/admin/beheer">Beheerders</a>
+<a href="/admin/organisatie">Organisatie</a>
+<a href="/logout">Uitloggen</a>
+{% endblock %}
 
-        <div class="row row2">
-            <div class="column">
-                <div class="search-bar">
-                    <input type="text" placeholder="Search Ervaringsdeskundigen">
-                </div>
-                <div class="section-title">
-                    <h3>Ervaringsdeskundigen <i class="fas fa-chevron-down fa-xs"></i></h3>
-                </div>
-                <section class="data">
-                    <p>Ervaringsdeskundige 1</p>
-                    <button class="btn-details">Details</button>
-                </section>
-            </div>
-
-            <div class="column">
-                <div class="search-bar">
-                    <input type="text" placeholder="Search Organisaties">
-                </div>
-                <div class="section-title">
-                    <h3>Organisaties <i class="fas fa-chevron-down fa-xs"></i></h3>
-                </div>
-                <section class="data">
-                    <p>Organisatie 1</p>
-                    <button class="btn-details">Details</button>
-                </section>
-            </div>
-
-            <div class="column">
-                <div class="search-bar">
-                    <input type="text" placeholder="Search Onderzoeken">
-                </div>
-                <div class="section-title">
-                    <h3>Onderzoeken <i class="fas fa-chevron-down fa-xs"></i></h3>
-                </div>
-                <section class="data">
-                    <p>Onderzoek 1</p>
-                    <button class="btn-details">Details</button>
-                </section>
-            </div>
-        </div>
-
+{% block content %}
+<div class="container">
+    <div class="row">
+            <h1>Dashboard</h1>
     </div>
 
-</body>
-</html>
+    <div class="row row2">
+        <div class="column">
+            <div class="search-bar">
+                <input aria-label="Zoek Ervaringsdeskundigen" type="text" placeholder="Zoek Ervaringsdeskundigen">
+            </div>
+            <div class="section-title">
+                <h2>Ervaringsdeskundigen <i class="fas fa-chevron-down fa-xs"></i></h2>
+            </div>
+            <section class="data">
+                <p>Ervaringsdeskundige 1</p>
+                <button class="btn-details">Details</button>
+            </section>
+        </div>
+
+        <div class="column">
+            <div class="search-bar">
+                <input aria-label="Zoek Organisaties" type="text" placeholder="Zoek Organisaties">
+            </div>
+            <div class="section-title">
+                <h2>Organisaties <i class="fas fa-chevron-down fa-xs"></i></h2>
+            </div>
+            <section class="data">
+                <p>Organisatie 1</p>
+                <button class="btn-details">Details</button>
+            </section>
+        </div>
+
+        <div class="column">
+            <div class="search-bar">
+                <input aria-label="Zoek Onderzoeken" type="text" placeholder="Zoek Onderzoeken">
+            </div>
+            <div class="section-title">
+                <h2>Onderzoeken <i class="fas fa-chevron-down fa-xs"></i></h2>
+            </div>
+            <section class="data">
+                <p>Onderzoek 1</p>
+                <button class="btn-details">Details</button>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

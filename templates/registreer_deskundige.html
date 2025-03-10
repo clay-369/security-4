@@ -1,11 +1,13 @@
-<html lang="nl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registratie ervaringsdeskundige</title>
+{% extends 'base.html' %}
+{% block title %} Registratie ervaringdeskundige {% endblock %}
+{% block styles %}
     <link rel="stylesheet" href="/static/registreer_deskundige.css" />
-  </head>
-  <body>
+{% endblock %}
+{% block nav_links %}
+  <a href="/login">Login</a>
+{% endblock %}
+
+{% block content %}
     <div id="snackbar"></div>
     <h1>Registratie ervaringsdeskundige</h1>
     <form id="createDeskundige" method="POST">
@@ -83,7 +85,7 @@
             id="toezichthouder"
             name="toezichthouder"
             value="true"
-            checked 
+            checked
           />
           <span class="checkmark"></span>
         </label>
@@ -122,11 +124,15 @@
 
       <div class="label-column">
         <label for="voorkeur-benadering">Voorkeur benadering <span class="required-field">*</span></label>
+
         <div class="radio-container">
-          <input type="radio" name="voorkeur-benadering" value="telefoon" > Telefonisch</input>
-          <input type="radio" name="voorkeur-benadering" value="email" > E-mail</input>
+          <input id="preference-email" type="radio" name="voorkeur-benadering" value="email" checked>
+          <label for="preference-email">E-mail</label>
+
+          <input id="preference-telephone" type="radio" name="voorkeur-benadering" value="telefoon" >
+          <label for="preference-telephone" >Telefonisch</label>
         </div>
-      </div>
+      </fieldset>
 
       <div class="label-column dropdown">
         <label for="type-onderzoek">Type onderzoek <span class="required-field">*</span></label>
@@ -155,6 +161,8 @@
 
       <input type="submit" value="Registreer" class="label-column" />
     </form>
+{% endblock %}
+
+{% block scripts %}
     <script src="../static/js/registreer_deskundige.js"></script>
-  </body>
-</html>
+{% endblock %}

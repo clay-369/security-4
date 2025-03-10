@@ -22,7 +22,7 @@ export async function renderResearchPage() {
     allResearchItems.forEach(researchItem => {
         if (!enlistedResearchIds.includes(researchItem.onderzoek_id)) {
             html += `
-                <div class="research-container js-research-container" data-research-id="${researchItem.onderzoek_id}">
+                <div tabindex="0" class="research-container js-research-container" data-research-id="${researchItem.onderzoek_id}">
                     <h2 class="research-title">${researchItem.titel}</h2>
                     <div class="research-details">
                         <p><time>${researchItem.datum_vanaf}</time> tot <time>${researchItem.datum_tot}</time></p>
@@ -49,6 +49,11 @@ export async function renderResearchPage() {
         containerElement.addEventListener('click', () => {
             renderResearchModal(researchId);
         });
+        containerElement.addEventListener('keydown', (event) => {
+            if (event['key'] === 'Enter') {
+                renderResearchModal(researchId);
+            }
+        });
     });
 }
 
@@ -60,7 +65,7 @@ async function renderResearchModal(researchId) {
     document.querySelector('.js-research-modal-background')
         .innerHTML = `
             <div class="research-modal">
-                <img class="close-modal js-close-modal" alt="Sluit Popup" src="../static/icons/xmark-solid.svg">
+                <img tabindex="0" class="close-modal js-close-modal" alt="Sluit Popup" src="../static/icons/xmark-solid.svg">
                 <h1 class="research-modal-title">${researchItem.titel}</h1>
                 <p class="research-modal-description">${researchItem.beschrijving}</p>
                 <h2 class="research-modal-organisation">Details</h2>

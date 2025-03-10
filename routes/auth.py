@@ -1,12 +1,10 @@
-from types import NoneType
-
 from flask import Blueprint, request
 from flask_jwt_extended import (create_access_token,
                                 create_refresh_token,
                                 jwt_required, current_user,
                                 get_jwt_identity, get_jwt)
 
-from lib.model.organisatie import Organisatie
+from lib.model.organisation import Organisation
 from lib.model.token_blocklist import TokenBlocklist
 
 auth_bp = Blueprint('auth', __name__)
@@ -14,11 +12,11 @@ auth_bp = Blueprint('auth', __name__)
 
 
 # JWT API Authorization
-@auth_bp.route('/api/organisaties/login', methods=['POST'])
+@auth_bp.route('/organisatie/login', methods=['POST'])
 def login_organisation():
     # Accepts {"email": <email>, "password": <password>} in JSON
     data = request.get_json()
-    organisations_model = Organisatie()
+    organisations_model = Organisation()
 
     email = data['email']
     password = data['password']
@@ -56,7 +54,7 @@ def refresh_access_token():
     return {"access_token": new_access_token}, 200
 
 
-@auth_bp.route('/logout', methods=['GET'])
+@auth_bp.route('/organisatie/logout', methods=['GET'])
 @jwt_required(verify_type=False)
 def logout_organisation():
     jwt = get_jwt()

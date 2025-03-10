@@ -1,18 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loginpagina</title>
-
+{% extends 'base.html' %}
+{% block title %}Loginpagina{% endblock %}
+{% block styles %}
     <link rel="icon" type="image/x-icon" href="https://www.accessibility.nl/themes/sa/images/logo.svg">
     <link rel="stylesheet" href="{{ url_for('static', filename='log-in.css') }}" >
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class="header">
-            <img src="https://www.accessibility.nl/themes/sa/images/logo.svg">
-    </div>
+{% endblock %}
+
+{% block nav_links %}
+    <a href="/deskundige/registreer">Registreren</a>
+{% endblock %}
+
+{% block content %}
 <form id="loginForm">
     <h1>Log hier in</h1>
     <label for="email">Email of gebruikersnaam:</label>
@@ -23,7 +20,8 @@
 
     <button type="submit">Log In</button>
 </form>
+{% endblock %}
 
+{% block scripts %}
 <script src="{{ url_for('static', filename='js/login.js') }}"></script>
-</body>
-</html>
+{% endblock %}

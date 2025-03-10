@@ -107,6 +107,11 @@ h2 {
   resize: vertical;
 }
 
+fieldset.label-column {
+  border-radius: 4px;
+  border: 1px solid #c3d0ed;
+}
+
 .full-width-form-element {
   grid-column: span 2;
 }

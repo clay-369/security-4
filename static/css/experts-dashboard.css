@@ -9,12 +9,14 @@
     color: #212121;
     font-family: Roboto, serif;
 }
+html,
+body {
+    height: 100%;
+}
 
 body {
     margin: 0;
     padding: 0;
-    min-height: 100vh;
-    background-color: #f0f2f5;
 }
 
 h1 {
@@ -41,20 +43,22 @@ a {
     color: inherit;
 }
 
+main {
+    height: calc(100% - 120px);
+}
+
 section {
-    max-width: 1200px;
+    width: 73%;
     margin: 0 auto;
-    padding: 20px;
-    background-color: #FFF;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 100%;
 }
 
 .section-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: end;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    padding-top: 10px;
 }
 
 .section-title {
@@ -62,12 +66,7 @@ section {
 }
 
 .page-toggler {
-    font-size: 20px;
-    font-weight: bold;
     cursor: pointer;
-}
-.page-toggler:hover {
-    text-decoration: underline;
 }
 
 .hide {
@@ -78,24 +77,27 @@ section {
 .research-grid-container {
     display: grid;
     grid-template-columns: 33% 33% 33%;
-    column-gap: 10px;
+    column-gap: 15px;
     row-gap: 20px;
     margin: 0 auto;
+    border-radius: 8px;
 }
 
 .research-container {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #D8EAF6;
     border-radius: 10px;
-
     padding: 15px;
-
     min-width: 20%;
     cursor: pointer;
     transition-duration: 0.1s;
 }
 .research-container:hover {
-    box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.17);
 }
+.research-container:hover .research-title {
+    text-decoration: underline;
+}
+
 
 .research-title {
     margin: 0;
@@ -113,21 +115,28 @@ section {
 /* Enlistments section */
 .enlistments-grid-container {
     margin: 0 auto;
-
     display: grid;
     grid-template-columns: 33% 33% 33%;
-    column-gap: 10px;
+    column-gap: 15px;
+    height: 70%;
 }
 
 .enlistment-category-container {
     border-radius: 10px;
+}
+
+.enlistments-container {
+    background-color: #D9EBF7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.17);
     padding: 10px;
-    box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    height: 100%;
 }
 
 .enlistment-category-header {
     text-align: center;
-    font-size: 24px;
+    font-size: 27px;
+    margin-bottom: 8px;
 }
 
 .enlistment-search-label {
@@ -144,18 +153,22 @@ section {
 }
 
 .enlistments-search-input {
-    height: 25px;
-    padding: 8px;
-    border: 2px solid var(--border-color);
-    border-radius: 5px;
+    height: 45px;
+    border-radius: 300px;
+    padding: 10px;
+    border: 2px solid var(--prm-color);
     margin-left: 15px;
     transition-duration: 0.2s;
     width: 30%;
+    color: var(--prm-color);
+    font-size: 18px;
 }
 .enlistments-search-input:focus {
     outline: none;
-    border: 2px solid var(--prm-color);
-    padding: 8px;
+}
+.enlistments-search-input::placeholder {
+    color: var(--prm-color);
+    font-size: 18px;
 }
 
 .enlistment {
@@ -164,18 +177,20 @@ section {
     align-items: center;
     height: 20px;
     width: 100%;
-    border-top: 1px solid #777;
     padding: 16px 0;
 }
 
 .enlistment-name {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
+    text-overflow: ellipsis;
+    width: 70%;
 }
 
 .enlistment-details-button {
     background-color: inherit;
-    border: 1px solid var(--border-color);
+    color: var(--prm-color);
+    border: 2px solid var(--prm-color);
     border-radius: 5px;
     padding: 7px;
     font-size: 15px;
@@ -184,16 +199,16 @@ section {
     transition-duration: 0.1s;
 }
 .enlistment-details-button:hover {
-    border: 2px solid var(--prm-color);
+    background-color: #FFF;
 }
 
 
 /* Research Modal */
 .research-modal-background {
-    position: absolute;
+    position: fixed;
     background-color: rgba(0, 0, 0, 0.5);
     width: 100%;
-    height: 100%;
+    height: calc(100% - 120px);
     display: flex;
     align-items: center;
     justify-content: center;

@@ -3,7 +3,7 @@ from flask_session import Session
 from flask_jwt_extended import JWTManager
 
 from lib.model.users import hash_password
-from lib.model.organisatie import Organisatie
+from lib.model.organisation import Organisation
 from lib.model.token_blocklist import TokenBlocklist
 # Routes
 from routes import admin, expert, research, auth, organisation
@@ -29,9 +29,9 @@ app.register_blueprint(auth.auth_bp)
 app.register_blueprint(organisation.organisation_bp)
 
 
-OPEN_ROUTES = ['login', '/', 'static', 'api_login', 'api_admin_beheer', 'test2', 'auth.login_organisation', 'expert.register', 'expert.deskundige_api', 'expert.disabilities', 'expert.research']
+OPEN_ROUTES = ['login_page', 'logout', '/', 'static', 'api_login', 'api_admin_beheer', 'test2', 'auth.login_organisation', 'expert.register', 'expert.deskundige_api', 'expert.disabilities', 'expert.research']
 PROTECTED_ROUTES = ['organisation.get_research', 'auth.whoami', 'auth.refresh_access_token', 'auth.logout_organisation']
-ADMIN_ROUTES = ['admin.manage']
+ADMIN_ROUTES = ['admin.manage', 'admin.dashboard_beheer', 'admin.organisatie_registratie']
 EXPERT_ROUTES = ['expert.dashboard', 'expert.register', 'expert.edit', 'expert.details']
 
 temp_routes = ['expert.edit', 'expert.deskundige_api']
@@ -51,13 +51,13 @@ def before_request():
         return
 
     if logged_in is None:
-        return redirect(url_for('login')), 401
+        return redirect(url_for('login_page'))
 
-    if logged_in is not None:
+    if logged_in:
         if request.endpoint in ADMIN_ROUTES and session.get('admin') == False:
-            return redirect(url_for('index')), 403
+            return redirect(url_for('index'))
         elif request.endpoint in EXPERT_ROUTES and session.get('admin') == True:
-            return redirect(url_for('admin.manage')), 403   # Needs to redirect to admin dashboard when it's ready
+            return redirect(url_for('admin.dashboard_beheer'))   # Needs to redirect to admin dashboard when it's ready
 
 
 @app.route('/')
@@ -66,45 +66,43 @@ def index():
         return redirect(url_for('login'))
     # Logged in:
     elif session.get('admin'):
-        return redirect(url_for('admin.manage'))
+        return redirect(url_for('admin.dashboard_beheer'))
     elif not session.get('admin'):
         return redirect(url_for('expert.dashboard'))
 
 
 @app.route('/login')
-def login():
+def login_page():
     return render_template('log-in.html')
 
 
-@app.route('/api/login', methods=['GET','POST'])
+@app.route('/api/login', methods=['POST'])
 def api_login():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+    password = hash_password(password)
+
     users_model = Users()
+    login = users_model.login(email)
+    if login['account_type'] == 'expert':
+        expert_account = login['user']
+        if password == expert_account['wachtwoord']:
+            session['user_id'] = expert_account['deskundige_id']
+            session['name'] = expert_account['voornaam']
+            session['admin'] = False
+            return {"success": True, "account_type": "expert"}
 
-    if request.method == 'POST':
-        data = request.get_json()
-        email = data.get('email')
-        password = data.get('password')
-
-        password = hash_password(password)
-        login = users_model.login(email)
-        if 'user' in login:
-            user = login[0]
-            if password == user[2]:
-                session['user_id'] = user['deskundige_id']
-                session['name'] = user['voornaam']
-                session['admin'] = False
-                return {"success": True, "type": "user"}
-
-        elif 'admin' in login:
-            admin = login[0]
-            if password == admin[4]:
-                print('Password correct')
-                session['user_id'] = admin[0]
-                session['name'] = admin[1]
-                session['admin'] = True
-                return {"success": True, "type": "admin"}
-        else:
-            return {"success": False}
+    elif login['account_type'] == 'admin':
+        admin_account = login['user']
+        if password == admin_account['wachtwoord']:
+            print('Password correct')
+            session['user_id'] = admin_account['beheerder_id']
+            session['name'] = admin_account['voornaam']
+            session['admin'] = True
+            return {"success": True, "account_type": "admin"}
+    else:
+        return {"message": "Invalid email or password", "success": False}
 
 
 @app.route('/logout')
@@ -124,14 +122,6 @@ def test2():
     return render_template('public-api-test.html')
 
 
-@app.route('/beheerder_beheer')
-def beheerder():
-    return render_template('beheerder-beheer.html')
-
-@app.route('/dashboard_beheer')
-def dashboard_beheer():
-    return render_template('dashboard-beheer.html')
-
 # JWT
 
 ## Load current user
@@ -141,7 +131,7 @@ def user_lookup_callback(_jwt_headers, jwt_data):
     account_type = jwt_data['account_type']
 
     if account_type == 'organisation':
-        organisation_model = Organisatie()
+        organisation_model = Organisation()
         org = organisation_model.get_organisation_by_email(identity_email)
         return org
     # Else if expert
