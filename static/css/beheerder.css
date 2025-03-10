@@ -44,9 +44,10 @@ button {
 
 table {
     width: 100%;
-    border-collapse: collapse;
+    border-color: transparent;
     max-width: 100%;
     overflow-x: scroll;
+    border-spacing: 0 10px;
 }
 
 thead th {
@@ -116,7 +117,7 @@ tbody td {
 }
 
 .create-btn {
-    background-color: #D8EAF6;
+    background-color: #FFF;
     border-radius: 8px;
     color: #0057B7;
     border: 2px solid #0057B7;
@@ -128,5 +129,5 @@ tbody td {
 }
 
 .create-btn:hover {
-    background-color: #FFF;
+    background-color: #D8EAF6;
 }
