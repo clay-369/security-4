@@ -57,5 +57,20 @@ function createOrganisation(data) {
         .then(data => {
             const type = data['success'] ? 'success' : 'error'
             showSnackbar(data['message'], type);
+
+            if (data['success']) {
+                clearInputs();
+            }
         });
+}
+
+function clearInputs() {
+    document.querySelector('#name').value = '';
+    document.querySelector('#website').value = '';
+    document.querySelector('#contact-person').value = '';
+    document.querySelector('#description').value = '';
+    document.querySelector('#email').value = '';
+    document.querySelector('#phone-number').value = '';
+    document.querySelector('#password').value = '';
+    document.querySelector('#details').value = '';
 }

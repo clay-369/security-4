@@ -91,10 +91,10 @@ def create_organisation():
     data = request.get_json()
 
     organisation_model = Organisation()
-    try:
-        new_organisation_id = organisation_model.create_organisation(data)
+    new_organisation_id = organisation_model.create_organisation(data)
+    if new_organisation_id:
         return {"message": "Organisatie succesvol geregistreerd!", "success": True, "id": new_organisation_id}, 201
-    except sqlite3.IntegrityError:
-        return {"message": "Dit e-mailadres bestaat al.", "success": False}, 400
+
+    return {"message": "Dit e-mailadres bestaat al.", "success": False}, 400
 
 

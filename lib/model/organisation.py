@@ -10,31 +10,34 @@ class Organisation:
     def create_organisation(self, data):
 
         try:
-            data['description']
+            if data['description'] == '':
+                data['description'] = None
         except KeyError:
             data['description'] = None
 
         try:
-            data['details']
+            if data['details'] == '':
+                data['details'] = None
         except KeyError:
             data['details'] = None
 
         # Check if the email is already in use
-        existing_email = self.cursor.execute("SELECT email FROM deskundigen WHERE email = ?",
+        existing_email = self.cursor.execute("SELECT email FROM organisaties WHERE email = ?",
                                              (data["email"],)).fetchone()
         if existing_email:
             return False
 
-        self.cursor.execute(
-            """
-            INSERT INTO organisaties (naam, organisatie_type, website, beschrijving, contactpersoon, email, 
-                telefoonnummer, overige_details, wachtwoord)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            (data['name'], data['organisation_type'], data['website'], data['description'], data['contact_person'],
-            data['email'], data['phone_number'], data['details'], data['password']))
-
-        self.conn.commit()
+        try:
+            self.cursor.execute(
+                """
+                INSERT INTO organisaties (naam, organisatie_type, website, beschrijving, contactpersoon, email, 
+                    telefoonnummer, overige_details, wachtwoord)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (data['name'], data['organisation_type'], data['website'], data['description'], data['contact_person'],
+                data['email'], data['phone_number'], data['details'], data['password']))
+        finally:
+            self.conn.commit()
         return self.cursor.lastrowid
 
     def validate_credentials(self, email, password):
