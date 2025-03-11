@@ -34,7 +34,7 @@ PROTECTED_ROUTES = ['organisation.get_research', 'auth.whoami', 'auth.refresh_ac
 ADMIN_ROUTES = ['admin.manage', 'admin.dashboard_beheer', 'admin.organisatie_registratie']
 EXPERT_ROUTES = ['expert.dashboard', 'expert.register', 'expert.edit', 'expert.details']
 
-temp_routes = ['expert.edit', 'expert.deskundige_api']
+temp_routes = ['expert.edit', 'expert.deskundige_api', 'research.api_edit_research']
 
 @app.before_request
 def before_request():
@@ -170,6 +170,10 @@ def token_in_blocklist_callback(_jwt_header, jwt_data):
 
     return is_blocked
 
+
+@app.route('/edit/research')
+def research_test():
+    return render_template('edit_research_test.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
