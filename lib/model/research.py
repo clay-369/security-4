@@ -113,7 +113,7 @@ class Research:
 
         return research_item
 
-    def status_update(self, status, onderzoek_id):
-        self.cursor.execute("UPDATE onderzoeken SET status = ? WHERE onderzoek_id = ?", (status, onderzoek_id))
+    def status_update(self, status, onderzoek_id, admin_id):
+        self.cursor.execute("UPDATE onderzoeken SET status = ?, beheerder_id = ? WHERE onderzoek_id = ?", (status, admin_id, onderzoek_id))
         self.conn.commit()
         return True, "Status gewijzigd!"

@@ -69,7 +69,6 @@ function openDetailsModal(dataID, dataType) {
                 openedModal.remove();
             }
 
-
             if (dataType === 'expert') {
                 console.log('Expert function');
                 expertData = responseData.experts[dataID - 1]; // Index key offset
@@ -131,6 +130,8 @@ function openDetailsModal(dataID, dataType) {
 
             document.getElementById("detailsModal").addEventListener('submit', function (event) {
                 event.preventDefault();
+
+                const adminId = responseData.admin_id;
                 if (event.submitter.value === "Accepteren") {
                     status = 'GEACCEPTEERD'
                 } else if (event.submitter.value === "Weigeren") {
@@ -141,7 +142,7 @@ function openDetailsModal(dataID, dataType) {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({status: status, data_type: dataType, data_id: dataID})
+                    body: JSON.stringify({status: status, data_type: dataType, data_id: dataID, admin_id : adminId})
                 })
                     .then(response => response.json())
                     .then(data => {
@@ -150,6 +151,7 @@ function openDetailsModal(dataID, dataType) {
                             loadTable();
                         } else {
                             console.log('Error!');
+                            loadTable();
                         }
                     })
                 closeModal('detailsModal');

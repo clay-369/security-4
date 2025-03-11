@@ -62,7 +62,7 @@ class Enlistment:
         self.cursor.execute("SELECT * FROM inschrijvingen")
         return self.cursor.fetchall()
 
-    def status_update(self, status, enlistment_id):
-        self.cursor.execute("UPDATE inschrijvingen SET status = ? WHERE inschrijving_id = ?", (status, enlistment_id))
+    def status_update(self, status, enlistment_id, admin_id):
+        self.cursor.execute("UPDATE inschrijvingen SET status = ?, beheerder_id = ? WHERE inschrijving_id = ?", (status, admin_id, enlistment_id))
         self.conn.commit()
         return True, "Status gewijzigd!"

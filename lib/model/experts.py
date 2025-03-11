@@ -113,7 +113,7 @@ class Experts:
         self.conn.commit()
         return True, "Deskundige gewijzigd!"
 
-    def status_update(self, status, expert_id):
-        self.cursor.execute("UPDATE deskundigen SET status = ? WHERE deskundige_id = ?", (status, expert_id))
+    def status_update(self, status, expert_id, admin_id):
+        self.cursor.execute("UPDATE deskundigen SET status = ?, beheerder_id = ?  WHERE deskundige_id = ?", (status, admin_id, expert_id))
         self.conn.commit()
         return True, "Status gewijzigd!"

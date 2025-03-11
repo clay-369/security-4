@@ -1,6 +1,6 @@
 import sqlite3
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, session
 
 from lib.model.research import Research
 from lib.model.users import Users
@@ -118,7 +118,8 @@ def api_get_data():
     return {
         "experts": expert_dict,
         "enlistments": enlistment_dict,
-        "researches": research_data
+        "researches": research_data,
+        "admin_id": session.get('user_id')
     }
 
 @admin_bp.route('/api/admin', methods=['PATCH'])
@@ -127,17 +128,18 @@ def api_status_update():
     status = data.get('status')
     data_type = data.get('data_type')
     data_id = data.get('data_id')
+    admin_id = data.get('admin_id')
     if data_type == 'expert':
         experts_model = Experts()
-        experts_model.status_update(status, data_id)
+        experts_model.status_update(status, data_id, admin_id)
         return {"message" : "Registratie succesvol geaccepteerd!"}
     elif data_type == 'enlistment':
         enlistment_model = Enlistment()
-        enlistment_model.status_update(status, data_id)
+        enlistment_model.status_update(status, data_id, admin_id)
         return {"message" : "Inschrijving succesvol geaccepteerd!"}
     elif data_type == 'research':
         research_model = Research()
-        research_model.status_update(status, data_id)
+        research_model.status_update(status, data_id, admin_id)
         return {"message" : "Onderzoek succesvol geaccepteerd!"}
     else:
         return {"message": "Er is iets fout gegaan tijdens het accepteren van het verzoek."}
