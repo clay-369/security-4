@@ -9,7 +9,7 @@
 
 {% block content %}
     <h1>Registratie ervaringsdeskundige</h1>
-    <form id="createDeskundige" method="POST">
+    <div class="form-container">
       <h2 class="form-title">Vul de onderstaande gegevens in</h2>
       <div class="label-column">
         <label for="voornaam" class="required">Voornaam <span class="required-field">*</span></label>
@@ -57,13 +57,9 @@
 
       <div class="label-column dropdown">
         <label for="type-beperking" class="required">Beperkingen <span class="required-field">*</span></label>
-        <div id="type-beperking" class="dropdown">
-          <button>Kies uw beperkingen</button>
-          <div class="dropdown-content">
-              <label><input type="checkbox" name="fruits" value="apple"> Apple</label>
-              <label><input type="checkbox" name="fruits" value="orange"> Orange</label>
-              <label><input type="checkbox" name="fruits" value="banana"> Banana</label>
-              <label><input type="checkbox" name="fruits" value="grape"> Grape</label>
+        <div id="type-beperking" class="disability-dropdown-container">
+          <button class="dropdown-button">Kies uw beperkingen <i class="arrow"></i></button>
+          <div id="disability-dropdown" class="dropdown-content">
             </div>
           </div>
       </div>
@@ -90,8 +86,6 @@
             type="checkbox"
             id="toezichthouder"
             name="toezichthouder"
-            value="true"
-            checked
           />
           <span class="checkmark"></span>
         </label>
@@ -167,8 +161,8 @@
         </label>
       </div>
 
-      <input type="submit" value="Registreer" class="label-column" />
-    </form>
+      <input id="createDeskundige" type="submit" value="Registreer" class="label-column" />
+    </div>
 {% endblock %}
 
 {% block scripts %}

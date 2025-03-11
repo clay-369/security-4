@@ -29,10 +29,19 @@ window.addEventListener("load", function () {
           const checkbox = document.createElement("input");
           checkbox.type = "checkbox";
           checkbox.value = disability.beperking_id;
+
+          const checkmarkSpan = document.createElement('span');
+          checkmarkSpan.classList.add('checkmark');
+          checkmarkSpan.classList.add('dropdown-checkmark');
+
           const label = document.createElement("label");
-          label.textContent = disability.beperking;
+          label.classList.add('checkbox-container')
+
           label.appendChild(checkbox);
-          document.getElementById("type-beperking").appendChild(label);
+          label.appendChild(checkmarkSpan);
+          label.innerHTML += disability.beperking;
+
+          document.getElementById("disability-dropdown").appendChild(label);
         })
       } else {
         console.error(data.message)
@@ -46,8 +55,10 @@ window.addEventListener("load", function () {
 
 document
   .getElementById("createDeskundige")
-  .addEventListener("submit", function (event) {
+  .addEventListener("click", function (event) {
     event.preventDefault()
+
+      console.log(collectSelectedDisabilities());
 
     const voornaam = document.getElementById("voornaam").value
     const achternaam = document.getElementById("achternaam").value
@@ -72,6 +83,11 @@ document
     const toezichthouder_telefoonnummer = document.getElementById(
       "toezichthouder-telefoonnummer"
     ).value
+    const beperkingen = collectSelectedDisabilities();
+    if (beperkingen.length < 1) {
+        showSnackbar("Selecteer alstublieft een beperking.")
+        return;
+    }
     const type_onderzoek = document.getElementById("type-onderzoek").value
     let voorkeur_benadering = ""
     if (document.getElementsByName("voorkeur-benadering")[0].checked) {
@@ -107,6 +123,7 @@ document
       voorkeur_benadering: voorkeur_benadering,
       bijzonderheden_beschikbaarheid: bijzonderheden_beschikbaarheid,
       akkoord: akkoord,
+      beperkingen: beperkingen
     }
 
     fetch("/api/deskundige", {
@@ -131,3 +148,16 @@ document
         showSnackbar("Er is een fout opgetreden bij het registreren.", "error")
       })
   })
+
+function collectSelectedDisabilities() {
+  const checkboxes = document.querySelectorAll('.dropdown-content input[type="checkbox"]');
+
+  const selectedDisabilities = [];
+  checkboxes.forEach((checkbox) => {
+    if (checkbox.checked) {
+      selectedDisabilities.push(checkbox.value);
+    }
+  });
+
+  return selectedDisabilities;
+}
