@@ -93,11 +93,11 @@ def delete_enlistment():
 
 @research_bp.route('/api/onderzoeken/edit', methods=['PATCH'])
 def api_edit_research():
+    print('TEST')
     research_model = Research()
-    print('yes')
     research = request.json['research']
     research_edit = research_model.research_edit(research)
     if research_edit:
-        return {'success': 'yessir' }, 200
+        return {'success': 'Research edit succesful' }, 200
     else:
         return {'error': 'Research edit failed'}, 400
