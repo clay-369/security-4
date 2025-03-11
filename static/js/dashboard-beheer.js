@@ -133,9 +133,9 @@ function openDetailsModal(dataID, dataType) {
 
                 const adminId = responseData.admin_id;
                 if (event.submitter.value === "Accepteren") {
-                    status = 'GEACCEPTEERD'
+                    status = 'GOEDGEKEURD'
                 } else if (event.submitter.value === "Weigeren") {
-                    status = 'GEWEIGERD'
+                    status = 'AFGEKEURD'
                 }
                 fetch('/api/admin', {
                     method: 'PATCH',
