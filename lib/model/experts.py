@@ -1,4 +1,5 @@
 from lib.model.database import Database
+from lib.model.disabilities import Disabilities
 from lib.model.users import hash_password
 import re
 
@@ -54,23 +55,35 @@ class Experts:
           # Temporary solution to check if there are "onderzoeken"
         if deskundige["type_onderzoek"] == "":
             return False, "U moet een type onderzoek selecteren."
-        
-        # Temporary solution to check if there are "beperkingen"
-        if deskundige["type_beperking"] == "":
-            return False, "Er zijn geen beperkingen gevonden."
-        
+
         # Check if all neccesary fields are filled
         for field in deskundige:
             if field in neccesary_fields and deskundige[field] == "":
                 return False, f"Het veld {field} is verplicht.\n"
+
             
         # Check if the email is already in use
         existing_email = self.cursor.execute("SELECT email FROM deskundigen WHERE email = ?", (deskundige["email"],)).fetchone()
         if existing_email:
             return False, "Dit emailadres is al geregistreerd."
 
-        self.cursor.execute("INSERT into deskundigen (email,wachtwoord,voornaam,achternaam,postcode,telefoonnummer,geboortedatum,hulpmiddelen,bijzonderheden, bijzonderheden_beschikbaarheid, introductie, voorkeur_benadering, type_beperking, type_onderzoeken, toezichthouder, toezichthouder_naam, toezichthouder_email, toezichthouder_telefoonnummer, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-        (deskundige["email"], hash_password(deskundige["wachtwoord"]), deskundige["voornaam"], deskundige["achternaam"], deskundige["postcode"], deskundige["telefoonnummer"], deskundige["geboortedatum"], deskundige["hulpmiddelen"], deskundige["bijzonderheden"], deskundige["bijzonderheden_beschikbaarheid"], deskundige["introductie"], deskundige["voorkeur_benadering"], deskundige["type_beperking"], deskundige["type_onderzoek"], deskundige["toezichthouder"], deskundige["toezichthouder_naam"], deskundige["toezichthouder_email"], deskundige["toezichthouder_telefoonnummer"], "Nieuw"))
+        # Create expert
+        self.cursor.execute("INSERT into deskundigen (email,wachtwoord,voornaam,achternaam,postcode,telefoonnummer,geboortedatum,hulpmiddelen,bijzonderheden, bijzonderheden_beschikbaarheid, introductie, voorkeur_benadering, type_onderzoeken, toezichthouder, toezichthouder_naam, toezichthouder_email, toezichthouder_telefoonnummer, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        (deskundige["email"], hash_password(deskundige["wachtwoord"]), deskundige["voornaam"], deskundige["achternaam"], deskundige["postcode"], deskundige["telefoonnummer"], deskundige["geboortedatum"], deskundige["hulpmiddelen"], deskundige["bijzonderheden"], deskundige["bijzonderheden_beschikbaarheid"], deskundige["introductie"], deskundige["voorkeur_benadering"], deskundige["type_onderzoek"], deskundige["toezichthouder"], deskundige["toezichthouder_naam"], deskundige["toezichthouder_email"], deskundige["toezichthouder_telefoonnummer"], "Nieuw"))
+
+        new_expert_id = self.cursor.lastrowid
+
+        # Create link with disabilities
+        for disability_id in deskundige['beperkingen']:
+            self.cursor.execute(
+                """
+                INSERT INTO beperking_deskundige 
+                (beperking_id, deskundige_id)
+                VALUES (?,?)
+                """,
+                (disability_id, new_expert_id)
+            )
+
         # Wijzigingen opslaan
         self.conn.commit()
         return True, "Deskundige gemaakt!"

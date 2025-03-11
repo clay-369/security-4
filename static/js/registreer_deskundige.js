@@ -58,8 +58,6 @@ document
   .addEventListener("click", function (event) {
     event.preventDefault()
 
-      console.log(collectSelectedDisabilities());
-
     const voornaam = document.getElementById("voornaam").value
     const achternaam = document.getElementById("achternaam").value
     const email = document.getElementById("email").value
@@ -69,9 +67,15 @@ document
     const geboortedatum = document.getElementById("geboortedatum").value
     const geslacht = document.getElementById("geslacht").value
     const type_beperking = document.getElementById("type-beperking").value
-    const hulpmiddelen = document.getElementById("hulpmiddelen").value
+    let hulpmiddelen = document.getElementById("hulpmiddelen").value
+    if (hulpmiddelen === '') {
+        hulpmiddelen = null;
+    }
     const introductie = document.getElementById("introductie").value
-    const bijzonderheden = document.getElementById("bijzonderheden").value
+    let bijzonderheden = document.getElementById("bijzonderheden").value
+    if (bijzonderheden === '') {
+        bijzonderheden = null;
+    }
     const toezichthouder = document.getElementById("toezichthouder").checked
     const akkoord = document.getElementById("akkoord").checked
     const toezichthouder_naam = document.getElementById(
@@ -98,9 +102,12 @@ document
       voorkeur_benadering = ""
     }
 
-    const bijzonderheden_beschikbaarheid = document.getElementById(
+    let bijzonderheden_beschikbaarheid = document.getElementById(
       "bijzonderheden-beschikbaarheid"
     ).value
+    if (bijzonderheden_beschikbaarheid === '') {
+        bijzonderheden_beschikbaarheid = null;
+    }
 
     let deskundige_data = {
       voornaam: voornaam,
