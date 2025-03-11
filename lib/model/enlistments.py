@@ -57,3 +57,12 @@ class Enlistment:
     def get_enlistments_by_expert(self, expert_id:int):
         self.cursor.execute("SELECT * FROM inschrijvingen WHERE deskundige_id = ?", (expert_id,))
         return self.cursor.fetchall()
+
+    def get_enlistments(self):
+        self.cursor.execute("SELECT * FROM inschrijvingen")
+        return self.cursor.fetchall()
+
+    def status_update(self, status, enlistment_id):
+        self.cursor.execute("UPDATE inschrijvingen SET status = ? WHERE inschrijving_id = ?", (status, enlistment_id))
+        self.conn.commit()
+        return True, "Status gewijzigd!"
