@@ -12,6 +12,7 @@
   animation: fadein 1s;
   opacity: 0;
   transition: opacity 0.5s;
+  z-index: 1000;
 }
 
 #snackbar.show {

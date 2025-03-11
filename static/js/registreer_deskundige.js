@@ -26,10 +26,22 @@ window.addEventListener("load", function () {
       if (data.success) {
         data.disabilities.forEach((disability) => {
           disabilities.push(disability)
-          const option = document.createElement("option")
-          option.value = disability.beperking_id
-          option.textContent = disability.beperking
-          document.getElementById("type-beperking").appendChild(option)
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.value = disability.beperking_id;
+
+          const checkmarkSpan = document.createElement('span');
+          checkmarkSpan.classList.add('checkmark');
+          checkmarkSpan.classList.add('dropdown-checkmark');
+
+          const label = document.createElement("label");
+          label.classList.add('checkbox-container')
+
+          label.appendChild(checkbox);
+          label.appendChild(checkmarkSpan);
+          label.innerHTML += disability.beperking;
+
+          document.getElementById("disability-dropdown").appendChild(label);
         })
       } else {
         console.error(data.message)
@@ -40,9 +52,10 @@ window.addEventListener("load", function () {
     })
 })
 
+
 document
   .getElementById("createDeskundige")
-  .addEventListener("submit", function (event) {
+  .addEventListener("click", function (event) {
     event.preventDefault()
 
     const voornaam = document.getElementById("voornaam").value
@@ -54,9 +67,15 @@ document
     const geboortedatum = document.getElementById("geboortedatum").value
     const geslacht = document.getElementById("geslacht").value
     const type_beperking = document.getElementById("type-beperking").value
-    const hulpmiddelen = document.getElementById("hulpmiddelen").value
+    let hulpmiddelen = document.getElementById("hulpmiddelen").value
+    if (hulpmiddelen === '') {
+        hulpmiddelen = null;
+    }
     const introductie = document.getElementById("introductie").value
-    const bijzonderheden = document.getElementById("bijzonderheden").value
+    let bijzonderheden = document.getElementById("bijzonderheden").value
+    if (bijzonderheden === '') {
+        bijzonderheden = null;
+    }
     const toezichthouder = document.getElementById("toezichthouder").checked
     const akkoord = document.getElementById("akkoord").checked
     const toezichthouder_naam = document.getElementById(
@@ -68,6 +87,11 @@ document
     const toezichthouder_telefoonnummer = document.getElementById(
       "toezichthouder-telefoonnummer"
     ).value
+    const beperkingen = collectSelectedDisabilities();
+    if (beperkingen.length < 1) {
+        showSnackbar("Selecteer alstublieft een beperking.")
+        return;
+    }
     const type_onderzoek = document.getElementById("type-onderzoek").value
     let voorkeur_benadering = ""
     if (document.getElementsByName("voorkeur-benadering")[0].checked) {
@@ -78,9 +102,12 @@ document
       voorkeur_benadering = ""
     }
 
-    const bijzonderheden_beschikbaarheid = document.getElementById(
+    let bijzonderheden_beschikbaarheid = document.getElementById(
       "bijzonderheden-beschikbaarheid"
     ).value
+    if (bijzonderheden_beschikbaarheid === '') {
+        bijzonderheden_beschikbaarheid = null;
+    }
 
     let deskundige_data = {
       voornaam: voornaam,
@@ -103,6 +130,7 @@ document
       voorkeur_benadering: voorkeur_benadering,
       bijzonderheden_beschikbaarheid: bijzonderheden_beschikbaarheid,
       akkoord: akkoord,
+      beperkingen: beperkingen
     }
 
     fetch("/api/deskundige", {
@@ -127,3 +155,16 @@ document
         showSnackbar("Er is een fout opgetreden bij het registreren.", "error")
       })
   })
+
+function collectSelectedDisabilities() {
+  const checkboxes = document.querySelectorAll('.dropdown-content input[type="checkbox"]');
+
+  const selectedDisabilities = [];
+  checkboxes.forEach((checkbox) => {
+    if (checkbox.checked) {
+      selectedDisabilities.push(checkbox.value);
+    }
+  });
+
+  return selectedDisabilities;
+}
