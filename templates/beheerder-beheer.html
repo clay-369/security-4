@@ -37,24 +37,30 @@
 </div>
 
 <div id="createModal" class="modal">
-    <button class="close-btn" onclick="closeModal('createModal')">x</button>
+    <h1>Nieuwe gebruiker</h1>
     <div class="modal-content">
-        <h1>Nieuwe gebruiker</h1>
-        <form id='createAdmin' method="POST">
-            <label for="first_name">Voornaaam</label>
-            <input class="text-input" type="text" id="first_name" name="first_name" required>
+        <div class="form-container">
+            <div class="input-fields">
+                <div class="field-row">
+                    <label for="first_name">Voornaam</label>
+                    <input class="text-input" type="text" id="first_name" name="first_name" required>
 
-            <label for="last_name">Achternaaam</label>
-            <input class="text-input" type="text" id="last_name" name="last_name" required>
+                    <label for="email">Email</label>
+                    <input class="text-input" type="email" id="email" name="email" required>
+                </div>
+                <div class="field-row">
+                    <label for="last_name">Achternaam</label>
+                    <input class="text-input" type="text" id="last_name" name="last_name" required>
 
-            <label for="email">Email / login</label>
-            <input class="text-input" type="email" id="email" name="email" required>
-
-            <label for="password">Wachtwoord</label>
-            <input class="text-input" type="text" id="password" name="password" required>
-
-            <input class="modal-btn" type="submit" value="Opslaan">
-        </form>
+                    <label for="password">Wachtwoord</label>
+                    <input class="text-input" type="text" id="password" name="password" required>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <input id='createAdmin' class="modal-btn" type="submit" value="Opslaan">
+                <button onclick="closeModal('createModal')" class="close-btn">Annuleren</button>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
