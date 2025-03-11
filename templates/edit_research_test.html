@@ -23,7 +23,8 @@
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(research)
+    body: JSON.stringify({research}),
+
   })
           .then(response => response.json())
       .then(data => console.log(data));
