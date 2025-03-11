@@ -26,10 +26,13 @@ window.addEventListener("load", function () {
       if (data.success) {
         data.disabilities.forEach((disability) => {
           disabilities.push(disability)
-          const option = document.createElement("option")
-          option.value = disability.beperking_id
-          option.textContent = disability.beperking
-          document.getElementById("type-beperking").appendChild(option)
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.value = disability.beperking_id;
+          const label = document.createElement("label");
+          label.textContent = disability.beperking;
+          label.appendChild(checkbox);
+          document.getElementById("type-beperking").appendChild(label);
         })
       } else {
         console.error(data.message)
@@ -39,6 +42,7 @@ window.addEventListener("load", function () {
       console.error("Error:", error)
     })
 })
+
 
 document
   .getElementById("createDeskundige")
