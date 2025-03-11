@@ -91,13 +91,13 @@ def delete_enlistment():
 
     return dict(deleted_item), 200
 
-@research_bp.route('/api/onderzoeken/edit', methods=['PATCH'])
+@research_bp.route('/api/onderzoeken/edit', methods=['PUT'])
 def api_edit_research():
     research_model = Research()
-    print('yes')
-    research = request.json['research']
+    research = request.get_json()
+
     research_edit = research_model.research_edit(research)
     if research_edit:
-        return {'success': 'yessir' }, 200
+        return {"message": "Onderzoek succesvol bewerkt.", 'success': True }, 200
     else:
-        return {'error': 'Research edit failed'}, 400
+        return {'error': 'Onderzoek bewerken mislukt.'}, 400
