@@ -1,75 +1,63 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <title>Onderzoeken</title>
+{% extends 'base.html' %}
 
-    <!-- Code for Roboto font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+{% block title %}Onderzoeken{% endblock %}
 
-    <link rel="stylesheet" href="../static/css/experts-dashboard.css">
-</head>
-<body>
-   <main>
-      <div class="research-modal-background js-research-modal-background hide">
-          <!--Research item modal-->
+{% block styles %}
+<link rel="stylesheet" href="../static/css/experts-dashboard.css">
+{% endblock %}
+
+{% block nav_links %}
+<a href="#" class="page-toggler js-page-toggler">Inschrijvingen</a>
+<a href="/deskundige/profiel">Profiel</a>
+<a href="/logout">Uitloggen</a>
+{% endblock %}
+
+{% block content %}
+<div class="research-modal-background js-research-modal-background hide">
+  <!--Research item modal-->
+</div>
+
+<section class="js-research-section">
+  <div class="section-header">
+      <h1 class="section-title">Beschikbare onderzoeken</h1>
+  </div>
+  <div class="research-grid-container js-research-grid-container">
+    <!--Research Items-->
+  </div>
+</section>
+
+<section class="js-enlistments-section hide">
+  <div class="section-header">
+      <h1 class="section-title">Jouw inschrijvingen</h1>
+  </div>
+
+  <div class="enlistments-search-bar">
+      <input id="enlistments-input" class="enlistments-search-input" type="search" aria-label="Zoeken" placeholder="Zoeken">
+  </div>
+
+  <div class="enlistments-grid-container">
+      <div class="enlistment-category-container">
+          <h2 class="enlistment-category-header">Lopend</h2>
+          <div class="enlistments-container pending-enlistments js-pending-enlistments">
+                <!--Pending Enlistments-->
+          </div>
       </div>
-
-      <section class="js-research-section">
-          <div class="section-header">
-              <h1 class="section-title">Beschikbare onderzoeken</h1>
-              <nav class="page-toggler js-page-toggler">Ga naar inschrijvingen</nav>
+      <div class="enlistment-category-container">
+          <h2 class="enlistment-category-header">Goedgekeurd</h2>
+          <div class="enlistments-container accepted-enlistments js-accepted-enlistments">
+                <!--Accepted Enlistments-->
           </div>
-          <div class="research-grid-container js-research-grid-container">
-            <!--Research Items-->
+      </div>
+      <div class="enlistment-category-container">
+          <h2 class="enlistment-category-header">Afgekeurd</h2>
+          <div class="enlistments-container rejected-enlistments js-rejected-enlistments">
+              <!--Rejected Enlistments-->
           </div>
-      </section>
+      </div>
+  </div>
+</section>
+{% endblock %}
 
-      <section class="js-enlistments-section hide">
-          <div class="section-header">
-              <h1 class="section-title">Jouw inschrijvingen</h1>
-              <nav class="page-toggler js-page-toggler">Ga naar onderzoeken</nav>
-          </div>
-          <div class="enlistments-grid-container">
-              <div class="enlistment-category-container">
-                  <h2 class="enlistment-category-header">Lopende inschrijvingen</h2>
-                  <div class="enlistments-search-bar">
-                      <label for="pending-enlistments-input">Zoeken</label>
-                      <input id="pending-enlistments-input" class="enlistments-search-input">
-                  </div>
-
-                  <div class="pending-enlistments js-pending-enlistments">
-                        <!--Pending Enlistments-->
-                  </div>
-              </div>
-              <div class="enlistment-category-container">
-                  <h2 class="enlistment-category-header">Goedgekeurde inschrijvingen</h2>
-                  <div class="enlistments-search-bar">
-                      <label for="accepted-enlistments-input">Zoeken</label>
-                      <input id="accepted-enlistments-input" class="enlistments-search-input">
-                  </div>
-
-                  <div class="accepted-enlistments js-accepted-enlistments">
-                        <!--Accepted Enlistments-->
-                  </div>
-              </div>
-              <div class="enlistment-category-container">
-                  <h2 class="enlistment-category-header">Afgekeurde inschrijvingen</h2>
-                  <div class="enlistments-search-bar">
-                      <label for="rejected-enlistments-input">Zoeken</label>
-                      <input id="rejected-enlistments-input" class="enlistments-search-input">
-                  </div>
-
-                  <div class="rejected-enlistments js-rejected-enlistments">
-                      <!--Rejected Enlistments-->
-                  </div>
-              </div>
-          </div>
-      </section>
-   </main>
-
+{% block scripts %}
 <script type="module" src="../static/js/experts-dashboard.js"></script>
-</body>
-</html>
+{% endblock %}

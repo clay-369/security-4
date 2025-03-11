@@ -8,15 +8,14 @@ class Research:
         self.conn, self.cursor = database.connect_db()
 
     def get_research_by_id(self, research_id:int):
-        result = self.cursor.execute("SELECT * FROM onderzoeken WHERE onderzoek_id = ?", (research_id,)).fetchone()
-        return result
+        result = self.cursor.execute(f"SELECT * FROM onderzoeken WHERE onderzoek_id=?", (research_id,)).fetchone()
+        return dict(result)
 
-    def create_research(self, research_item:dict):
+    def create_research(self, research_item:dict, organisation_id:int):
 
 
         # Accept dictionary like
         # {
-        #     'organisatie_id': int,
         #     'titel': str,
         #     'beschikbaar': bool,
         #     'beschrijving': str,
@@ -57,7 +56,7 @@ class Research:
                 return False
 
         # Create new research
-        self.cursor.execute(
+        new_research_item = self.cursor.execute(
             """
             INSERT INTO onderzoeken 
             (
@@ -67,14 +66,14 @@ class Research:
             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
             """,
             (
-                research_item['organisatie_id'], research_item['titel'], research_item['beschrijving'], research_item['beschikbaar'],
+                organisation_id, research_item['titel'], research_item['beschrijving'], research_item['beschikbaar'],
                 research_item['datum_vanaf'], research_item['datum_tot'], research_item['onderzoek_type'],
                 research_item['locatie'], research_item['met_beloning'], research_item['beloning'],
                 research_item['leeftijd_vanaf'], research_item['leeftijd_tot'], research_item['status']
             )
         )
 
-        new_research_id = self.cursor.lastrowid
+        new_research_id = self.cursor.lastrowid()
 
         # Create beperking_onderzoek instances
         for disability_name in research_item['beperkingen']:
@@ -90,10 +89,16 @@ class Research:
             )
 
         self.conn.commit()
-        return new_research_id
+        return dict(new_research_item)
 
     def get_all_research_items(self):
         self.cursor.execute("SELECT * FROM onderzoeken")
+        rows = self.cursor.fetchall()
+        return [dict(row) for row in rows]
+
+    def get_all_available_research_items(self):
+        self.cursor.execute("SELECT * FROM onderzoeken WHERE status = ? AND beschikbaar = ?",
+                            ('GOEDGEKEURD', True))
         return self.cursor.fetchall()
 
     def format_research_item(self, research_item) -> dict:

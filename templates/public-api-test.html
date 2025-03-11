@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Test out JWT</h1>
+
+<button class="login">Log in als organisatie via api</button>
+<button class="test">Test de token</button>
+<button class="whoami">Who Am I</button>
+<button class="refresh">Refresh Token</button>
+<button class="logout">Logout</button>
+
+<script>
+    document.querySelector('.login')
+        .addEventListener('click', () => {
+            login();
+        });
+
+    document.querySelector('.test')
+        .addEventListener('click', () => {
+            test();
+        });
+
+    document.querySelector('.whoami')
+        .addEventListener('click',  () => {
+            whoami();
+        });
+
+    document.querySelector('.refresh')
+        .addEventListener('click', () => {
+            refresh();
+        });
+
+    document.querySelector('.logout')
+        .addEventListener('click', () => {
+            logout();
+        });
+
+    let accessToken = '';
+    let refreshToken = '';
+
+    function test() {
+        fetch('/onderzoeken', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => console.log(data));
+    }
+
+    function login() {
+        fetch('/api/organisaties/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({'email': 'peter@email.com', 'password': 'ABC'})
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                accessToken = data['tokens']['access'];
+                refreshToken = data['tokens']['refresh'];
+            })
+    }
+
+    function whoami() {
+        fetch('/whoami', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => console.log(data));
+    }
+
+    function refresh() {
+        fetch('/refresh', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${refreshToken}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                accessToken = data['access_token'];
+            });
+    }
+
+    function logout() {
+        fetch('/logout', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => console.log(data));
+
+        fetch('/logout', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${refreshToken}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => console.log(data));
+    }
+</script>
+</body>
+</html>

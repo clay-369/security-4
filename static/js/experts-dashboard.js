@@ -1,17 +1,16 @@
 import {renderEnlistmentPage} from "./experts-dashboard/enlistments-page.js";
 import {renderResearchPage} from "./experts-dashboard/research-page.js";
 
-
 renderResearchPage();
 
-let intervalId;
+export let intervalId;
 // Render every 5 seconds
 intervalId = setInterval(renderResearchPage, 5000);
 
 function loadAjaxPage(renderFunc) {
-    renderFunc(); //Load page immediately
-
     clearInterval(intervalId); // Clear interval currently active
+
+    renderFunc(); //Load page immediately
     intervalId = setInterval(renderFunc, 5000); // Set interval for 5 sec
 }
 
@@ -19,23 +18,23 @@ function loadAjaxPage(renderFunc) {
 document.querySelectorAll('.js-page-toggler')
     .forEach(togglerElement => {
         togglerElement.addEventListener('click' , () => {
-            toggleSections();
+            toggleSections(togglerElement);
         });
     });
 
-function toggleSections() {
+function toggleSections(togglerElement) {
     const researchSection = document.querySelector('.js-research-section');
     const enlistmentsSection = document.querySelector('.js-enlistments-section');
 
     if (researchSection.classList.contains('hide')) {
         researchSection.classList.remove('hide');
         enlistmentsSection.classList.add('hide');
-
+        togglerElement.innerHTML = 'Inschrijvingen';
         loadAjaxPage(renderResearchPage)
     } else {
         researchSection.classList.add('hide');
         enlistmentsSection.classList.remove('hide');
-
+        togglerElement.innerHTML = 'Onderzoeken';
         loadAjaxPage(renderEnlistmentPage);
     }
 }
@@ -55,12 +54,11 @@ export function showResearchModal() {
     // Close research modal event listener
     document.querySelector('.js-close-modal')
         .addEventListener('click', closeResearchModal);
+
+    document.querySelector('.js-close-modal')
+        .addEventListener('keydown', event => {
+            if (event['key'] === 'Enter') {
+                closeResearchModal();
+            }
+        });
 }
-
-
-
-
-
-
-
-

@@ -7,13 +7,15 @@ class Users:
         self.conn, self.cursor = database.connect_db()
 
     def login(self, email):
-        user = self.cursor.execute('SELECT * FROM deskundigen WHERE email = ?', (email,)).fetchone()
-        if user is not None:
-            return user, 'user'
+        expert = self.cursor.execute('SELECT * FROM deskundigen WHERE email = ?', (email,)).fetchone()
+        if expert is not None:
+            return {"user": expert, "account_type": 'expert'}
         else:
             admin = self.cursor.execute('SELECT * FROM beheerders WHERE email = ?', (email,)).fetchone()
             if admin is not None:
-                return admin, 'admin'
+                return {"user": admin, "account_type": 'admin'}
+            else:
+                return None
 
 
     def admin_create(self, first_name, last_name, email, password):

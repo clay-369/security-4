@@ -1,51 +1,53 @@
-<html lang="nl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registratie ervaringsdeskundige</title>
+{% extends 'base.html' %}
+{% block title %} Registratie ervaringdeskundige {% endblock %}
+{% block styles %}
     <link rel="stylesheet" href="/static/registreer_deskundige.css" />
-  </head>
-  <body>
+{% endblock %}
+{% block nav_links %}
+  <a href="/login">Login</a>
+{% endblock %}
+
+{% block content %}
     <h1>Registratie ervaringsdeskundige</h1>
     <form id="createDeskundige" method="POST">
       <h2 class="form-title">Vul de onderstaande gegevens in</h2>
       <div class="label-column">
-        <label for="voornaam">Voornaam</label>
+        <label for="voornaam" class="required">Voornaam <span class="required-field">*</span></label>
         <input type="text" id="voornaam" name="voornaam" />
       </div>
 
       <div class="label-column">
-        <label for="achternaam">Achternaam</label>
+        <label for="achternaam" class="required">Achternaam <span class="required-field">*</span></label>
         <input type="text" id="achternaam" name="achternaam" />
       </div>
 
       <div class="label-column">
-        <label for="email">E-mail</label>
+        <label for="email" class="required">E-mail <span class="required-field">*</span></label>
         <input type="email" id="email" name="email" />
       </div>
 
       <div class="label-column">
-        <label for="wachtwoord">Wachtwoord</label>
+        <label for="wachtwoord" class="required">Wachtwoord <span class="required-field">*</span></label>
         <input type="password" id="wachtwoord" name="wachtwoord" />
       </div>
 
       <div class="label-column">
-        <label for="telefoonnummer">Telefoonnummer</label>
+        <label for="telefoonnummer" class="required">Telefoonnummer <span class="required-field">*</span></label>
         <input type="text" id="telefoonnummer" name="telefoonnummer" />
       </div>
 
       <div class="label-column">
-        <label for="postcode">Postcode</label>
+        <label for="postcode" class="required">Postcode <span class="required-field">*</span></label>
         <input type="text" id="postcode" name="postcode" />
       </div>
 
       <div class="label-column">
-        <label for="geboortedatum">Geboortedatum</label>
+        <label for="geboortedatum" class="required">Geboortedatum <span class="required-field">*</span></label>
         <input type="date" id="geboortedatum" name="geboortedatum" />
       </div>
 
       <div class="label-column dropdown">
-        <label for="geslacht">Geslacht</label>
+        <label for="geslacht" class="required">Geslacht <span class="required-field">*</span></label>
         <select name="geslacht" id="geslacht">
           <option value="man">Man</option>
           <option value="vrouw">Vrouw</option>
@@ -54,11 +56,8 @@
       </div>
 
       <div class="label-column dropdown">
-        <label for="type-beperking">Type beperking</label>
+        <label for="type-beperking" class="required">Type beperking <span class="required-field">*</span></label>
         <select name="type-beperking" id="type-beperking">
-          <option value="blind">Blind</option>
-          <option value="dikbeklede">Dikbeklede</option>
-          <option value="andere">Andere</option>
         </select>
       </div>
 
@@ -68,7 +67,7 @@
       </div>
 
       <div class="label-column full-width-form-element">
-        <label for="introductie ">Introductie</label>
+        <label for="introductie" class="required">Introductie <span class="required-field">*</span></label>
         <textarea name="introductie" id="introductie"></textarea>
       </div>
 
@@ -85,58 +84,61 @@
             id="toezichthouder"
             name="toezichthouder"
             value="true"
+            checked
           />
           <span class="checkmark"></span>
         </label>
       </div>
 
-      <div class="label-column">
-        <label for="toezichthouder-naam">Naam toezichthouder </label>
-        <input
-          type="text"
-          id="toezichthouder-naam"
-          name="toezichthouder-naam"
-        />
-      </div>
+      <div id="toezichthouder-container" class="full-width-form-element">
+        <div class="label-column">
+          <label for="toezichthouder-naam">Naam toezichthouder </label>
+          <input
+            type="text"
+            id="toezichthouder-naam"
+            name="toezichthouder-naam"
+          />
+        </div>
 
-      <div class="label-column">
-        <label for="toezichthouder-email">Email toezichthouder </label>
-        <input
-          type="email"
-          id="toezichthouder-email"
-          name="toezichthouder-email"
-        />
-      </div>
+        <div class="label-column">
+          <label for="toezichthouder-email">Email toezichthouder </label>
+          <input
+            type="email"
+            id="toezichthouder-email"
+            name="toezichthouder-email"
+          />
+        </div>
 
-      <div class="label-column full-width-form-element">
-        <label for="toezichthouder-telefoonnummer"
-          >Telefoonnummer toezichthouder
-        </label>
-        <input
-          type="tel"
-          id="toezichthouder-telefoonnummer"
-          name="toezichthouder-telefoonnummer"
-        />
-      </div>
-
-      <div class="label-column">
-        <label for="voorkeur-benadering">Voorkeur benadering </label>
-        <div class="radio-container">
-          <input type="radio" name="voorkeur-benadering" value="telefoon" > Telefonisch</input>
-          <input type="radio" name="voorkeur-benadering" value="email" > E-mail</input>
+        <div class="label-column full-width-form-element">
+          <label for="toezichthouder-telefoonnummer"
+            >Telefoonnummer toezichthouder
+          </label>
+          <input
+            type="tel"
+            id="toezichthouder-telefoonnummer"
+            name="toezichthouder-telefoonnummer"
+          />
         </div>
       </div>
 
+      <fieldset class="label-column">
+        <legend>Voorkeur benadering <span class="required-field">*</span></legend>
+        <div class="radio-container">
+          <input id="preference-email" type="radio" name="voorkeur-benadering" value="email" checked>
+          <label for="preference-email">E-mail</label>
+
+          <input id="preference-telephone" type="radio" name="voorkeur-benadering" value="telefoon" >
+          <label for="preference-telephone" >Telefonisch</label>
+        </div>
+      </fieldset>
+
       <div class="label-column dropdown">
-        <label for="type-onderzoek">Type onderzoek</label>
+        <label for="type-onderzoek">Voorkeur type onderzoek <span class="required-field">*</span></label>
         <select name="type-onderzoek" id="type-onderzoek">
-          <option value="gebruikersonderzoek">Gebruikersonderzoek</option>
-          <option value="expertreview">Expert review</option>
-          <option value="focusgroep">Focusgroep</option>
-          <option value="interview">Interview</option>
-          <option value="enquete">Enquête</option>
-          <option value="usabilitytest">Usability test</option>
-          <option value="anders">Anders</option>
+            <option value="" disabled selected>Selecteer type onderzoek</option>
+            <option value="ONLINE">Online</option>
+            <option value="OP LOCATIE">Op locatie</option>
+            <option value="TELEFONISCH">Telefonisch</option>
         </select>
       </div>
 
@@ -160,6 +162,8 @@
 
       <input type="submit" value="Registreer" class="label-column" />
     </form>
-    <script src="../static/js/deskundige.js"></script>
-  </body>
-</html>
+{% endblock %}
+
+{% block scripts %}
+    <script src="../static/js/registreer_deskundige.js"></script>
+{% endblock %}
