@@ -140,6 +140,7 @@ document
     const introductie = document.getElementById("introductie").value
     const bijzonderheden = document.getElementById("bijzonderheden").value
     const toezichthouder = document.getElementById("toezichthouder").checked
+    const akkoord = document.getElementById("akkoord").checked
     const toezichthouder_naam = document.getElementById(
       "toezichthouder-naam"
     ).value
@@ -181,6 +182,7 @@ document
       type_onderzoek: type_onderzoek,
       voorkeur_benadering: voorkeur_benadering,
       bijzonderheden_beschikbaarheid: bijzonderheden_beschikbaarheid,
+      akkoord: akkoord,
     }
 
     fetch("/api/deskundige?id=" + userData.deskundige_id, {
