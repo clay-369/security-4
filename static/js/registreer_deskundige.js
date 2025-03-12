@@ -26,33 +26,34 @@ window.addEventListener("load", function () {
       if (data.success) {
         data.disabilities.forEach((disability) => {
           disabilities.push(disability)
-          const checkbox = document.createElement("input");
-          checkbox.type = "checkbox";
-          checkbox.value = disability.beperking_id;
-          checkbox.classList.add(`disability-checkbox-${disability.beperking_id}`)
-          checkbox.tabIndex = -1;
+          const checkbox = document.createElement("input")
+          checkbox.type = "checkbox"
+          checkbox.value = disability.beperking_id
+          checkbox.classList.add(
+            `disability-checkbox-${disability.beperking_id}`
+          )
+          checkbox.tabIndex = -1
 
-          const checkmarkSpan = document.createElement('span');
-          checkmarkSpan.classList.add('checkmark');
-          checkmarkSpan.classList.add('dropdown-checkmark');
+          const checkmarkSpan = document.createElement("span")
+          checkmarkSpan.classList.add("checkmark")
+          checkmarkSpan.classList.add("dropdown-checkmark")
 
-          const label = document.createElement("label");
-          label.classList.add('checkbox-container')
-          label.tabIndex = 0;
+          const label = document.createElement("label")
+          label.classList.add("checkbox-container")
+          label.tabIndex = 0
 
-          label.appendChild(checkbox);
-          label.appendChild(checkmarkSpan);
-          label.innerHTML += disability.beperking;
-
-          label.addEventListener('keydown', event => {
-              if (event['key'] === 'Enter') {
-                  document.querySelector(`.disability-checkbox-${disability.beperking_id}`)
-                      .checked = true;
-              }
+          label.appendChild(checkbox)
+          label.appendChild(checkmarkSpan)
+          label.innerHTML += disability.beperking
+          label.addEventListener("keydown", (event) => {
+            if (event["key"] === "Enter") {
+              document.querySelector(
+                `.disability-checkbox-${disability.beperking_id}`
+              ).checked = true
+            }
           })
 
-
-          document.getElementById("disability-dropdown").appendChild(label);
+          document.getElementById("disability-dropdown").appendChild(label)
         })
       } else {
         console.error(data.message)
@@ -62,7 +63,6 @@ window.addEventListener("load", function () {
       console.error("Error:", error)
     })
 })
-
 
 document
   .getElementById("createDeskundige")
@@ -79,13 +79,13 @@ document
     const geslacht = document.getElementById("geslacht").value
     const type_beperking = document.getElementById("type-beperking").value
     let hulpmiddelen = document.getElementById("hulpmiddelen").value
-    if (hulpmiddelen === '') {
-        hulpmiddelen = null;
+    if (hulpmiddelen === "") {
+      hulpmiddelen = null
     }
     const introductie = document.getElementById("introductie").value
     let bijzonderheden = document.getElementById("bijzonderheden").value
-    if (bijzonderheden === '') {
-        bijzonderheden = null;
+    if (bijzonderheden === "") {
+      bijzonderheden = null
     }
     const toezichthouder = document.getElementById("toezichthouder").checked
     const akkoord = document.getElementById("akkoord").checked
@@ -98,10 +98,10 @@ document
     const toezichthouder_telefoonnummer = document.getElementById(
       "toezichthouder-telefoonnummer"
     ).value
-    const beperkingen = collectSelectedDisabilities();
+    const beperkingen = collectSelectedDisabilities()
     if (beperkingen.length < 1) {
-        showSnackbar("Selecteer alstublieft een beperking.")
-        return;
+      showSnackbar("Selecteer alstublieft een beperking.")
+      return
     }
     const type_onderzoek = document.getElementById("type-onderzoek").value
     let voorkeur_benadering = ""
@@ -116,8 +116,8 @@ document
     let bijzonderheden_beschikbaarheid = document.getElementById(
       "bijzonderheden-beschikbaarheid"
     ).value
-    if (bijzonderheden_beschikbaarheid === '') {
-        bijzonderheden_beschikbaarheid = null;
+    if (bijzonderheden_beschikbaarheid === "") {
+      bijzonderheden_beschikbaarheid = null
     }
 
     let deskundige_data = {
@@ -141,7 +141,7 @@ document
       voorkeur_benadering: voorkeur_benadering,
       bijzonderheden_beschikbaarheid: bijzonderheden_beschikbaarheid,
       akkoord: akkoord,
-      beperkingen: beperkingen
+      beperkingen: beperkingen,
     }
 
     fetch("/api/deskundige", {
@@ -154,7 +154,6 @@ document
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          console.log(data.message)
           showSnackbar(data.message, "success")
         } else {
           console.error(data.message)
@@ -168,25 +167,28 @@ document
   })
 
 function collectSelectedDisabilities() {
-  const checkboxes = document.querySelectorAll('.dropdown-content input[type="checkbox"]');
+  const checkboxes = document.querySelectorAll(
+    '.dropdown-content input[type="checkbox"]'
+  )
 
-  const selectedDisabilities = [];
+  const selectedDisabilities = []
   checkboxes.forEach((checkbox) => {
     if (checkbox.checked) {
-      selectedDisabilities.push(checkbox.value);
+      selectedDisabilities.push(checkbox.value)
     }
-  });
+  })
 
-  return selectedDisabilities;
+  return selectedDisabilities
 }
 
 function toggleDisabilityDropdown() {
-    const containerElem = document.querySelector('.js-disability-dropdown-container');
+  const containerElem = document.querySelector(
+    ".js-disability-dropdown-container"
+  )
 
-    if (containerElem.classList.contains('show-dropdown')) {
-        containerElem.classList.remove('show-dropdown');
-    }
-    else {
-        containerElem.classList.add('show-dropdown');
-    }
+  if (containerElem.classList.contains("show-dropdown")) {
+    containerElem.classList.remove("show-dropdown")
+  } else {
+    containerElem.classList.add("show-dropdown")
+  }
 }
