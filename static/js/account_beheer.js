@@ -61,7 +61,7 @@ window.addEventListener("load", function () {
 })
 
 window.addEventListener("load", function () {
-  fetch("/api/deskundige?id=1", {
+  fetch("/api/deskundige", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -72,7 +72,6 @@ window.addEventListener("load", function () {
       if (data.success) {
         // Save the user data to the userData object
         userData = data.deskundige
-
         // Update the title and input fields with the user data
         document.getElementById("voornaam-title").textContent =
           data.deskundige.voornaam

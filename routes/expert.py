@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, session
 
 from lib.model.experts import Experts
 from lib.model.disabilities import Disabilities
@@ -45,7 +45,16 @@ def get_expert():
             return {"success": True, "deskundige": single_deskundige_dict}
         else:
             return {"success": False}
+        
+    else:
+        deskundige_id = session.get('user_id')
+        deskundige_info = expert_model.get_single_deskundige(deskundige_id)
+        single_deskundige_dict = dict(deskundige_info)
 
+        if deskundige_info:
+            return {"success": True, "deskundige": single_deskundige_dict}
+        else:
+            return {"success": False}
 
 @expert_bp.route("/api/deskundige", methods=["PUT"])
 def update_expert():
