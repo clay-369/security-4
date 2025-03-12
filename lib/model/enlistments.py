@@ -58,8 +58,10 @@ class Enlistment:
         self.cursor.execute("SELECT * FROM inschrijvingen WHERE deskundige_id = ?", (expert_id,))
         return self.cursor.fetchall()
 
-    def get_enlistments(self):
-        self.cursor.execute("SELECT * FROM inschrijvingen")
+    def get_enlistments_details(self):
+        self.cursor.execute("SELECT * FROM ((inschrijvingen "
+                            "INNER JOIN onderzoeken ON onderzoeken.onderzoek_id = inschrijvingen.onderzoek_id)"
+                            "INNER JOIN deskundigen ON deskundigen.deskundige_id = inschrijvingen.deskundige_id);")
         return self.cursor.fetchall()
 
     def status_update(self, status, enlistment_id, admin_id):

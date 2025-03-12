@@ -31,7 +31,8 @@ function loadTable() {
                 const row = document.createElement('tr');
                 if (enlistment.status === 'NIEUW') {
                     row.innerHTML = `
-                        <td>${enlistment.naam}</td>
+                        <td>${enlistment.voornaam} ${enlistment.achternaam}</td>
+                        <td>${enlistment.titel}</td>
                         <td>
                             <button tabindex="0" class="btn" onclick="openDetailsModal(${enlistment.inschrijving_id}, 'enlistment')">Details</button>
                         </td>
@@ -71,21 +72,28 @@ function openDetailsModal(dataID, dataType) {
 
             if (dataType === 'expert') {
                 console.log('Expert function');
-                expertData = responseData.experts[dataID - 1]; // Index key offset
+                const expertData = responseData.experts[dataID - 1]; // Index key offset
 
                 // Moet nog aan gewerkt worden
                 modalContent = `
                         <h1>Expert Details</h1>
                         
-                        <h2>Volledige naam</h2>
-                        <p>${expertData['voornaam']} ${expertData['achternaam']}</p>
+                        <h2>Persoonlijke gegevens</h2>
+                        <p>Naam: ${expertData['voornaam']} ${expertData['achternaam']}</p>
+                        <p>Geboortedatum: ${expertData['geboortedatum']}</p>
+                        <p>Introductie: ${expertData['introductie']}</p>
                         
                         <h2>Contactgegevens</h2>
-                        <p>${expertData['email']}</p>
-                        <p>${expertData['telefoonnummer']}</p>
+                        <p>Email: ${expertData['email']}</p>
+                        <p>Telefoonnummer: ${expertData['telefoonnummer']}</p>
                         
-                        <p>${expertData['postcode']}</p>                        
-                        <p>${expertData['geboortedatum']}</p>
+                        <h2>Overige gegevens</h2>
+                        <p>Hulpmiddelen: ${expertData['hulpmiddelen']}</p>
+                        <p>Bijzonderheden: ${expertData['bijzonderheden']}</p>
+                        <p>Bijzonderheden beschikbaarheid: ${expertData['bijzonderheden_beschikbaarheid']}</p>
+                        <p>Type onderzoeken: ${expertData['type_onderzoeken']}</p>     
+                        
+                        <h2>Toezichthouder Informatie</h2>
                         
                             <form method="POST" id="detailsModal">
                                 <input class="modal-btn" type="submit" name="submit" value="Accepteren">
@@ -94,10 +102,31 @@ function openDetailsModal(dataID, dataType) {
                 `;
             } else if (dataType === 'enlistment') {
                 console.log('Enlistment function')
+                const enlistmentData = responseData.enlistments[dataID - 1]; // Index key offset
                 // Moet nog aan gewerkt worden
                 modalContent = `
                         <h1>Inschrijving Details</h1>
                             <form method="POST" id="detailsModal">
+                            
+                                <h2>Details inschrijvende:</h2>
+                                <p>Naam: ${enlistmentData['voornaam']} ${enlistmentData['achternaam']}</p>
+                                <p>Geboortedatum: ${enlistmentData['geboortedatum']}</p>
+                                <p>Email: ${enlistmentData['email']}</p>
+                                <p>Telefoonnummer: ${enlistmentData['telefoonnummer']}</p>
+                                <p>Hulpmiddelen: ${enlistmentData['hulpmiddelen']}</p>
+                                <p>Bijzonderheden: ${enlistmentData['bijzonderheden']}</p>
+                                <p>Bijzonderheden beschikbaarheid: ${enlistmentData['bijzonderheden_beschikbaarheid']}</p>
+                                <p>Type onderzoeken: ${enlistmentData['type_onderzoeken']}</p>     
+        
+                                <h2>Details onderzoek:</h2>
+                                <p>Titel: ${enlistmentData['titel']}</p>
+                                <p>Beschrijving: ${enlistmentData['beschrijving']}</p>
+                                <p>Startdatum: ${enlistmentData['datum_vanaf']}</p>
+                                <p>Einddatum: ${enlistmentData['datum_tot']}</p>
+                                <p>Onderzoek-type: ${enlistmentData['onderzoek_type']}</p>
+                                <p>Locatie: ${enlistmentData['locatie']}</p>
+                                <p>Vanaf leeftijd:: ${enlistmentData['leeftijd_vanaf']}</p>
+                                <p>Tot leeftijd: ${enlistmentData['leeftijd_tot']}</p>
         
                                 <input class="modal-btn" type="submit" name="submit" value="Accepteren">
                                 <input class="modal-btn" type="submit" name="submit" value="Weigeren">
