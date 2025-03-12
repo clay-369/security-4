@@ -69,6 +69,8 @@ function openDetailsModal(dataID, dataType) {
                 openedModal.remove();
             }
 
+            let modalContent;
+
             if (dataType === 'expert') {
                 console.log('Expert function');
                 expertData = responseData.experts[dataID - 1]; // Index key offset
@@ -105,11 +107,30 @@ function openDetailsModal(dataID, dataType) {
                 `;
             } else if (dataType === 'research') {
                 console.log('Research function')
+                const research = responseData.researches[dataID - 1];
                 // Moet nog aan gewerkt worden
                 modalContent = `
                         <h1>Onderzoek Details</h1>
+                        <h2>Onderzoek</h2>
+                        <p>titel: ${research.titel}</p>
+                        <p>beschrijving: ${research.beschrijving}</p>
+                        <p>datum: ${research.datum_vanaf} tot ${research.datum_tot}</p>
+                        <p>type: ${research.onderzoek_type.toLowerCase()}</p>
+                        
+                        <!-- If OP LOCATIE-->
+                        <p>locatie: ${research.locatie}</p>
+                        <!--If statement for beloning-->
+                        <p>${research.beloning}</p>
+                        <p>${research.leeftijd_vanaf} tot ${research.leeftijd_tot} jaar</p>
+                        <p>${research.titel}</p>
+                        
+                        <h3>Beperkingen</h3>
+                        <!--todo-->
+                        
+                        <h3>Organisatie</h3>
+                        <p>${research.naam}</p>
+                        
                             <form method="POST" id="detailsModal">
-        
                                 <input class="modal-btn" type="submit" name="submit" value="Accepteren">
                                 <input class="modal-btn" type="submit" name="submit" value="Weigeren">
                             </form>

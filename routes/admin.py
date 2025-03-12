@@ -113,7 +113,7 @@ def api_get_data():
     enlistment_data = enlistment_model.get_enlistments()
     enlistment_dict = [dict(row) for row in enlistment_data]
 
-    research_data = research_model.get_all_research_items()
+    research_data = research_model.get_all_research_items_for_admins()
 
     return {
         "experts": expert_dict,

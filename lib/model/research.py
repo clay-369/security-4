@@ -101,6 +101,13 @@ class Research:
                             ('GOEDGEKEURD', True))
         return self.cursor.fetchall()
 
+
+    def get_all_research_items_for_admins(self):
+        self.cursor.execute("SELECT * FROM onderzoeken JOIN organisaties USING(organisatie_id)")
+        rows = self.cursor.fetchall()
+        return [dict(row) for row in rows]
+
+
     def format_research_item(self, research_item) -> dict:
         """ Adds organisatie_naam to research_item and converts it to dict """
         research_item = dict(research_item)
