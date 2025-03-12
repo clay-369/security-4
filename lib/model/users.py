@@ -8,8 +8,13 @@ class Users:
 
     def login(self, email):
         expert = self.cursor.execute('SELECT * FROM deskundigen WHERE email = ?', (email,)).fetchone()
-        if expert is not None:
-            return {"user": expert, "account_type": 'expert'}
+        if expert:
+            if expert['status'] == 'GOEDGEKEURD':
+                return {"user": expert, "account_type": 'expert'}
+            elif expert['status'] == 'NIEUW':
+                return "Uw registratie is in behandeling."
+            elif expert['status'] == 'AFGEKEURD':
+                return "Uw registratie is afgekeurd"
         else:
             admin = self.cursor.execute('SELECT * FROM beheerders WHERE email = ?', (email,)).fetchone()
             if admin is not None:

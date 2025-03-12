@@ -107,6 +107,7 @@ fieldset.label-column {
   height: 20px;
   width: 20px;
   background-color: #eee;
+  border: 1px solid #c3d0ed;
 }
 
 /* On mouse-over, add a grey background color */
@@ -243,7 +244,6 @@ input {
   margin-right: 8px;
   top: 25%;
   left: 5px;
-  background-color: #e3e3e3;
 }
 
 .disability-dropdown-container:hover .dropdown-content {
