@@ -113,6 +113,7 @@ window.addEventListener("load", function () {
       console.error("Error:", error)
     })
 })
+
 document
   .getElementById("updateDeskundige")
   .addEventListener("submit", function (event) {
@@ -151,7 +152,7 @@ document
       "bijzonderheden-beschikbaarheid"
     ).value
 
-    deskundige_data = {
+    let deskundige_data = {
       deskundige_id: 1,
       voornaam: firstName,
       achternaam: lastName,
@@ -186,7 +187,8 @@ document
         if (data.success) {
           showSnackbar("Deskundige gewijzigd!", "success")
         } else {
-          showSnackbar("Error!", "error")
+          console.error(data.message)
+          showSnackbar(data.message, "error")
         }
       })
       .catch((error) => {
