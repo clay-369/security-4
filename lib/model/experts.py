@@ -98,17 +98,56 @@ class Experts:
         return self.cursor.fetchone()
     
     def update_deskundige(self, expert):
-        neccesary_fields = ["email", "wachtwoord", "voornaam", "achternaam", "postcode", "telefoonnummer", "geboortedatum"]
+        neccesary_fields = ["email", "wachtwoord", "voornaam", "achternaam", "postcode", "telefoonnummer", "geboortedatum", "introductie", "voorkeur_benadering", "type_beperking"]
+
+        if expert["voorkeur_benadering"] == "":
+            return False, "U moet een voorkeur benadering selecteren."
+
+        if len(expert["introductie"]) < 10:
+            return False, "Vertel wat meer in je introductie."
         
         if expert["toezichthouder"] == True:
             neccesary_fields.append("toezichthouder_naam")
             neccesary_fields.append("toezichthouder_email")
             neccesary_fields.append("toezichthouder_telefoonnummer")
+
+            if expert["toezichthouder_naam"] == "":
+                return False, "U moet een naam invullen voor de toezichthouder omdat u toezichthouder heeft geselecteerd."
+
+            if expert["toezichthouder_email"] == "":
+                return False, "U moet een e-mailadres invullen voor de toezichthouder omdat u toezichthouder heeft geselecteerd."
+
+            if expert["toezichthouder_telefoonnummer"] == "":
+                return False, "U moet een telefoonnummer invullen voor de toezichthouder omdat u toezichthouder heeft geselecteerd."
+
+
+        # Check if the email is valid
+        valid = re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', expert["email"])
+        if not valid:
+            return False, "U moet een geldig e-mailadres invullen."
+
+        # Check if the phone number is valid
+        valid = re.match(r'^[0-9]{10}$', expert["telefoonnummer"])
+        if not valid:
+            return False, "U moet een geldig telefoonnummer invullen."
+
+        # Check if the postcode is valid
+        valid = re.match(r'^[1-9][0-9]{3} ?[A-Z]{2}$', expert["postcode"])
+        if not valid:
+            return False, "U moet een geldige postcode invullen."
+
+        # Temporary solution to check if there are "onderzoeken"
+        if expert["type_onderzoek"] == "":
+            return False, "U moet een type onderzoek selecteren."
+        
+        if expert["type_onderzoek"] == "":
+            return False, "U moet een type onderzoek selecteren."
         
         # Check if all neccesary fields are filled
         for field in expert:
             if field in neccesary_fields and expert[field] == "":
                 return False, f"Het veld {field} is verplicht.\n"
+        
 
         self.cursor.execute("""
             UPDATE deskundigen SET email = ?, wachtwoord = ?, voornaam = ?, achternaam = ?, postcode = ?, 

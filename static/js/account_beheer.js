@@ -1,3 +1,4 @@
+let userData = {}
 // Toezichthouder checkbox
 document
   .getElementById("toezichthouder")
@@ -60,7 +61,7 @@ window.addEventListener("load", function () {
 })
 
 window.addEventListener("load", function () {
-  fetch("/api/deskundige?id=1", {
+  fetch("/api/deskundige", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -69,6 +70,9 @@ window.addEventListener("load", function () {
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
+        // Save the user data to the userData object
+        userData = data.deskundige
+        // Update the title and input fields with the user data
         document.getElementById("voornaam-title").textContent =
           data.deskundige.voornaam
         document.getElementById("achternaam-title").textContent =
@@ -82,7 +86,6 @@ window.addEventListener("load", function () {
           data.deskundige.telefoonnummer
         document.getElementById("geboortedatum").value =
           data.deskundige.geboortedatum
-        document.getElementById("geslacht").value = data.deskundige.geslacht
         document.getElementById("type-beperking").value =
           data.deskundige.type_beperking
         document.getElementById("hulpmiddelen").value =
@@ -101,10 +104,15 @@ window.addEventListener("load", function () {
           data.deskundige.toezichthouder_telefoonnummer
         document.getElementById("type-onderzoek").value =
           data.deskundige.type_onderzoek
-        // document.getElementById("voorkeur-benadering").value =
-        //   data.deskundige.voorkeur_benadering
         document.getElementById("bijzonderheden-beschikbaarheid").value =
           data.deskundige.bijzonderheden_beschikbaarheid
+        if (data.deskundige.voorkeur_benadering == "telefoon") {
+          document.getElementById("preference-email").checked = false
+          document.getElementById("preference-telefoon").checked = true
+        } else {
+          document.getElementById("preference-email").checked = true
+          document.getElementById("preference-telefoon").checked = false
+        }
       } else {
         console.log("Error!")
       }
@@ -113,6 +121,7 @@ window.addEventListener("load", function () {
       console.error("Error:", error)
     })
 })
+
 document
   .getElementById("updateDeskundige")
   .addEventListener("submit", function (event) {
@@ -151,8 +160,8 @@ document
       "bijzonderheden-beschikbaarheid"
     ).value
 
-    deskundige_data = {
-      deskundige_id: 1,
+    let deskundige_data = {
+      deskundige_id: userData.deskundige_id,
       voornaam: firstName,
       achternaam: lastName,
       email: email,
@@ -174,7 +183,7 @@ document
       bijzonderheden_beschikbaarheid: bijzonderheden_beschikbaarheid,
     }
 
-    fetch("/api/deskundige?id=1", {
+    fetch("/api/deskundige?id=" + userData.deskundige_id, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -186,10 +195,15 @@ document
         if (data.success) {
           showSnackbar("Deskundige gewijzigd!", "success")
         } else {
-          showSnackbar("Error!", "error")
+          console.error(data.message)
+          showSnackbar(data.message, "error")
         }
       })
       .catch((error) => {
         console.error("Error:", error)
+        showSnackbar(
+          "Er is een fout opgetreden bij het wijzigen van de deskundige.",
+          "error"
+        )
       })
   })
