@@ -119,6 +119,11 @@ class Experts:
 
             if expert["toezichthouder_telefoonnummer"] == "":
                 return False, "U moet een telefoonnummer invullen voor de toezichthouder omdat u toezichthouder heeft geselecteerd."
+            
+        else:
+            expert["toezichthouder_naam"] = ""
+            expert["toezichthouder_email"] = ""
+            expert["toezichthouder_telefoonnummer"] = ""
 
 
         # Check if the email is valid
@@ -148,22 +153,37 @@ class Experts:
             if field in neccesary_fields and expert[field] == "":
                 return False, f"Het veld {field} is verplicht.\n"
         
-
-        self.cursor.execute("""
-            UPDATE deskundigen SET email = ?, wachtwoord = ?, voornaam = ?, achternaam = ?, postcode = ?, 
-            telefoonnummer = ?, geboortedatum = ?, hulpmiddelen = ?, bijzonderheden = ?, 
-            bijzonderheden_beschikbaarheid = ?, introductie = ?, voorkeur_benadering = ?, type_beperking = ?, 
-            type_onderzoeken = ?, toezichthouder = ?, toezichthouder_naam = ?, toezichthouder_email = ?, 
-            toezichthouder_telefoonnummer = ? WHERE deskundige_id = ?""",
-            (expert["email"], expert["wachtwoord"], expert["voornaam"], expert["achternaam"],
-             expert["postcode"], expert["telefoonnummer"], expert["geboortedatum"], expert["hulpmiddelen"],
-             expert["bijzonderheden"], expert["bijzonderheden_beschikbaarheid"], expert["introductie"],
-             expert["voorkeur_benadering"], expert["type_beperking"], expert["type_onderzoek"],
-             expert["toezichthouder"], expert["toezichthouder_naam"], expert["toezichthouder_email"],
-             expert["toezichthouder_telefoonnummer"], expert["deskundige_id"]))
-
-        self.conn.commit()
-        return True, "Deskundige gewijzigd!"
+        if expert["akkoord"] == False:
+            self.cursor.execute("""
+                UPDATE deskundigen SET email = ?, voornaam = ?, achternaam = ?, postcode = ?, 
+                telefoonnummer = ?, geboortedatum = ?, hulpmiddelen = ?, bijzonderheden = ?, 
+                bijzonderheden_beschikbaarheid = ?, introductie = ?, voorkeur_benadering = ?, type_beperking = ?, 
+                type_onderzoeken = ?, toezichthouder = ?, toezichthouder_naam = ?, toezichthouder_email = ?, 
+                toezichthouder_telefoonnummer = ? WHERE deskundige_id = ?""",
+                (expert["email"], expert["voornaam"], expert["achternaam"],
+                expert["postcode"], expert["telefoonnummer"], expert["geboortedatum"], expert["hulpmiddelen"],
+                expert["bijzonderheden"], expert["bijzonderheden_beschikbaarheid"], expert["introductie"],
+                expert["voorkeur_benadering"], expert["type_beperking"], expert["type_onderzoek"],
+                expert["toezichthouder"], expert["toezichthouder_naam"], expert["toezichthouder_email"],
+                expert["toezichthouder_telefoonnummer"], expert["deskundige_id"]))
+            self.conn.commit()
+            return True, "Deskundige gewijzigd!"
+        
+        else:
+            self.cursor.execute("""
+                UPDATE deskundigen SET wachtwoord = ?, email = ?, voornaam = ?, achternaam = ?, postcode = ?, 
+                telefoonnummer = ?, geboortedatum = ?, hulpmiddelen = ?, bijzonderheden = ?, 
+                bijzonderheden_beschikbaarheid = ?, introductie = ?, voorkeur_benadering = ?, type_beperking = ?, 
+                type_onderzoeken = ?, toezichthouder = ?, toezichthouder_naam = ?, toezichthouder_email = ?, 
+                toezichthouder_telefoonnummer = ? WHERE deskundige_id = ?""",
+                (hash_password(expert["wachtwoord"]), expert["email"], expert["voornaam"], expert["achternaam"],
+                expert["postcode"], expert["telefoonnummer"], expert["geboortedatum"], expert["hulpmiddelen"],
+                expert["bijzonderheden"], expert["bijzonderheden_beschikbaarheid"], expert["introductie"],
+                expert["voorkeur_benadering"], expert["type_beperking"], expert["type_onderzoek"],
+                expert["toezichthouder"], expert["toezichthouder_naam"], expert["toezichthouder_email"],
+                expert["toezichthouder_telefoonnummer"], expert["deskundige_id"]))
+            self.conn.commit()
+            return True, "Deskundige gewijzigd!"
 
     def status_update(self, status, expert_id, admin_id):
         self.cursor.execute("UPDATE deskundigen SET status = ?, beheerder_id = ?  WHERE deskundige_id = ?", (status, admin_id, expert_id))
