@@ -29,6 +29,8 @@ window.addEventListener("load", function () {
           const checkbox = document.createElement("input");
           checkbox.type = "checkbox";
           checkbox.value = disability.beperking_id;
+          checkbox.classList.add(`disability-checkbox-${disability.beperking_id}`)
+          checkbox.tabIndex = -1;
 
           const checkmarkSpan = document.createElement('span');
           checkmarkSpan.classList.add('checkmark');
@@ -36,10 +38,19 @@ window.addEventListener("load", function () {
 
           const label = document.createElement("label");
           label.classList.add('checkbox-container')
+          label.tabIndex = 0;
 
           label.appendChild(checkbox);
           label.appendChild(checkmarkSpan);
           label.innerHTML += disability.beperking;
+
+          label.addEventListener('keydown', event => {
+              if (event['key'] === 'Enter') {
+                  document.querySelector(`.disability-checkbox-${disability.beperking_id}`)
+                      .checked = true;
+              }
+          })
+
 
           document.getElementById("disability-dropdown").appendChild(label);
         })
@@ -167,4 +178,15 @@ function collectSelectedDisabilities() {
   });
 
   return selectedDisabilities;
+}
+
+function toggleDisabilityDropdown() {
+    const containerElem = document.querySelector('.js-disability-dropdown-container');
+
+    if (containerElem.classList.contains('show-dropdown')) {
+        containerElem.classList.remove('show-dropdown');
+    }
+    else {
+        containerElem.classList.add('show-dropdown');
+    }
 }

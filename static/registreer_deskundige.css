@@ -190,6 +190,7 @@ input {
   text-align: left;
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .dropdown-button .arrow {
@@ -246,11 +247,11 @@ input {
   left: 5px;
 }
 
-.disability-dropdown-container:hover .dropdown-content {
+.disability-dropdown-container.show-dropdown .dropdown-content {
   display: grid;
 }
 
-.disability-dropdown-container:hover .dropdown-button > .arrow {
+.disability-dropdown-container.show-dropdown .dropdown-button > .arrow {
   margin-top: 5px;
   transform: rotate(-135deg);
 }
