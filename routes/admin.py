@@ -110,10 +110,13 @@ def api_get_data():
     expert_data = experts_model.get_deskundigen()
     expert_dict = [dict(row) for row in expert_data]
 
-    enlistment_data = enlistment_model.get_enlistments()
-    enlistment_dict = [dict(row) for row in enlistment_data]
-
     research_data = research_model.get_all_research_items_for_admins()
+
+    # Inschrijving details
+    enlistment_data = enlistment_model.get_enlistments_details()
+    enlistment_dict = [dict(row) for row in enlistment_data]
+    print(enlistment_dict)
+
 
     return {
         "experts": expert_dict,
