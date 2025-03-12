@@ -115,7 +115,6 @@ def api_get_data():
     # Inschrijving details
     enlistment_data = enlistment_model.get_enlistments_details()
     enlistment_dict = [dict(row) for row in enlistment_data]
-    print(enlistment_dict)
 
 
     return {
