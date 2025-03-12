@@ -1,7 +1,9 @@
 import sqlite3
+from hashlib import sha256
 from pathlib import Path
 
-from lib.model.users import hash_password
+def hash_password(password):
+    return sha256(password.encode('utf-8')).hexdigest()
 
 
 class WP3DatabaseGenerator:
