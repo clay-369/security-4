@@ -136,9 +136,17 @@ class Experts:
         if not valid:
             return False, "U moet een geldige postcode invullen."
 
-          # Temporary solution to check if there are "onderzoeken"
+        # Temporary solution to check if there are "onderzoeken"
         if expert["type_onderzoek"] == "":
             return False, "U moet een type onderzoek selecteren."
+        
+        if expert["type_onderzoek"] == "":
+            return False, "U moet een type onderzoek selecteren."
+        
+        # Check if all neccesary fields are filled
+        for field in expert:
+            if field in neccesary_fields and expert[field] == "":
+                return False, f"Het veld {field} is verplicht.\n"
         
 
         self.cursor.execute("""

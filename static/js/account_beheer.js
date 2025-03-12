@@ -86,7 +86,6 @@ window.addEventListener("load", function () {
           data.deskundige.telefoonnummer
         document.getElementById("geboortedatum").value =
           data.deskundige.geboortedatum
-        document.getElementById("geslacht").value = data.deskundige.geslacht
         document.getElementById("type-beperking").value =
           data.deskundige.type_beperking
         document.getElementById("hulpmiddelen").value =
@@ -105,10 +104,15 @@ window.addEventListener("load", function () {
           data.deskundige.toezichthouder_telefoonnummer
         document.getElementById("type-onderzoek").value =
           data.deskundige.type_onderzoek
-        // document.getElementById("voorkeur-benadering").value =
-        //   data.deskundige.voorkeur_benadering
         document.getElementById("bijzonderheden-beschikbaarheid").value =
           data.deskundige.bijzonderheden_beschikbaarheid
+        if (data.deskundige.voorkeur_benadering == "telefoon") {
+          document.getElementById("preference-email").checked = false
+          document.getElementById("preference-telefoon").checked = true
+        } else {
+          document.getElementById("preference-email").checked = true
+          document.getElementById("preference-telefoon").checked = false
+        }
       } else {
         console.log("Error!")
       }
