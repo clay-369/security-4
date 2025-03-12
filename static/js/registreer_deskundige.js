@@ -47,9 +47,8 @@ window.addEventListener("load", function () {
           label.innerHTML += disability.beperking
           label.addEventListener("keydown", (event) => {
             if (event["key"] === "Enter") {
-              document.querySelector(
-                `.disability-checkbox-${disability.beperking_id}`
-              ).checked = true
+              let checkbox = document.querySelector(`.disability-checkbox-${disability.beperking_id}`);
+              checkbox.checked = !checkbox.checked;
             }
           })
 
