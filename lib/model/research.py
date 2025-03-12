@@ -101,6 +101,13 @@ class Research:
                             ('GOEDGEKEURD', True))
         return self.cursor.fetchall()
 
+
+    def get_all_research_items_for_admins(self):
+        self.cursor.execute("SELECT * FROM onderzoeken JOIN organisaties USING(organisatie_id)")
+        rows = self.cursor.fetchall()
+        return [dict(row) for row in rows]
+
+
     def format_research_item(self, research_item) -> dict:
         """ Adds organisatie_naam to research_item and converts it to dict """
         research_item = dict(research_item)
@@ -122,3 +129,8 @@ class Research:
                              research['met_beloning'], research['onderzoek_id']))
         self.conn.commit()
         return True
+
+    def status_update(self, status, onderzoek_id, admin_id):
+        self.cursor.execute("UPDATE onderzoeken SET status = ?, beheerder_id = ? WHERE onderzoek_id = ?", (status, admin_id, onderzoek_id))
+        self.conn.commit()
+        return True, "Status gewijzigd!"

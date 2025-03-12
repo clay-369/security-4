@@ -61,7 +61,7 @@ class Experts:
             if field in neccesary_fields and deskundige[field] == "":
                 return False, f"Het veld {field} is verplicht.\n"
 
-            
+
         # Check if the email is already in use
         existing_email = self.cursor.execute("SELECT email FROM deskundigen WHERE email = ?", (deskundige["email"],)).fetchone()
         if existing_email:
@@ -69,7 +69,7 @@ class Experts:
 
         # Create expert
         self.cursor.execute("INSERT into deskundigen (email,wachtwoord,voornaam,achternaam,postcode,telefoonnummer,geboortedatum,hulpmiddelen,bijzonderheden, bijzonderheden_beschikbaarheid, introductie, voorkeur_benadering, type_onderzoeken, toezichthouder, toezichthouder_naam, toezichthouder_email, toezichthouder_telefoonnummer, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-        (deskundige["email"], hash_password(deskundige["wachtwoord"]), deskundige["voornaam"], deskundige["achternaam"], deskundige["postcode"], deskundige["telefoonnummer"], deskundige["geboortedatum"], deskundige["hulpmiddelen"], deskundige["bijzonderheden"], deskundige["bijzonderheden_beschikbaarheid"], deskundige["introductie"], deskundige["voorkeur_benadering"], deskundige["type_onderzoek"], deskundige["toezichthouder"], deskundige["toezichthouder_naam"], deskundige["toezichthouder_email"], deskundige["toezichthouder_telefoonnummer"], "Nieuw"))
+        (deskundige["email"], hash_password(deskundige["wachtwoord"]), deskundige["voornaam"], deskundige["achternaam"], deskundige["postcode"], deskundige["telefoonnummer"], deskundige["geboortedatum"], deskundige["hulpmiddelen"], deskundige["bijzonderheden"], deskundige["bijzonderheden_beschikbaarheid"], deskundige["introductie"], deskundige["voorkeur_benadering"], deskundige["type_onderzoek"], deskundige["toezichthouder"], deskundige["toezichthouder_naam"], deskundige["toezichthouder_email"], deskundige["toezichthouder_telefoonnummer"], "NIEUW"))
 
         new_expert_id = self.cursor.lastrowid
 
@@ -125,3 +125,8 @@ class Experts:
 
         self.conn.commit()
         return True, "Deskundige gewijzigd!"
+
+    def status_update(self, status, expert_id, admin_id):
+        self.cursor.execute("UPDATE deskundigen SET status = ?, beheerder_id = ?  WHERE deskundige_id = ?", (status, admin_id, expert_id))
+        self.conn.commit()
+        return True, "Status gewijzigd!"

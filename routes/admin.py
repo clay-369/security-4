@@ -1,9 +1,13 @@
 import sqlite3
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, session
 
+from lib.model.research import Research
 from lib.model.users import Users
 from lib.model.organisation import Organisation
+from lib.model.experts import Experts
+from lib.model.enlistments import Enlistment
+
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -17,7 +21,7 @@ def manage():
     return render_template('beheerder-beheer.html')
 
 
-@admin_bp.route('/admin/organisatie', methods=['GET'])
+@admin_bp.route('/admin/e', methods=['GET'])
 def organisatie_registratie():
     return render_template('organisatie_registratie.html')
 
@@ -97,4 +101,49 @@ def create_organisation():
 
     return {"message": "Dit e-mailadres bestaat al.", "success": False}, 400
 
+@admin_bp.route('/api/admin', methods=['GET'])
+def api_get_data():
+    experts_model = Experts()
+    enlistment_model = Enlistment()
+    research_model = Research()
+
+    expert_data = experts_model.get_deskundigen()
+    expert_dict = [dict(row) for row in expert_data]
+
+    research_data = research_model.get_all_research_items_for_admins()
+
+    # Inschrijving details
+    enlistment_data = enlistment_model.get_enlistments_details()
+    enlistment_dict = [dict(row) for row in enlistment_data]
+    print(enlistment_dict)
+
+
+    return {
+        "experts": expert_dict,
+        "enlistments": enlistment_dict,
+        "researches": research_data,
+        "admin_id": session.get('user_id')
+    }
+
+@admin_bp.route('/api/admin', methods=['PATCH'])
+def api_status_update():
+    data = request.get_json()
+    status = data.get('status')
+    data_type = data.get('data_type')
+    data_id = data.get('data_id')
+    admin_id = data.get('admin_id')
+    if data_type == 'expert':
+        experts_model = Experts()
+        experts_model.status_update(status, data_id, admin_id)
+        return {"message" : "Registratie succesvol geaccepteerd!"}
+    elif data_type == 'enlistment':
+        enlistment_model = Enlistment()
+        enlistment_model.status_update(status, data_id, admin_id)
+        return {"message" : "Inschrijving succesvol geaccepteerd!"}
+    elif data_type == 'research':
+        research_model = Research()
+        research_model.status_update(status, data_id, admin_id)
+        return {"message" : "Onderzoek succesvol geaccepteerd!"}
+    else:
+        return {"message": "Er is iets fout gegaan tijdens het accepteren van het verzoek."}
 

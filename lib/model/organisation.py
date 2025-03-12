@@ -47,3 +47,7 @@ class Organisation:
     def get_organisation_by_email(self, email):
         result = self.cursor.execute("SELECT * FROM organisaties WHERE email = ?", (email,)).fetchone()
         return dict(result)
+
+    def get_all_organisations(self):
+        result = self.cursor.execute("SELECT * FROM organisaties").fetchall()
+        return result
