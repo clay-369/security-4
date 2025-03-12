@@ -84,27 +84,26 @@ def api_login():
     password = hash_password(password)
 
     users_model = Users()
-    login = users_model.login(email)
+    login = users_model.login(email, password)
     if login:
         if type(login) == str:
+            # Error message
             return {"message": login}
 
         if login['account_type'] == 'expert':
             expert_account = login['user']
-            if password == expert_account['wachtwoord']:
-                session['user_id'] = expert_account['deskundige_id']
-                session['name'] = expert_account['voornaam']
-                session['admin'] = False
-                return {"success": True, "account_type": "expert"}
+            session['user_id'] = expert_account['deskundige_id']
+            session['name'] = expert_account['voornaam']
+            session['admin'] = False
+            return {"success": True, "account_type": "expert"}
 
         elif login['account_type'] == 'admin':
             admin_account = login['user']
-            if password == admin_account['wachtwoord']:
-                print('Password correct')
-                session['user_id'] = admin_account['beheerder_id']
-                session['name'] = admin_account['voornaam']
-                session['admin'] = True
-                return {"success": True, "account_type": "admin"}
+            print('Password correct')
+            session['user_id'] = admin_account['beheerder_id']
+            session['name'] = admin_account['voornaam']
+            session['admin'] = True
+            return {"success": True, "account_type": "admin"}
     else:
         return {"message": "Incorrecte wachtwoord of email.", "success": False}
 

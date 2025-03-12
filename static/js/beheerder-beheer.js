@@ -54,7 +54,10 @@ function openEditModal(adminID) {
                 const firstName = document.getElementById("edit_first_name").value;
                 const lastName = document.getElementById("edit_last_name").value;
                 const email = document.getElementById('edit_email').value;
-                const password = document.getElementById('edit_password').value;
+                let password = document.getElementById('edit_password').value;
+                if (password === '') {
+                    password = null;
+                }
 
                    fetch('/api/admin/beheer', {
                         method: 'PATCH',
