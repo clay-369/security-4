@@ -185,12 +185,11 @@ class WP3DatabaseGenerator:
             # Auditieve beperkingen
             ("auditief", "doof"),
             ("auditief", "slechthorend"),
-            ("auditief", "doofblind"),
+            ("auditief en visueel", "doofblind"),
             # Visuele beperkingen
             ("visueel", "blind"),
             ("visueel", "slechtziend"),
             ("visueel", "kleurenblind"),
-            ("visueel", "doofblind"),
             # Motorische / lichamelijke beperkingen
             ("motorisch of lichamelijk", "amputatie of mismaaktheid"),
             ("motorisch of lichamelijk", "artritus"),
@@ -236,7 +235,19 @@ class WP3DatabaseGenerator:
                           "1-1-1800", "Rollator", "heel oud", "alleen woensdag", "Hallo ik ben Diekerik",
                           "TELEFONISCH", "nee", 1, "Jan", "jan@email.com", "06122222", "NIEUW", None)
         self.__execute_transaction_statement(insert_statement_experts, values_experts)
-        print("✅ Filled default expert account")
+        print("✅ Filled new expert account")
+
+        insert_statement_experts = ("INSERT INTO deskundigen "
+                                    "(email, wachtwoord, voornaam, achternaam, postcode, telefoonnummer, "
+                                    "geboortedatum, hulpmiddelen, bijzonderheden, bijzonderheden_beschikbaarheid, "
+                                    "introductie, type_onderzoeken, voorkeur_benadering, toezichthouder, "
+                                    "toezichthouder_naam, toezichthouder_email, toezichthouder_telefoonnummer, "
+                                    "status, beheerder_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+        values_experts = ("friet@hr.nl", hash_password("geheimer"), "Diederik", "de Vries", "1234AA", "06958388583",
+                          "1-1-1800", "Rollator", "heel oud", "alleen woensdag", "Hallo ik ben Diekerik",
+                          "TELEFONISCH", "nee", 1, "Jan", "jan@email.com", "06122222", "GOEDGEKEURD", None)
+        self.__execute_transaction_statement(insert_statement_experts, values_experts)
+        print("✅ Filled accepted expert account")
 
         insert_statement_research = ("""INSERT INTO onderzoeken 
             (organisatie_id, titel, beschrijving, beschikbaar, datum_vanaf, datum_tot, onderzoek_type, locatie, 

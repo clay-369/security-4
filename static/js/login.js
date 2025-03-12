@@ -25,7 +25,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
             //     console.log('Succes voor admin!')
             // }
         } else {
-            console.log('Foktop!')
+            showSnackbar(data['message']);
         }
     })
 

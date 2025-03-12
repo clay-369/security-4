@@ -15,7 +15,11 @@ function collectInfo() {
     const email = document.querySelector('#email').value;
     const phoneNumber = document.querySelector('#phone-number').value;
     const password = document.querySelector('#password').value;
-    const details = document.querySelector('#details').value;
+    let details = document.querySelector('#details').value;
+    if (details === '') {
+        details = null;
+    }
+
     if (!name) {
         showSnackbar("Vul een naam in");
         return false;
