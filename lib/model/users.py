@@ -7,6 +7,7 @@ class Users:
         self.conn, self.cursor = database.connect_db()
 
     def login(self, email, password):
+        password = hash_password(password)
         expert = self.cursor.execute('SELECT * FROM deskundigen WHERE wachtwoord = ? AND email = ?',
                                      (password, email)).fetchone()
         if expert:

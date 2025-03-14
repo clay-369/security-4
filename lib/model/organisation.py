@@ -36,7 +36,7 @@ class Organisation:
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (data['name'], data['organisation_type'], data['website'], data['description'], data['contact_person'],
-                data['email'], data['phone_number'], data['details'], data['password']))
+                data['email'], data['phone_number'], data['details'], hash_password(data['password'])))
         finally:
             self.conn.commit()
         return self.cursor.lastrowid

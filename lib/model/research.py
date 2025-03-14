@@ -134,13 +134,26 @@ class Research:
 
         return research_item
 
-    def research_edit(self, research):
+    def edit_research(self, research, research_id):
+        try:
+            research['beloning']
+        except KeyError:
+            if research['met_beloning'] == 1:
+                return {"error": "Field <beloning> missing"}
+            else:
+                research['beloning'] = None
+
+        try:
+            research['beschrijving']
+        except KeyError:
+                research['beschrijving'] = None
+
         self.cursor.execute('UPDATE onderzoeken '
                             'SET titel = ?, beschikbaar = ?, beschrijving = ?, datum_vanaf = ?, '
                             'datum_tot = ?, beloning = ?, met_beloning = ? WHERE onderzoek_id = ?',
                             (research['titel'], research['beschikbaar'], research['beschrijving'],
                              research['datum_vanaf'], research['datum_tot'], research['beloning'],
-                             research['met_beloning'], research['onderzoek_id']))
+                             research['met_beloning'], research_id))
         self.conn.commit()
         return True
 
@@ -148,3 +161,7 @@ class Research:
         self.cursor.execute("UPDATE onderzoeken SET status = ?, beheerder_id = ? WHERE onderzoek_id = ?", (status, admin_id, onderzoek_id))
         self.conn.commit()
         return True, "Status gewijzigd!"
+
+    def get_organisation_id(self, research_id):
+        self.cursor.execute("SELECT organisatie_id FROM onderzoeken WHERE onderzoek_id = ?", (research_id,))
+        return self.cursor.fetchone()['organisatie_id']

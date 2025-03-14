@@ -26,12 +26,18 @@ jwt.init_app(app)
 app.register_blueprint(admin.admin_bp)
 app.register_blueprint(expert.expert_bp)
 app.register_blueprint(research.research_bp)
-app.register_blueprint(auth.auth_bp, url_prefix='/auth')
 app.register_blueprint(organisation.organisation_bp)
+app.register_blueprint(auth.auth_bp, url_prefix='/auth')
 
 
-OPEN_ROUTES = ['login_page', 'logout', '/', 'static', 'api_login', 'api_admin_beheer', 'test2', 'auth.login_jwt', 'expert.register', 'expert.deskundige_api', 'expert.disabilities', 'expert.research', "expert.create_expert"]
-PUBLIC_ROUTES = ['organisation.api_edit_research' 'organisation.get_research', 'auth.whoami', 'auth.refresh_access_token', 'auth.logout_jwt', 'organisation.create_research_item', 'organisation.get_research_by_id']
+OPEN_ROUTES = [
+    'login_page', 'logout', '/', 'static', 'api_login', 'api_admin_beheer', 'test2', 'auth.login_jwt',
+    'expert.register', 'expert.deskundige_api', 'expert.disabilities', 'expert.research', "expert.create_expert"
+]
+PUBLIC_API_ROUTES = [
+    'organisation.edit_research', 'organisation.get_research', 'auth.whoami', 'auth.refresh_access_token',
+    'auth.logout_jwt', 'organisation.create_research_item', 'organisation.get_research_by_id'
+]
 ADMIN_ROUTES = ['admin.manage', 'admin.dashboard_beheer', 'admin.organisatie_registratie']
 EXPERT_ROUTES = ['expert.dashboard', 'expert.register', 'expert.edit', 'expert.details']
 
@@ -39,26 +45,26 @@ temp_routes = ['expert.edit', 'expert.deskundige_api']
 
 @app.before_request
 def before_request():
-    logged_in = session.get('user_id')
-
     if request.endpoint in OPEN_ROUTES:
         return # Let user access route
 
-    if request.endpoint in PUBLIC_ROUTES:
+    if request.endpoint in PUBLIC_API_ROUTES:
         return # Let jwt function handle protection
 
     # TEMP
     if request.endpoint in temp_routes:
         return
 
+    logged_in = session.get('user_id')
+
     if logged_in is None:
         return redirect(url_for('login_page'))
 
     if logged_in:
-        if request.endpoint in ADMIN_ROUTES and session.get('admin') == False:
+        if request.endpoint not in EXPERT_ROUTES and session.get('admin') == False:
             return redirect(url_for('index'))
-        elif request.endpoint in EXPERT_ROUTES and session.get('admin') == True:
-            return redirect(url_for('admin.dashboard_beheer'))   # Needs to redirect to admin dashboard when it's ready
+        elif request.endpoint not in ADMIN_ROUTES and session.get('admin') == True:
+            return redirect(url_for('admin.dashboard_beheer'))
 
 
 @app.route('/')
@@ -82,7 +88,6 @@ def api_login():
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
-    password = hash_password(password)
 
     users_model = Users()
     login = users_model.login(email, password)

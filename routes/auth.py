@@ -20,7 +20,6 @@ def login_jwt():
     data = request.get_json()
     email = data['email']
     password = data['password']
-    password = hash_password(password)
 
     user_model = Users()
     is_validated = user_model.login(email, password)

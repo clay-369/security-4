@@ -5,9 +5,10 @@ from lib.model.research import Research
 
 organisation_bp = Blueprint('organisation', __name__)
 
+
 # All routes for external organisation use
 
-@organisation_bp.get('/onderzoeken') # Test route
+@organisation_bp.route('/onderzoeken', methods=['GET'])  # Test route
 @jwt_required()
 def get_research():
     claims = get_jwt()
@@ -21,7 +22,7 @@ def get_research():
     return result, 200
 
 
-@organisation_bp.get('/onderzoeken/<research_id>') # Test route
+@organisation_bp.route('/onderzoeken/<research_id>', methods=['GET'])
 @jwt_required()
 def get_research_by_id(research_id):
     claims = get_jwt()
@@ -39,7 +40,7 @@ def get_research_by_id(research_id):
     return research_item, 200
 
 
-@organisation_bp.post('/onderzoeken')
+@organisation_bp.route('/onderzoeken', methods=['POST'])
 @jwt_required()
 def create_research_item():
     claims = get_jwt()
@@ -57,17 +58,28 @@ def create_research_item():
             return new_research_item, 422
 
     except KeyError:
-        return new_research_item, 201 # Created
+        return new_research_item, 201  # Created
 
 
+@organisation_bp.route('/onderzoeken/<research_id>', methods=['PUT'])
+@jwt_required()
+def edit_research(research_id):
+    claims = get_jwt()
+    if claims.get('account_type') != "organisation":
+        return {"message": "You are not authorized to access this resource"}, 401
 
-@organisation_bp.route('/api/onderzoeken/edit', methods=['PUT'])
-def api_edit_research():
-    research_model = Research()
+    organisation_id = claims['organisation_id']
+
     research = request.get_json()
 
-    research_edit = research_model.research_edit(research)
-    if research_edit:
-        return {"message": "Onderzoek succesvol bewerkt.", 'success': True }, 200
+    research_model = Research()
+
+    # Check if research item belongs to this organisation
+    if organisation_id != research_model.get_organisation_id(research_id):
+        return {"message": "You are not authorized to access this resource"}, 401
+
+    is_edited = research_model.edit_research(research, research_id)
+    if is_edited:
+        return {"message": "Onderzoek succesvol bewerkt.", "success": True}, 200
     else:
-        return {'error': 'Onderzoek bewerken mislukt.'}, 400
+        return {"error": "Onderzoek bewerken mislukt."}, 400
