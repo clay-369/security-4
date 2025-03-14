@@ -7,7 +7,12 @@ function closeModal(modalType) {
 }
 
 function openEditModal(adminID) {
-    fetch(`/api/admin/beheer?id=${adminID}`)
+    fetch(`/api/admin/beheer/${adminID}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+        }
+    })
         .then(response => response.json())
         .then(admin => {
             const openedModal = document.getElementById("editModal");
@@ -59,13 +64,14 @@ function openEditModal(adminID) {
                     password = null;
                 }
 
-                   fetch('/api/admin/beheer', {
+                   fetch(`/api/admin/beheer/${adminID}`, {
                         method: 'PATCH',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
                         },
                         body: JSON.stringify({first_name: firstName, last_name: lastName,
-                            email: email, password: password, admin_id: adminID})
+                            email: email, password: password})
                    })
                     .then(response => response.json())
                     .then(data => {
@@ -81,12 +87,12 @@ function openEditModal(adminID) {
 
            document.getElementById('deleteAdmin')
                .addEventListener('click', () => {
-                       fetch('/api/admin/beheer', {
+                       fetch(`/api/admin/beheer/${adminID}`, {
                             method: 'DELETE',
                             headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({admin_id: adminID})
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+                            }
                        })
                         .then(response => response.json())
                         .then(data => {
@@ -103,7 +109,12 @@ function openEditModal(adminID) {
 }
 
 function loadTable() {
-        fetch('/api/admin/beheer?fetch=adminData')
+        fetch('/api/admin/beheer', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+            }
+        })
         .then(response => response.json())
         .then(data => {
             const tbody = document.querySelector("table tbody");
@@ -139,7 +150,8 @@ document.getElementById('createAdmin').addEventListener('click', function(event)
     fetch('/api/admin/beheer', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
         },
         body: JSON.stringify({request: request, first_name: firstName, last_name: lastName, email: email, password: password})
     })

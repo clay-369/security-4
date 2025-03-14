@@ -40,7 +40,7 @@ class Users:
 
     def get_single_admin(self, admin_id):
         admin = self.cursor.execute('SELECT * FROM beheerders WHERE beheerder_id = ?', (admin_id,)).fetchone()
-        return admin
+        return dict(admin)
 
 
     def admin_edit(self, admin_id, first_name, last_name, email, password):

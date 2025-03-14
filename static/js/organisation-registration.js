@@ -53,7 +53,8 @@ function createOrganisation(data) {
     fetch('/api/organisatie', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
         },
         body: JSON.stringify(data)
     })
