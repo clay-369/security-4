@@ -40,25 +40,29 @@ def get_expert():
     if claims.get('account_type') != "expert":
         return {"message": "You are not authorized to access this resource"}, 401
 
-    expert_model = Experts()
     expert_id = claims.get('expert_id')
+    expert_model = Experts()
     expert_info = expert_model.get_single_expert(expert_id)
 
     return expert_info, 200
 
 
 @expert_bp.route("/api/deskundige", methods=["PUT"])
+@jwt_required()
 def update_expert():
-    expert_model = Experts()
-    if request.args.get('id'):
-        expert_id = request.args.get('id')
-        data = request.get_json()
-        update_deskundige, message = expert_model.update_deskundige(data)
+    claims = get_jwt()
+    if claims.get('account_type') != "expert":
+        return {"message": "You are not authorized to access this resource"}, 401
 
-        if update_deskundige:
-            return {"success": True, "message": message}
-        else:
-            return {"success": False, "message": message}
+    expert_id = claims.get('expert_id')
+    expert_model = Experts()
+    data = request.get_json()
+    update_deskundige, message = expert_model.update_expert(data, expert_id)
+
+    if update_deskundige:
+        return {"success": True, "message": message}
+    else:
+        return {"success": False, "message": message}
         
 @expert_bp.route("/api/disabilities", methods=["GET"])
 def disabilities():

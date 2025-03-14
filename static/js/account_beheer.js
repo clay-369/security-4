@@ -1,4 +1,3 @@
-let userData = {}
 // Toezichthouder checkbox
 document
   .getElementById("toezichthouder")
@@ -57,8 +56,6 @@ window.addEventListener("load", function () {
   })
     .then((response) => response.json())
     .then((expert) => {
-        // Save the user data to the userData object
-        userData = expert
         // Update the title and input fields with the user data
         document.getElementById("voornaam-title").textContent =
           expert.voornaam
@@ -67,7 +64,6 @@ window.addEventListener("load", function () {
         document.getElementById("voornaam").value = expert.voornaam
         document.getElementById("achternaam").value = expert.achternaam
         document.getElementById("email").value = expert.email
-        document.getElementById("wachtwoord").value = expert.wachtwoord
         document.getElementById("postcode").value = expert.postcode
         document.getElementById("telefoonnummer").value =
           expert.telefoonnummer
@@ -114,17 +110,18 @@ document
     const firstName = document.getElementById("voornaam").value
     const lastName = document.getElementById("achternaam").value
     const email = document.getElementById("email").value
-    const password = document.getElementById("wachtwoord").value
+    let password = document.getElementById("wachtwoord").value
+    if (password === '') {
+        password = null;
+    }
     const postcode = document.getElementById("postcode").value
     const telefoonnummer = document.getElementById("telefoonnummer").value
     const geboortedatum = document.getElementById("geboortedatum").value
     const geslacht = document.getElementById("geslacht").value
-    const type_beperking = document.getElementById("type-beperking").value
     const hulpmiddelen = document.getElementById("hulpmiddelen").value
     const introductie = document.getElementById("introductie").value
     const bijzonderheden = document.getElementById("bijzonderheden").value
     const toezichthouder = document.getElementById("toezichthouder").checked
-    const akkoord = document.getElementById("akkoord").checked
     const toezichthouder_naam = document.getElementById(
       "toezichthouder-naam"
     ).value
@@ -146,7 +143,6 @@ document
     ).value
 
     let deskundige_data = {
-      deskundige_id: userData.deskundige_id,
       voornaam: firstName,
       achternaam: lastName,
       email: email,
@@ -155,7 +151,6 @@ document
       telefoonnummer: telefoonnummer,
       geboortedatum: geboortedatum,
       geslacht: geslacht,
-      type_beperking: type_beperking,
       hulpmiddelen: hulpmiddelen,
       introductie: introductie,
       bijzonderheden: bijzonderheden,
@@ -166,13 +161,13 @@ document
       type_onderzoek: type_onderzoek,
       voorkeur_benadering: voorkeur_benadering,
       bijzonderheden_beschikbaarheid: bijzonderheden_beschikbaarheid,
-      akkoord: akkoord,
     }
 
-    fetch("/api/deskundige?id=" + userData.deskundige_id, {
+    fetch("/api/deskundige", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`
       },
       body: JSON.stringify(deskundige_data),
     })
