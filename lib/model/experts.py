@@ -88,7 +88,7 @@ class Experts:
         self.conn.commit()
         return True, "Deskundige gemaakt!"
 
-    def get_deskundigen(self):
+    def get_experts(self):
         self.cursor.execute("SELECT * FROM deskundigen")
         return self.cursor.fetchall()
     

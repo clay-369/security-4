@@ -127,12 +127,17 @@ def create_organisation():
     return {"message": "Dit e-mailadres bestaat al.", "success": False}, 400
 
 @admin_bp.route('/api/admin', methods=['GET'])
+@jwt_required()
 def api_get_data():
+    claims = get_jwt()
+    if claims.get('account_type') != "admin":
+        return {"message": "You are not authorized to access this resource"}, 401
+
     experts_model = Experts()
     enlistment_model = Enlistment()
     research_model = Research()
 
-    expert_data = experts_model.get_deskundigen()
+    expert_data = experts_model.get_experts()
     expert_dict = [dict(row) for row in expert_data]
 
     research_data = research_model.get_all_research_items_for_admins()
@@ -141,33 +146,38 @@ def api_get_data():
     enlistment_data = enlistment_model.get_enlistments_details()
     enlistment_dict = [dict(row) for row in enlistment_data]
 
-
     return {
         "experts": expert_dict,
         "enlistments": enlistment_dict,
-        "researches": research_data,
-        "admin_id": session.get('user_id')
+        "researches": research_data
     }
 
 @admin_bp.route('/api/admin', methods=['PATCH'])
+@jwt_required()
 def api_status_update():
+    claims = get_jwt()
+    if claims.get('account_type') != "admin":
+        return {"message": "You are not authorized to access this resource"}, 401
+
+    admin_id = claims.get('admin_id')
+
     data = request.get_json()
     status = data.get('status')
     data_type = data.get('data_type')
     data_id = data.get('data_id')
-    admin_id = data.get('admin_id')
+
     if data_type == 'expert':
         experts_model = Experts()
         experts_model.status_update(status, data_id, admin_id)
-        return {"message" : "Registratie succesvol geaccepteerd!"}
+        return {"message" : "Registratie succesvol geaccepteerd!", "success": True}
     elif data_type == 'enlistment':
         enlistment_model = Enlistment()
         enlistment_model.status_update(status, data_id, admin_id)
-        return {"message" : "Inschrijving succesvol geaccepteerd!"}
+        return {"message" : "Inschrijving succesvol geaccepteerd!", "success": True}
     elif data_type == 'research':
         research_model = Research()
         research_model.status_update(status, data_id, admin_id)
-        return {"message" : "Onderzoek succesvol geaccepteerd!"}
+        return {"message" : "Onderzoek succesvol geaccepteerd!", "success": True}
     else:
         return {"message": "Er is iets fout gegaan tijdens het accepteren van het verzoek."}
 

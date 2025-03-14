@@ -15,14 +15,14 @@ class Users:
             elif expert['status'] == 'NIEUW':
                 return "Uw registratie is in behandeling."
             elif expert['status'] == 'AFGEKEURD':
-                return "Uw registratie is afgekeurd"
+                return "Uw registratie is afgekeurd."
+
+        admin = self.cursor.execute('SELECT * FROM beheerders WHERE wachtwoord= ? AND email = ?',
+                                    (password, email)).fetchone()
+        if admin is not None:
+            return {"user": admin, "account_type": 'admin'}
         else:
-            admin = self.cursor.execute('SELECT * FROM beheerders WHERE wachtwoord= ? AND email = ?',
-                                        (password, email)).fetchone()
-            if admin is not None:
-                return {"user": admin, "account_type": 'admin'}
-            else:
-                return None
+            return None
 
 
     def admin_create(self, first_name, last_name, email, password):

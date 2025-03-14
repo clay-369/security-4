@@ -76,10 +76,10 @@ function openEditModal(adminID) {
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            console.log('Admin bewerkt!');
+                            showSnackbar("Beheerder is succesvol bewerkt.", 'success');
                             loadTable();
                         } else {
-                            console.log('Error!');
+                            showSnackbar("Beheerder kon niet bewerkt worden.");
                         }
                     })
                 closeModal('editModal');
@@ -97,10 +97,10 @@ function openEditModal(adminID) {
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                console.log('Admin verwijderd!');
+                                showSnackbar("Beheerder is succesvol verwijdert.", 'success');
                                 loadTable();
                             } else {
-                                console.log('Error!');
+                                showSnackbar("Beheerder kon niet verwijdert worden.");
                             }
                         })
                     closeModal('editModal');
@@ -158,10 +158,10 @@ document.getElementById('createAdmin').addEventListener('click', function(event)
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            console.log('Admin gemaakt!');
+            showSnackbar("Beheerder succesvol aangemaakt.", 'success');
             loadTable();
         } else {
-            console.log('Error!');
+            showSnackbar("Beheerder kon niet aangemaakt worden.");
         }
     })
     closeModal('createModal');
