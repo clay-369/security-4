@@ -1,3 +1,18 @@
+function automaticLogin() {
+    const refreshToken = sessionStorage.getItem('refreshToken');
+
+    if (refreshToken === null) {
+        return;
+    }
+
+    fetch('/auth/refresh', {
+        method: 'GET',
+
+    })
+}
+automaticLogin();
+
+
 document.getElementById('loginForm')
     .addEventListener('submit', function(event) {
         event.preventDefault();

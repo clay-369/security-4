@@ -1,8 +1,9 @@
+from datetime import timedelta
+
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_session import Session
 from flask_jwt_extended import JWTManager
 
-from lib.model.users import hash_password
 from lib.model.organisation import Organisation
 from lib.model.token_blocklist import TokenBlocklist
 # Routes
@@ -14,6 +15,9 @@ from lib.model.experts import Experts
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+
 Session(app)
 
 app.config['SECRET_KEY'] = ';)' # For JWT
@@ -35,7 +39,7 @@ OPEN_ROUTES = [
     'expert.register', 'expert.deskundige_api', 'expert.disabilities', 'expert.research', "expert.create_expert"
 ]
 PUBLIC_API_ROUTES = [
-    'organisation.edit_research', 'organisation.get_research', 'auth.whoami', 'auth.refresh_access_token',
+    'organisation.edit_research', 'organisation.get_research', 'auth.whoami', 'auth.login_jwt', 'auth.refresh_access_token',
     'auth.logout_jwt', 'organisation.create_research_item', 'organisation.get_research_by_id'
 ]
 ADMIN_ROUTES = ['admin.manage', 'admin.dashboard_beheer', 'admin.organisatie_registratie']
@@ -61,9 +65,9 @@ def before_request():
         return redirect(url_for('login_page'))
 
     if logged_in:
-        if request.endpoint not in EXPERT_ROUTES and session.get('admin') == False:
+        if request.endpoint in ADMIN_ROUTES and session.get('admin') == False:
             return redirect(url_for('index'))
-        elif request.endpoint not in ADMIN_ROUTES and session.get('admin') == True:
+        elif request.endpoint in EXPERT_ROUTES and session.get('admin') == True:
             return redirect(url_for('admin.dashboard_beheer'))
 
 

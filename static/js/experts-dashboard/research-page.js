@@ -1,5 +1,6 @@
 import {closeResearchModal, showResearchModal} from "../experts-dashboard.js";
 import {get_enlistments_by_expert} from "./enlistments.js";
+import {renderEnlistmentPage} from "./enlistments-page.js";
 
 
 export async function renderResearchPage() {
@@ -15,11 +16,21 @@ export async function renderResearchPage() {
         .then(response => response.json())
         .then(async allResearchItems => {
 
+            if (allResearchItems['error'] === 'token_expired') {
+                refreshAccessToken(renderResearchPage);
+                return;
+            }
+
             // Create list with ids of research items that expert already interacted with
-            const enlistments_by_expert = await get_enlistments_by_expert();
+            const enlistmentsByExpert = await get_enlistments_by_expert();
+            if (enlistmentsByExpert['error'] === 'token_expired') {
+                refreshAccessToken(renderResearchPage);
+                return;
+            }
+
             const enlistedResearchIds = [];
 
-            enlistments_by_expert.forEach(enlistment => enlistedResearchIds.push(enlistment.onderzoek_id));
+            enlistmentsByExpert.forEach(enlistment => enlistedResearchIds.push(enlistment.onderzoek_id));
 
             // Generate the HTML
             let html = '';
@@ -74,6 +85,11 @@ async function renderResearchModal(researchId) {
         .then(response => response.json())
         .then(researchItem => {
 
+            if (researchItem['error'] === 'token_expired') {
+                refreshAccessToken(renderResearchModal, researchId);
+                return;
+            }
+
             document.querySelector('.js-research-modal-background')
                 .innerHTML = `
             <div class="research-modal">
@@ -121,7 +137,13 @@ function enlist(researchId) {
             },
             body: JSON.stringify({research_id: researchId})
         })
-        .then(() => {
+        .then(response => response.json())
+        .then((data) => {
+            if (data['error'] === 'token_expired') {
+                refreshAccessToken(enlist, researchId);
+                return;
+            }
+
             closeResearchModal();
             renderResearchPage();
         });

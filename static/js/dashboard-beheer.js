@@ -11,6 +11,10 @@ function loadTable() {
         })
         .then(response => response.json())
         .then(data => {
+            if (data['error'] === 'token_expired') {
+                refreshAccessToken(loadTable);
+                return;
+            }
             const expertsData = data.experts;
             const expertsBody = document.querySelector("#registrationTable tbody");
             expertsBody.innerHTML = '';
@@ -75,6 +79,10 @@ function openDetailsModal(dataID, dataType) {
     })
         .then(response => response.json())
         .then(responseData => {
+            if (responseData['error'] === 'token_expired') {
+                refreshAccessToken(openDetailsModal, [dataID, dataType]);
+                return;
+            }
             const openedModal = document.getElementById("detailsModal");
             if (openedModal) {
                 openedModal.remove();
@@ -190,32 +198,42 @@ function openDetailsModal(dataID, dataType) {
 
             document.getElementById("detailsModal").addEventListener('submit', function (event) {
                 event.preventDefault();
-
+                let status;
                 if (event.submitter.value === "Accepteren") {
                     status = 'GOEDGEKEURD'
                 } else if (event.submitter.value === "Weigeren") {
                     status = 'AFGEKEURD'
                 }
-                fetch('/api/admin', {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
-                    },
-                    body: JSON.stringify({status: status, data_type: dataType, data_id: dataID})
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            showSnackbar(data['message'], 'success');
-                            loadTable();
-                        } else {
-                            showSnackbar(data['message']);
-                            loadTable();
-                        }
-                    })
+
+                editRequest(status, dataType, dataID);
+
                 closeModal('detailsModal');
             })
+        })
+}
+
+function editRequest(status, dataType, dataID) {
+    fetch('/api/admin', {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+        },
+        body: JSON.stringify({status: status, data_type: dataType, data_id: dataID})
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data['error'] === 'token_expired') {
+                refreshAccessToken(editRequest, [status, dataType, dataID]);
+                return;
+            }
+            if (data.success) {
+                showSnackbar(data['message'], 'success');
+                loadTable();
+            } else {
+                showSnackbar(data['message']);
+                loadTable();
+            }
         })
 }
 

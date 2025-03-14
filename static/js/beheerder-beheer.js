@@ -15,6 +15,10 @@ function openEditModal(adminID) {
     })
         .then(response => response.json())
         .then(admin => {
+            if (admin['error'] === 'token_expired') {
+                refreshAccessToken(openEditModal, adminID);
+                return;
+            }
             const openedModal = document.getElementById("editModal");
             if (openedModal) {
                 openedModal.remove();
@@ -63,49 +67,67 @@ function openEditModal(adminID) {
                 if (password === '') {
                     password = null;
                 }
-
-                   fetch(`/api/admin/beheer/${adminID}`, {
-                        method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
-                        },
-                        body: JSON.stringify({first_name: firstName, last_name: lastName,
-                            email: email, password: password})
-                   })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            showSnackbar("Beheerder is succesvol bewerkt.", 'success');
-                            loadTable();
-                        } else {
-                            showSnackbar("Beheerder kon niet bewerkt worden.");
-                        }
-                    })
+                  editAdmin(adminID, firstName, lastName, email, password);
                 closeModal('editModal');
                });
 
            document.getElementById('deleteAdmin')
                .addEventListener('click', () => {
-                       fetch(`/api/admin/beheer/${adminID}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
-                            }
-                       })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                showSnackbar("Beheerder is succesvol verwijdert.", 'success');
-                                loadTable();
-                            } else {
-                                showSnackbar("Beheerder kon niet verwijdert worden.");
-                            }
-                        })
+                   deleteAdmin(adminID);
+
                     closeModal('editModal');
                 })
            });
+}
+
+function editAdmin(adminID, firstName, lastName, email, password) {
+  fetch(`/api/admin/beheer/${adminID}`, {
+      method: 'PATCH',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+      },
+      body: JSON.stringify({
+          first_name: firstName, last_name: lastName,
+          email: email, password: password
+      })
+  })
+      .then(response => response.json())
+      .then(data => {
+          if (data['error'] === 'token_expired') {
+                refreshAccessToken(editAdmin, [adminID, firstName, lastName, email, password]);
+                return;
+            }
+          if (data.success) {
+              showSnackbar("Beheerder is succesvol bewerkt.", 'success');
+              loadTable();
+          } else {
+              showSnackbar("Beheerder kon niet bewerkt worden.");
+          }
+      })
+}
+
+function deleteAdmin(adminID) {
+   fetch(`/api/admin/beheer/${adminID}`, {
+       method: 'DELETE',
+       headers: {
+           'Content-Type': 'application/json',
+           'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+       }
+   })
+       .then(response => response.json())
+       .then(data => {
+           if (data['error'] === 'token_expired') {
+                refreshAccessToken(deleteAdmin, adminID);
+                return;
+            }
+           if (data.success) {
+               showSnackbar("Beheerder is succesvol verwijdert.", 'success');
+               loadTable();
+           } else {
+               showSnackbar("Beheerder kon niet verwijdert worden.");
+           }
+       })
 }
 
 function loadTable() {
@@ -117,6 +139,10 @@ function loadTable() {
         })
         .then(response => response.json())
         .then(data => {
+            if (data['error'] === 'token_expired') {
+                refreshAccessToken(loadTable);
+                return;
+            }
             const tbody = document.querySelector("table tbody");
             tbody.innerHTML = '';
 
@@ -141,30 +167,43 @@ window.addEventListener('load', function() {
 document.getElementById('createAdmin').addEventListener('click', function(event){
     event.preventDefault();
 
-    const request = 'create'
     const firstName = document.getElementById("first_name").value;
     const lastName = document.getElementById("last_name").value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
+    createAdmin(firstName, lastName, email, password);
+
+    closeModal('createModal');
+});
+
+function createAdmin(firstName, lastName, email, password) {
     fetch('/api/admin/beheer', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
         },
-        body: JSON.stringify({request: request, first_name: firstName, last_name: lastName, email: email, password: password})
+        body: JSON.stringify({
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            password: password
+        })
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            showSnackbar("Beheerder succesvol aangemaakt.", 'success');
-            loadTable();
-        } else {
-            showSnackbar("Beheerder kon niet aangemaakt worden.");
-        }
-    })
-    closeModal('createModal');
-});
+        .then(response => response.json())
+        .then(data => {
+            if (data['error'] === 'token_expired') {
+                refreshAccessToken(createAdmin, [firstName, lastName, email, password]);
+                return;
+            }
+            if (data.success) {
+                showSnackbar("Beheerder succesvol aangemaakt.", 'success');
+                loadTable();
+            } else {
+                showSnackbar("Beheerder kon niet aangemaakt worden.");
+            }
+        })
+}
 
 loadTable()

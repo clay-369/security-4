@@ -9,6 +9,7 @@
     const accessToken = sessionStorage.getItem('accessToken');
     const refreshToken = sessionStorage.getItem('refreshToken');
 
+
     fetch('/auth/logout', {
         headers: {
             'Authorization': `Bearer ${accessToken}`
@@ -21,6 +22,8 @@
             }
         })
         .then(response => {
+            sessionStorage.clear();
+
             window.location.href = '/';
         })
     })

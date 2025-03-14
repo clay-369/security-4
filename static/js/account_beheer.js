@@ -47,60 +47,68 @@ window.addEventListener("load", function () {
 })
 
 window.addEventListener("load", function () {
-  fetch("/api/deskundige", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`
-    },
-  })
-    .then((response) => response.json())
-    .then((expert) => {
-        // Update the title and input fields with the user data
-        document.getElementById("voornaam-title").textContent =
-          expert.voornaam
-        document.getElementById("achternaam-title").textContent =
-          expert.achternaam
-        document.getElementById("voornaam").value = expert.voornaam
-        document.getElementById("achternaam").value = expert.achternaam
-        document.getElementById("email").value = expert.email
-        document.getElementById("postcode").value = expert.postcode
-        document.getElementById("telefoonnummer").value =
-          expert.telefoonnummer
-        document.getElementById("geboortedatum").value =
-          expert.geboortedatum
-        document.getElementById("type-beperking").value =
-          expert.type_beperking
-        document.getElementById("hulpmiddelen").value =
-          expert.hulpmiddelen
-        document.getElementById("introductie").value =
-          expert.introductie
-        document.getElementById("bijzonderheden").value =
-          expert.bijzonderheden
-        document.getElementById("toezichthouder").value =
-          expert.toezichthouder
-        document.getElementById("toezichthouder-naam").value =
-          expert.toezichthouder_naam
-        document.getElementById("toezichthouder-email").value =
-          expert.toezichthouder_email
-        document.getElementById("toezichthouder-telefoonnummer").value =
-          expert.toezichthouder_telefoonnummer
-        document.getElementById("type-onderzoek").value =
-          expert.type_onderzoek
-        document.getElementById("bijzonderheden-beschikbaarheid").value =
-          expert.bijzonderheden_beschikbaarheid
-        if (expert.voorkeur_benadering === "telefoon") {
-          document.getElementById("preference-email").checked = false
-          document.getElementById("preference-telefoon").checked = true
-        } else {
-          document.getElementById("preference-email").checked = true
-          document.getElementById("preference-telephone").checked = false
-        }
-    })
-    .catch((error) => {
-      console.error("Error:", error)
-    })
+    fillPage();
 })
+
+function fillPage() {
+    fetch("/api/deskundige", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`
+        },
+    })
+        .then((response) => response.json())
+        .then((expert) => {
+            if (expert['error'] === 'token_expired') {
+                refreshAccessToken(fillPage);
+                return;
+            }
+            // Update the title and input fields with the user data
+            document.getElementById("voornaam-title").textContent =
+                expert.voornaam
+            document.getElementById("achternaam-title").textContent =
+                expert.achternaam
+            document.getElementById("voornaam").value = expert.voornaam
+            document.getElementById("achternaam").value = expert.achternaam
+            document.getElementById("email").value = expert.email
+            document.getElementById("postcode").value = expert.postcode
+            document.getElementById("telefoonnummer").value =
+                expert.telefoonnummer
+            document.getElementById("geboortedatum").value =
+                expert.geboortedatum
+            document.getElementById("type-beperking").value =
+                expert.type_beperking
+            document.getElementById("hulpmiddelen").value =
+                expert.hulpmiddelen
+            document.getElementById("introductie").value =
+                expert.introductie
+            document.getElementById("bijzonderheden").value =
+                expert.bijzonderheden
+            document.getElementById("toezichthouder").value =
+                expert.toezichthouder
+            document.getElementById("toezichthouder-naam").value =
+                expert.toezichthouder_naam
+            document.getElementById("toezichthouder-email").value =
+                expert.toezichthouder_email
+            document.getElementById("toezichthouder-telefoonnummer").value =
+                expert.toezichthouder_telefoonnummer
+            document.getElementById("type-onderzoek").value =
+                expert.type_onderzoek
+            document.getElementById("bijzonderheden-beschikbaarheid").value =
+                expert.bijzonderheden_beschikbaarheid
+            if (expert.voorkeur_benadering === "telefoon") {
+                document.getElementById("preference-email").checked = false
+                document.getElementById("preference-telefoon").checked = true
+            } else {
+                document.getElementById("preference-email").checked = true
+                document.getElementById("preference-telephone").checked = false
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error)
+        })
+}
 
 document
   .getElementById("updateDeskundige")
@@ -163,28 +171,36 @@ document
       bijzonderheden_beschikbaarheid: bijzonderheden_beschikbaarheid,
     }
 
-    fetch("/api/deskundige", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`
-      },
-      body: JSON.stringify(deskundige_data),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          showSnackbar("Deskundige gewijzigd!", "success")
-        } else {
-          console.error(data.message)
-          showSnackbar(data.message, "error")
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error)
-        showSnackbar(
-          "Er is een fout opgetreden bij het wijzigen van de deskundige.",
-          "error"
-        )
-      })
+    editExpert(deskundige_data);
   })
+
+function editExpert(expertData) {
+    fetch("/api/deskundige", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`
+        },
+        body: JSON.stringify(expertData),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data['error'] === 'token_expired') {
+                refreshAccessToken(editExpert, expertData);
+                return;
+            }
+            if (data.success) {
+                showSnackbar("Deskundige gewijzigd!", "success")
+            } else {
+                console.error(data.message)
+                showSnackbar(data.message, "error")
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error)
+            showSnackbar(
+                "Er is een fout opgetreden bij het wijzigen van de deskundige.",
+                "error"
+            )
+        })
+}

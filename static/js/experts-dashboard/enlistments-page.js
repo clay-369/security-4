@@ -2,18 +2,23 @@ import {closeResearchModal, showResearchModal, intervalId} from "../experts-dash
 import {get_enlistments_by_expert, get_filtered_enlistments_by_expert} from "./enlistments.js";
 
 
-// TODO: Switch to sessions
-const expertId = 1;
-
 // Enlistment Page
 export async function renderEnlistmentPage() {
     const enlistments = await get_enlistments_by_expert();
-    // Rendering each partition
+
+    if (enlistments['error'] === 'token_expired') {
+        refreshAccessToken(renderEnlistmentPage);
+        return;
+    }
     renderPartitions(enlistments);
 }
 
 async function renderFilteredEnlistmentPage(search_words) {
     const enlistments = await get_filtered_enlistments_by_expert(search_words);
+    if (enlistments['error'] === 'token_expired') {
+        refreshAccessToken(renderFilteredEnlistmentPage, search_words);
+        return;
+    }
     renderPartitions(enlistments);
 }
 
@@ -81,6 +86,11 @@ async function renderEnlistmentModal(researchId, status) {
     })
     const researchItem = await response.json();
 
+    if (researchItem['error'] === 'token_expired') {
+        refreshAccessToken(renderEnlistmentModal, [researchId, status]);
+        return;
+    }
+
     // Generate the HTML
     document.querySelector('.js-research-modal-background')
         .innerHTML = `
@@ -134,9 +144,16 @@ function delist(researchId) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
             },
-            body: JSON.stringify({expert_id: expertId, research_id: researchId})
+            body: JSON.stringify({research_id: researchId})
         })
-        .then(() => {
+        .then(response => response.json())
+        .then((data) => {
+
+            if (data['error'] === 'token_expired') {
+                refreshAccessToken(delist, researchId);
+                return;
+            }
+
             closeResearchModal();
             renderEnlistmentPage();
         })
