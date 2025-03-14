@@ -67,3 +67,14 @@ def get_all_enlistments_by_expert(expert_id):
 
     all_enlistments = enlistment_model.get_formatted_enlistments_by_expert(int(expert_id), search_words)
     return all_enlistments, 200
+
+@research_bp.route('/api/onderzoeken/edit', methods=['PUT'])
+def api_edit_research():
+    research_model = Research()
+    research = request.get_json()
+
+    research_edit = research_model.research_edit(research)
+    if research_edit:
+        return {"message": "Onderzoek succesvol bewerkt.", 'success': True }, 200
+    else:
+        return {'error': 'Onderzoek bewerken mislukt.'}, 400

@@ -1,3 +1,5 @@
+import sqlite3
+
 from lib.model.database import Database
 from lib.model.users import hash_password
 
@@ -6,13 +8,38 @@ class Organisation:
         database = Database('./databases/database.db')
         self.conn, self.cursor = database.connect_db()
 
-    def create_organisatie(self, naam, organisatie_type, website, beschrijving, contactpersoon, email, telefoonnummer, overige_details):
-        self.cursor.execute("""
-            INSERT INTO organisaties (naam, organisatie_type, website, beschrijving, contactpersoon, email, telefoonnummer, overige_details)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, (naam, organisatie_type, website, beschrijving, contactpersoon, email, telefoonnummer, overige_details))
-        self.conn.commit()
-        return True
+    def create_organisation(self, data):
+
+        try:
+            if data['description'] == '':
+                data['description'] = None
+        except KeyError:
+            data['description'] = None
+
+        try:
+            if data['details'] == '':
+                data['details'] = None
+        except KeyError:
+            data['details'] = None
+
+        # Check if the email is already in use
+        existing_email = self.cursor.execute("SELECT email FROM organisaties WHERE email = ?",
+                                             (data["email"],)).fetchone()
+        if existing_email:
+            return False
+
+        try:
+            self.cursor.execute(
+                """
+                INSERT INTO organisaties (naam, organisatie_type, website, beschrijving, contactpersoon, email, 
+                    telefoonnummer, overige_details, wachtwoord)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (data['name'], data['organisation_type'], data['website'], data['description'], data['contact_person'],
+                data['email'], data['phone_number'], data['details'], data['password']))
+        finally:
+            self.conn.commit()
+        return self.cursor.lastrowid
 
     def validate_credentials(self, email, password):
         password = hash_password(password)
@@ -21,4 +48,8 @@ class Organisation:
 
     def get_organisation_by_email(self, email):
         result = self.cursor.execute("SELECT * FROM organisaties WHERE email = ?", (email,)).fetchone()
+        return result
+
+    def get_all_organisations(self):
+        result = self.cursor.execute("SELECT * FROM organisaties").fetchall()
         return result

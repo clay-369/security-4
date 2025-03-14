@@ -80,7 +80,7 @@ async function renderEnlistmentModal(researchId, status) {
     document.querySelector('.js-research-modal-background')
         .innerHTML = `
             <div class="research-modal">
-                <img class="close-modal js-close-modal" alt="Sluit Popup" src="../static/icons/xmark-solid.svg">
+                <img tabindex="0" class="close-modal js-close-modal" alt="Sluit Popup" src="../static/icons/xmark-solid.svg">
                 <h1 class="research-modal-title">${researchItem.titel}</h1>
                 <p class="research-modal-description">${researchItem.beschrijving}</p>
                 <h2 class="research-modal-organisation">Details</h2>

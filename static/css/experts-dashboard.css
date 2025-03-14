@@ -205,10 +205,10 @@ section {
 
 /* Research Modal */
 .research-modal-background {
-    position: absolute;
+    position: fixed;
     background-color: rgba(0, 0, 0, 0.5);
     width: 100%;
-    height: 100%;
+    height: calc(100% - 120px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -238,9 +238,9 @@ section {
 .research-modal-description {
     margin: 10px 0;
     font-size: 20px;
-    border-bottom: 1px solid black;
     padding-bottom: 15px;
     width: 100%;
+
 }
 
 .research-modal-details {
@@ -248,8 +248,10 @@ section {
     display: grid;
     grid-template-columns: 150px auto;
     row-gap: 5px;
-    border-bottom: 1px solid black;
-    padding-bottom: 15px;
+    background-color: #D8EAF6;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .research-modal-details p {

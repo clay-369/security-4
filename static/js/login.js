@@ -18,7 +18,7 @@ document.getElementById('loginForm')
             if (data.success) {
                 jwtLogin(email, password);
             } else {
-                console.log('Foktop!')
+                showSnackbar(data['message']);
             }
     })
 })

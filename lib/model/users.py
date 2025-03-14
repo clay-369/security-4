@@ -9,13 +9,18 @@ class Users:
     def login(self, email, password):
         expert = self.cursor.execute('SELECT * FROM deskundigen WHERE wachtwoord = ? AND email = ?', (password, email)).fetchone()
         if expert:
-            return {"user": expert, "account_type": 'expert'}
-
-        admin = self.cursor.execute('SELECT * FROM beheerders WHERE wachtwoord = ? AND email = ?', (password, email)).fetchone()
-        if admin:
-            return {"user": admin, "account_type": 'admin'}
-
-        return None
+            if expert['status'] == 'GOEDGEKEURD':
+                return {"user": expert, "account_type": 'expert'}
+            elif expert['status'] == 'NIEUW':
+                return "Uw registratie is in behandeling."
+            elif expert['status'] == 'AFGEKEURD':
+                return "Uw registratie is afgekeurd"
+        else:
+            admin = self.cursor.execute('SELECT * FROM beheerders WHERE wachtwoord= ? AND email = ?', (password, email)).fetchone()
+            if admin is not None:
+                return {"user": admin, "account_type": 'admin'}
+            else:
+                return None
 
 
     def admin_create(self, first_name, last_name, email, password):
@@ -37,10 +42,15 @@ class Users:
 
 
     def admin_edit(self, admin_id, first_name, last_name, email, password):
-        password = hash_password(password)
-        self.cursor.execute('UPDATE beheerders '
-                            'SET voornaam = ?, achternaam = ?, email = ?, wachtwoord = ?  '
-                            'WHERE beheerder_id = ?', (first_name, last_name, email, password, admin_id))
+        if password:
+            password = hash_password(password)
+            self.cursor.execute('UPDATE beheerders '
+                                'SET voornaam = ?, achternaam = ?, email = ?, wachtwoord = ?  '
+                                'WHERE beheerder_id = ?', (first_name, last_name, email, password, admin_id))
+        else:
+            self.cursor.execute('UPDATE beheerders '
+                                'SET voornaam = ?, achternaam = ?, email = ?'
+                                'WHERE beheerder_id = ?', (first_name, last_name, email, admin_id))
         self.conn.commit()
         return True
 

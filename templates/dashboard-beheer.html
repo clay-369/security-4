@@ -3,12 +3,14 @@
 {% block styles %}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/css/dashboard.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
 {% endblock %}
 
 {% block nav_links %}
 <a href="/admin">Verzoeken</a>
 <a href="/admin/beheer">Beheerders</a>
 <a href="/admin/organisatie">Organisatie</a>
+<a href="/logout">Uitloggen</a>
 {% endblock %}
 
 {% block content %}
@@ -20,42 +22,52 @@
     <div class="row row2">
         <div class="column">
             <div class="search-bar">
-                <input type="text" placeholder="Zoek Ervaringsdeskundigen">
+                <input aria-label="Zoek Registraties" type="text" placeholder="Zoek Registraties">
             </div>
             <div class="section-title">
-                <h3>Ervaringsdeskundigen <i class="fas fa-chevron-down fa-xs"></i></h3>
+                <h2>Registraties <i class="fas fa-chevron-down fa-xs"></i></h2>
             </div>
             <section class="data">
-                <p>Ervaringsdeskundige 1</p>
-                <button class="btn-details">Details</button>
+                <table id="registrationTable">
+                    <tbody>
+                    </tbody>
+                </table>
             </section>
         </div>
 
         <div class="column">
             <div class="search-bar">
-                <input type="text" placeholder="Zoek Organisaties">
+                <input aria-label="Zoek Onderzoeken" type="text" placeholder="Zoek Onderzoeken">
             </div>
             <div class="section-title">
-                <h3>Organisaties <i class="fas fa-chevron-down fa-xs"></i></h3>
+                <h2>Onderzoeken <i class="fas fa-chevron-down fa-xs"></i></h2>
             </div>
             <section class="data">
-                <p>Organisatie 1</p>
-                <button class="btn-details">Details</button>
+                <table id="researchesTable">
+                    <tbody>
+                    </tbody>
+                </table>
             </section>
         </div>
 
         <div class="column">
             <div class="search-bar">
-                <input type="text" placeholder="Zoek Onderzoeken">
+                <input aria-label="Zoek Inschrijvingen" type="text" placeholder="Zoek Inschrijvingen">
             </div>
             <div class="section-title">
-                <h3>Onderzoeken <i class="fas fa-chevron-down fa-xs"></i></h3>
+                <h2>Inschrijvingen <i class="fas fa-chevron-down fa-xs"></i></h2>
             </div>
             <section class="data">
-                <p>Onderzoek 1</p>
-                <button class="btn-details">Details</button>
+                <table id="enlistmentTable">
+                    <tbody>
+                    </tbody>
+                </table>
             </section>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="../static/js/dashboard-beheer.js"></script>
 {% endblock %}

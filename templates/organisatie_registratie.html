@@ -8,6 +8,7 @@
 <a href="/admin">Verzoeken</a>
 <a href="/admin/beheer">Beheerders</a>
 <a href="/admin/organisatie">Organisatie</a>
+<a href="/logout">Uitloggen</a>
 {% endblock %}
 
 {% block content%}
@@ -17,33 +18,36 @@
             Maak hier een organisatie aan!
         </h1>
     </div>
-    <form action="/organisatie_registratie" method="POST">
+    <div class="fields-container">
         <div class="form-group">
             <div class="form-items">
-                <label for="naam">Naam Organisatie:</label>
-                <input type="text" id="naam" name="naam" required>
+                <label for="name">Naam Organisatie</label>
+                <input type="text" id="name" required>
             </div>
             <div class="form-items">
-                <label for="type">Type Organisatie:</label>
-                <input type="text" id="type" name="type" required>
+                <label for="organisation-type">Type Organisatie:</label>
+                <select id="organisation-type" required>
+                    <option value="non-profit" selected>Non-profit</option>
+                    <option value="commerciëel">Commerciëel</option>
+                </select>
             </div>
         </div>
 
         <div class="form-group">
             <div class="form-items">
                 <label for="website">Website:</label>
-                <input type="url" id="website" name="website">
+                <input type="url" id="website" name="website" required>
             </div>
             <div class="form-items">
-                <label for="contactpersoon">Contactpersoon:</label>
-                <input type="text" id="contactpersoon" name="contactpersoon" required>
+                <label for="contact-person">Contactpersoon:</label>
+                <input type="text" id="contact-person" name="contactpersoon" required>
             </div>
         </div>
 
         <div class="form-group">
             <div class="form-items">
-                <label for="beschrijving">Beschrijving:</label>
-                <input type="text" id="beschrijving" name="beschrijving">
+                <label for="description">Beschrijving:</label>
+                <input type="text" id="description" name="beschrijving">
             </div>
         </div>
 
@@ -53,19 +57,27 @@
                 <input type="email" id="email" name="email" required>
             </div>
             <div class="form-items">
-                <label for="telefoonnummer">Telefoonnummer:</label>
-                <input type="tel" id="telefoonnummer" name="telefoonnummer">
+                <label for="phone-number">Telefoonnummer:</label>
+                <input type="tel" id="phone-number" name="telefoonnummer">
             </div>
         </div>
 
         <div class="form-group">
+            <div class="form-items">
+                <label for="password">Wachtwoord:</label>
+                <input type="text" id="password" name="details">
+            </div>
             <div class="form-items">
                 <label for="details">Overige Details:</label>
                 <input type="text" id="details" name="details">
             </div>
         </div>
 
-        <button type="submit">Verzenden</button>
-    </form>
+        <button class="js-submit">Verzenden</button>
+    </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/organisation-registration.js"></script>
 {% endblock %}

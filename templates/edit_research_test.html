@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API test</title>
+</head>
+<body>
+<script>
+
+  const research = {
+    'onderzoek_id': 1,
+    'titel': 'Onderzoeken 3',
+    'beschikbaar': false,
+    'datum_vanaf': '01-02-2025',
+    'datum_tot': '01-04-2025',
+    'met_beloning': true,
+    'beloning': '$1',
+    'beschrijving': 'Doe mee!'
+  };
+
+  fetch('/api/onderzoeken/edit', {
+      method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({research}),
+
+  })
+          .then(response => response.json())
+      .then(data => console.log(data));
+
+</script>
+</body>
+</html>

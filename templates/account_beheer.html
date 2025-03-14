@@ -1,21 +1,16 @@
-{% extends 'base.html' %}
-{% block title %}Account beheer{% endblock %}
-{% block styles%}
-    <link rel="stylesheet" href="/static/accountbeheer.css" />
-{% endblock %}
-
-{% block nav_links %}
+{% extends 'base.html' %} {% block title %}Account beheer{% endblock %} {% block
+styles%}
+<link rel="stylesheet" href="/static/accountbeheer.css" />
+{% endblock %} {% block nav_links %}
 <a href="/deskundige">Dashboard</a>
 <a href="/deskundige/profiel">Profiel</a>
-{% endblock %}
-
-{% block content %}
-<div id="snackbar"></div>
+<a href="/logout">Uitloggen</a>
+{% endblock %} {% block content %}
 <h1>Welkom</h1>
 <form id="updateDeskundige">
   <div class="form-header">
     <div class="form-header-left">
-      <img src="/static/icons/profile_picture.svg" alt="logo" />
+      <img src="/static/icons/profile_picture.svg" alt="profiel icoon" />
       <div class="form-header-text">
         <h2 id="voornaam-title"></h2>
         <h2 id="achternaam-title"></h2>
@@ -31,32 +26,44 @@
   <div class="account-info-wrapper">
     <h3>Persoonlijke gegevens</h3>
     <div class="label-column">
-      <label for="voornaam">Voornaam</label>
+      <label for="voornaam"
+        >Voornaam <span class="required-field">*</span></label
+      >
       <input type="text" id="voornaam" name="voornaam" />
     </div>
 
     <div class="label-column">
-      <label for="achternaam">Achternaam</label>
+      <label for="achternaam"
+        >Achternaam <span class="required-field">*</span></label
+      >
       <input type="text" id="achternaam" name="achternaam" />
     </div>
 
     <div class="label-column">
-      <label for="wachtwoord">Wachtwoord</label>
+      <label for="wachtwoord"
+        >Wachtwoord <span class="required-field">*</span></label
+      >
       <input type="password" id="wachtwoord" name="wachtwoord" />
     </div>
 
-    <div class="full-width-form-element label-column">
-      <label for="postcode">Postcode</label>
+    <div class="label-column">
+      <label for="postcode"
+        >Postcode <span class="required-field">*</span></label
+      >
       <input type="text" id="postcode" name="postcode" />
     </div>
 
     <div class="label-column">
-      <label for="geboortedatum">Geboortedatum</label>
+      <label for="geboortedatum"
+        >Geboortedatum <span class="required-field">*</span></label
+      >
       <input type="date" id="geboortedatum" name="geboortedatum" />
     </div>
 
     <div class="label-column dropdown">
-      <label for="geslacht">Geslacht</label>
+      <label for="geslacht"
+        >Geslacht <span class="required-field">*</span></label
+      >
       <select name="geslacht" id="geslacht">
         <option value="man">Man</option>
         <option value="vrouw">Vrouw</option>
@@ -65,7 +72,9 @@
     </div>
 
     <div class="label-column full-width-form-element">
-      <label for="introductie">Kort voorstel</label>
+      <label for="introductie"
+        >Kort voorstel <span class="required-field">*</span></label
+      >
       <textarea name="introductie" id="introductie"></textarea>
     </div>
   </div>
@@ -74,12 +83,14 @@
   <div class="account-info-wrapper">
     <h3>Contactgegevens</h3>
     <div class="label-column">
-      <label for="email">E-mail</label>
+      <label for="email">E-mail <span class="required-field">*</span></label>
       <input type="email" id="email" name="email" />
     </div>
 
     <div class="label-column">
-      <label for="telefoonnummer">Telefoon</label>
+      <label for="telefoonnummer"
+        >Telefoonnummer <span class="required-field">*</span></label
+      >
       <input type="text" id="telefoonnummer" name="telefoonnummer" />
     </div>
   </div>
@@ -102,11 +113,7 @@
 
     <div class="label-column">
       <label for="toezichthouder-naam">Naam toezichthouder </label>
-      <input
-        type="text"
-        id="toezichthouder-naam"
-        name="toezichthouder-naam"
-      />
+      <input type="text" id="toezichthouder-naam" name="toezichthouder-naam" />
     </div>
 
     <div class="label-column">
@@ -159,30 +166,42 @@
       />
     </div>
 
-    <div class="label-column">
-      <label>Voorkeur benadering </label>
+    <fieldset class="label-column">
+      <legend>Voorkeur benadering</legend>
       <div class="radio-container">
-        <input type="radio" name="voorkeur-benadering" value="Telefoon" />
-        <label>Telefoonisch</label>
+        <input
+          id="preference-email"
+          type="radio"
+          name="voorkeur-benadering"
+          value="E-mail"
+        />
+        <label for="preference-email">E-mail</label>
       </div>
       <div class="radio-container">
-        <input type="radio" name="voorkeur-benadering" value="E-mail" />
-        <label>E-mail</label>
+        <input
+          id="preference-telephone"
+          type="radio"
+          name="voorkeur-benadering"
+          value="telefoon"
+        />
+        <label for="preference-telephone">Telefonisch</label>
       </div>
-    </div>
+    </fieldset>
 
     <div class="label-column dropdown">
       <label for="type-onderzoek">Type onderzoek</label>
       <select name="type-onderzoek" id="type-onderzoek"></select>
     </div>
   </div>
-  <div class="button-container">
-    <input type="text" value="Annuleren" id="annuleren-button" />
-    <input type="submit" value="Opslaan" />
+  <div class="label-column">
+    <label class="checkbox-container" for="akkoord"
+      >Wilt u uw wachtwoord ook wijzigen?
+      <input type="checkbox" id="akkoord" name="akkoord" />
+      <span class="checkmark"></span>
+    </label>
   </div>
+  <input type="submit" value="Opslaan" />
 </form>
-{% endblock %}
-
-{% block scripts %}
-    <script src="/static/js/account_beheer.js"></script>
+{% endblock %} {% block scripts %}
+<script src="/static/js/account_beheer.js"></script>
 {% endblock %}

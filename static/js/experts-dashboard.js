@@ -54,4 +54,11 @@ export function showResearchModal() {
     // Close research modal event listener
     document.querySelector('.js-close-modal')
         .addEventListener('click', closeResearchModal);
+
+    document.querySelector('.js-close-modal')
+        .addEventListener('keydown', event => {
+            if (event['key'] === 'Enter') {
+                closeResearchModal();
+            }
+        });
 }

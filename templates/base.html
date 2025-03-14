@@ -13,22 +13,31 @@
 
     {% block styles %}{% endblock %}
     <link rel="stylesheet" href="../static/css/header.css">
+    <link rel="stylesheet" href="../static/css/snackbar.css">
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://www.accessibility.nl/themes/sa/favicon/favicon-32x32.png"
+    />
 </head>
 <body>
-    <header>
-        <nav>
+    <header role="banner">
+        <nav role="navigation">
             <a class="header-logo-container" href="/">
                 <img class="header-logo" src="https://www.accessibility.nl/themes/sa/images/logo.svg" alt="Logo van Stichting Accessibility">
             </a>
             <div class="nav-links">
                 {% block nav_links %}{% endblock %}
-                <a href="/logout">Uitloggen</a>
             </div>
         </nav>
     </header>
 
-    {% block content %}{% endblock %}
+    <main role="main">
+        <div id="snackbar"></div>
+        {% block content %}{% endblock %}
+    </main>
 
+    <script src="/static/js/snackbar.js"></script>
     {% block scripts %}{% endblock %}
 </body>
 </html>
