@@ -7,7 +7,8 @@ class Users:
         self.conn, self.cursor = database.connect_db()
 
     def login(self, email, password):
-        expert = self.cursor.execute('SELECT * FROM deskundigen WHERE wachtwoord = ? AND email = ?', (password, email)).fetchone()
+        expert = self.cursor.execute('SELECT * FROM deskundigen WHERE wachtwoord = ? AND email = ?',
+                                     (password, email)).fetchone()
         if expert:
             if expert['status'] == 'GOEDGEKEURD':
                 return {"user": expert, "account_type": 'expert'}
@@ -16,7 +17,8 @@ class Users:
             elif expert['status'] == 'AFGEKEURD':
                 return "Uw registratie is afgekeurd"
         else:
-            admin = self.cursor.execute('SELECT * FROM beheerders WHERE wachtwoord= ? AND email = ?', (password, email)).fetchone()
+            admin = self.cursor.execute('SELECT * FROM beheerders WHERE wachtwoord= ? AND email = ?',
+                                        (password, email)).fetchone()
             if admin is not None:
                 return {"user": admin, "account_type": 'admin'}
             else:

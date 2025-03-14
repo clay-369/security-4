@@ -86,8 +86,12 @@ def api_login():
 
     users_model = Users()
     login = users_model.login(email, password)
-    if login is None:
-        return {"message": "Invalid email or password", "success": False}
+    if not login:
+        return {"message": "Incorrect wachtwoord of email.", "success": False}
+
+    if type(login) == str:
+        # Error message
+        return {"message": login}, 400
 
     if login['account_type'] == 'expert':
         expert_account = login['user']
