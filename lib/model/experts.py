@@ -92,10 +92,9 @@ class Experts:
         self.cursor.execute("SELECT * FROM deskundigen")
         return self.cursor.fetchall()
     
-    def get_single_deskundige(self, expert_id):
-        print(expert_id)
+    def get_single_expert(self, expert_id):
         self.cursor.execute("SELECT * FROM deskundigen WHERE deskundige_id = ?", (expert_id,))
-        return self.cursor.fetchone()
+        return dict(self.cursor.fetchone())
     
     def update_deskundige(self, expert):
         neccesary_fields = ["email", "wachtwoord", "voornaam", "achternaam", "postcode", "telefoonnummer", "geboortedatum", "introductie", "voorkeur_benadering", "type_beperking"]

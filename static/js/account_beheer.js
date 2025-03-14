@@ -52,57 +52,54 @@ window.addEventListener("load", function () {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      "Authorization": `Bearer ${sessionStorage.getItem('accessToken')}`
     },
   })
     .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
+    .then((expert) => {
         // Save the user data to the userData object
-        userData = data.deskundige
+        userData = expert
         // Update the title and input fields with the user data
         document.getElementById("voornaam-title").textContent =
-          data.deskundige.voornaam
+          expert.voornaam
         document.getElementById("achternaam-title").textContent =
-          data.deskundige.achternaam
-        document.getElementById("voornaam").value = data.deskundige.voornaam
-        document.getElementById("achternaam").value = data.deskundige.achternaam
-        document.getElementById("email").value = data.deskundige.email
-        document.getElementById("wachtwoord").value = data.deskundige.wachtwoord
-        document.getElementById("postcode").value = data.deskundige.postcode
+          expert.achternaam
+        document.getElementById("voornaam").value = expert.voornaam
+        document.getElementById("achternaam").value = expert.achternaam
+        document.getElementById("email").value = expert.email
+        document.getElementById("wachtwoord").value = expert.wachtwoord
+        document.getElementById("postcode").value = expert.postcode
         document.getElementById("telefoonnummer").value =
-          data.deskundige.telefoonnummer
+          expert.telefoonnummer
         document.getElementById("geboortedatum").value =
-          data.deskundige.geboortedatum
+          expert.geboortedatum
         document.getElementById("type-beperking").value =
-          data.deskundige.type_beperking
+          expert.type_beperking
         document.getElementById("hulpmiddelen").value =
-          data.deskundige.hulpmiddelen
+          expert.hulpmiddelen
         document.getElementById("introductie").value =
-          data.deskundige.introductie
+          expert.introductie
         document.getElementById("bijzonderheden").value =
-          data.deskundige.bijzonderheden
+          expert.bijzonderheden
         document.getElementById("toezichthouder").value =
-          data.deskundige.toezichthouder
+          expert.toezichthouder
         document.getElementById("toezichthouder-naam").value =
-          data.deskundige.toezichthouder_naam
+          expert.toezichthouder_naam
         document.getElementById("toezichthouder-email").value =
-          data.deskundige.toezichthouder_email
+          expert.toezichthouder_email
         document.getElementById("toezichthouder-telefoonnummer").value =
-          data.deskundige.toezichthouder_telefoonnummer
+          expert.toezichthouder_telefoonnummer
         document.getElementById("type-onderzoek").value =
-          data.deskundige.type_onderzoek
+          expert.type_onderzoek
         document.getElementById("bijzonderheden-beschikbaarheid").value =
-          data.deskundige.bijzonderheden_beschikbaarheid
-        if (data.deskundige.voorkeur_benadering == "telefoon") {
+          expert.bijzonderheden_beschikbaarheid
+        if (expert.voorkeur_benadering === "telefoon") {
           document.getElementById("preference-email").checked = false
           document.getElementById("preference-telefoon").checked = true
         } else {
           document.getElementById("preference-email").checked = true
-          document.getElementById("preference-telefoon").checked = false
+          document.getElementById("preference-telephone").checked = false
         }
-      } else {
-        console.log("Error!")
-      }
     })
     .catch((error) => {
       console.error("Error:", error)

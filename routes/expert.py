@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt
 
 from lib.model.experts import Experts
 from lib.model.disabilities import Disabilities
@@ -34,27 +34,17 @@ def create_expert():
 
 
 @expert_bp.route("/api/deskundige", methods=["GET"])
+@jwt_required()
 def get_expert():
+    claims = get_jwt()
+    if claims.get('account_type') != "expert":
+        return {"message": "You are not authorized to access this resource"}, 401
+
     expert_model = Experts()
-    if request.args.get('id'):
-        deskundige_id = request.args.get('id')
-        deskundige_info = expert_model.get_single_deskundige(deskundige_id)
-        single_deskundige_dict = dict(deskundige_info)
+    expert_id = claims.get('expert_id')
+    expert_info = expert_model.get_single_expert(expert_id)
 
-        if deskundige_info:
-            return {"success": True, "deskundige": single_deskundige_dict}
-        else:
-            return {"success": False}
-
-    else:
-        deskundige_id = session.get('user_id')
-        deskundige_info = expert_model.get_single_deskundige(deskundige_id)
-        single_deskundige_dict = dict(deskundige_info)
-
-        if deskundige_info:
-            return {"success": True, "deskundige": single_deskundige_dict}
-        else:
-            return {"success": False}
+    return expert_info, 200
 
 
 @expert_bp.route("/api/deskundige", methods=["PUT"])
