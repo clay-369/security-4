@@ -1,6 +1,7 @@
 import sqlite3
 
 from lib.model.database import Database
+from lib.model.users import hash_password
 
 class Organisation:
     def __init__(self):
@@ -35,18 +36,19 @@ class Organisation:
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (data['name'], data['organisation_type'], data['website'], data['description'], data['contact_person'],
-                data['email'], data['phone_number'], data['details'], data['password']))
+                data['email'], data['phone_number'], data['details'], hash_password(data['password'])))
         finally:
             self.conn.commit()
         return self.cursor.lastrowid
 
     def validate_credentials(self, email, password):
+        password = hash_password(password)
         result = self.cursor.execute("SELECT email FROM organisaties WHERE wachtwoord = ? AND email = ?", (password, email)).fetchone()
         return bool(result)
 
     def get_organisation_by_email(self, email):
         result = self.cursor.execute("SELECT * FROM organisaties WHERE email = ?", (email,)).fetchone()
-        return dict(result)
+        return result
 
     def get_all_organisations(self):
         result = self.cursor.execute("SELECT * FROM organisaties").fetchall()

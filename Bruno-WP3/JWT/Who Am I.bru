@@ -1,0 +1,20 @@
+meta {
+  name: Who Am I
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://127.0.0.1:5000/auth/whoami
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MTUzNjE5MCwianRpIjoiNGU4YzBiZDEtOGIwMi00ZTdjLWEwMWYtNWRiN2RmMWM0YWRjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InZyaWVkQGhyLm5sIiwibmJmIjoxNzQxNTM2MTkwLCJjc3JmIjoiNWJmZGU1N2EtNTM1Yi00MzEzLWFmMzctZjgzYzAzMDY1NWU5IiwiZXhwIjoxNzQxNTM3MDkwLCJhY2NvdW50X3R5cGUiOiJleHBlcnQiLCJleHBlcnRfaWQiOjF9.309IKauWKyCR0IgRhLC2yV8WRWW8G_qe6s7Lcg2VWno
+}
+
+docs {
+  Pass access token into Auth
+  Returns current user details
+}

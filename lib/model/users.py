@@ -7,20 +7,23 @@ class Users:
         self.conn, self.cursor = database.connect_db()
 
     def login(self, email, password):
-        expert = self.cursor.execute('SELECT * FROM deskundigen WHERE wachtwoord = ? AND email = ?', (password, email)).fetchone()
+        password = hash_password(password)
+        expert = self.cursor.execute('SELECT * FROM deskundigen WHERE wachtwoord = ? AND email = ?',
+                                     (password, email)).fetchone()
         if expert:
             if expert['status'] == 'GOEDGEKEURD':
                 return {"user": expert, "account_type": 'expert'}
             elif expert['status'] == 'NIEUW':
                 return "Uw registratie is in behandeling."
             elif expert['status'] == 'AFGEKEURD':
-                return "Uw registratie is afgekeurd"
+                return "Uw registratie is afgekeurd."
+
+        admin = self.cursor.execute('SELECT * FROM beheerders WHERE wachtwoord= ? AND email = ?',
+                                    (password, email)).fetchone()
+        if admin is not None:
+            return {"user": admin, "account_type": 'admin'}
         else:
-            admin = self.cursor.execute('SELECT * FROM beheerders WHERE wachtwoord= ? AND email = ?', (password, email)).fetchone()
-            if admin is not None:
-                return {"user": admin, "account_type": 'admin'}
-            else:
-                return None
+            return None
 
 
     def admin_create(self, first_name, last_name, email, password):
@@ -38,7 +41,7 @@ class Users:
 
     def get_single_admin(self, admin_id):
         admin = self.cursor.execute('SELECT * FROM beheerders WHERE beheerder_id = ?', (admin_id,)).fetchone()
-        return admin
+        return dict(admin)
 
 
     def admin_edit(self, admin_id, first_name, last_name, email, password):
@@ -60,6 +63,10 @@ class Users:
         self.conn.commit()
         return True
 
+
+    def get_admin_by_email(self, email):
+        self.cursor.execute("SELECT * FROM beheerders WHERE email = ?", (email,))
+        return self.cursor.fetchone()
 
 def hash_password(password):
     return sha256(password.encode('utf-8')).hexdigest()

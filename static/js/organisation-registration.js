@@ -53,12 +53,16 @@ function createOrganisation(data) {
     fetch('/api/organisatie', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
         },
         body: JSON.stringify(data)
     })
         .then(response => response.json())
         .then(data => {
+            if (data['error'] === 'token_expired') {
+                window.location.replace("/logout");
+            }
             const type = data['success'] ? 'success' : 'error'
             showSnackbar(data['message'], type);
 

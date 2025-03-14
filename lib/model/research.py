@@ -33,30 +33,41 @@ class Research:
 
         research_item['status'] = 'NIEUW'
 
-        # Filter optional fields
-        try:
-            research_item['locatie']
-        except KeyError:
-            research_item['locatie'] = None
-
-        try:
-            research_item['beloning']
-        except KeyError:
-            research_item['beloning'] = None
-
         # Filter onderzoek_type
         if research_item['onderzoek_type'].upper() not in ['ONLINE', 'OP LOCATIE', 'TELEFONISCH']:
             return False
 
+        # Filter optional fields
+        try:
+            research_item['locatie']
+        except KeyError:
+            if research_item['onderzoek_type'] == 'OP LOCATIE':
+                return {"error": "Field <locatie> missing"}
+            else:
+                research_item['locatie'] = None
+
+        try:
+            research_item['beloning']
+        except KeyError:
+            if research_item['met_beloning'] == 1:
+                return {"error": "Field <beloning> missing"}
+            else:
+                research_item['beloning'] = None
+
+
+
         # Check if disabilities exist in database
         disability_model = Disabilities()
         for disability_name in research_item['beperkingen']:
-            disability_id = disability_model.get_disability_id(disability_name.lower())
-            if not disability_id:
-                return False
+            disability_id = None
+            try:
+                disability_id = disability_model.get_disability_id(disability_name.lower())
+            finally:
+                if not disability_id:
+                    return {"error": f"Disability <{disability_name}> does not exist in the database"}
 
         # Create new research
-        new_research_item = self.cursor.execute(
+        self.cursor.execute(
             """
             INSERT INTO onderzoeken 
             (
@@ -73,7 +84,7 @@ class Research:
             )
         )
 
-        new_research_id = self.cursor.lastrowid()
+        new_research_id = self.cursor.lastrowid
 
         # Create beperking_onderzoek instances
         for disability_name in research_item['beperkingen']:
@@ -89,12 +100,15 @@ class Research:
             )
 
         self.conn.commit()
-        return dict(new_research_item)
 
-    def get_all_research_items(self):
-        self.cursor.execute("SELECT * FROM onderzoeken")
+        new_research_item = self.get_research_by_id(new_research_id)
+        return new_research_item
+
+    def get_all_research_items_by_organisation_id(self, organisation_id):
+        self.cursor.execute("SELECT * FROM onderzoeken WHERE organisatie_id = ?", (organisation_id,))
         rows = self.cursor.fetchall()
         return [dict(row) for row in rows]
+
 
     def get_all_available_research_items(self):
         self.cursor.execute("SELECT * FROM onderzoeken WHERE status = ? AND beschikbaar = ?",
@@ -120,13 +134,26 @@ class Research:
 
         return research_item
 
-    def research_edit(self, research):
+    def edit_research(self, research, research_id):
+        try:
+            research['beloning']
+        except KeyError:
+            if research['met_beloning'] == 1:
+                return {"error": "Field <beloning> missing"}
+            else:
+                research['beloning'] = None
+
+        try:
+            research['beschrijving']
+        except KeyError:
+                research['beschrijving'] = None
+
         self.cursor.execute('UPDATE onderzoeken '
                             'SET titel = ?, beschikbaar = ?, beschrijving = ?, datum_vanaf = ?, '
                             'datum_tot = ?, beloning = ?, met_beloning = ? WHERE onderzoek_id = ?',
                             (research['titel'], research['beschikbaar'], research['beschrijving'],
                              research['datum_vanaf'], research['datum_tot'], research['beloning'],
-                             research['met_beloning'], research['onderzoek_id']))
+                             research['met_beloning'], research_id))
         self.conn.commit()
         return True
 
@@ -134,3 +161,7 @@ class Research:
         self.cursor.execute("UPDATE onderzoeken SET status = ?, beheerder_id = ? WHERE onderzoek_id = ?", (status, admin_id, onderzoek_id))
         self.conn.commit()
         return True, "Status gewijzigd!"
+
+    def get_organisation_id(self, research_id):
+        self.cursor.execute("SELECT organisatie_id FROM onderzoeken WHERE onderzoek_id = ?", (research_id,))
+        return self.cursor.fetchone()['organisatie_id']

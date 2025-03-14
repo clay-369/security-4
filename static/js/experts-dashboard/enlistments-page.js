@@ -2,18 +2,23 @@ import {closeResearchModal, showResearchModal, intervalId} from "../experts-dash
 import {get_enlistments_by_expert, get_filtered_enlistments_by_expert} from "./enlistments.js";
 
 
-// TODO: Switch to sessions
-const expertId = 1;
-
 // Enlistment Page
 export async function renderEnlistmentPage() {
-    const enlistments = await get_enlistments_by_expert(expertId);
-    // Rendering each partition
+    const enlistments = await get_enlistments_by_expert();
+
+    if (enlistments['error'] === 'token_expired') {
+        refreshAccessToken(renderEnlistmentPage);
+        return;
+    }
     renderPartitions(enlistments);
 }
 
 async function renderFilteredEnlistmentPage(search_words) {
-    const enlistments = await get_filtered_enlistments_by_expert(expertId, search_words);
+    const enlistments = await get_filtered_enlistments_by_expert(search_words);
+    if (enlistments['error'] === 'token_expired') {
+        refreshAccessToken(renderFilteredEnlistmentPage, search_words);
+        return;
+    }
     renderPartitions(enlistments);
 }
 
@@ -25,15 +30,15 @@ function renderPartitions(enlistments) {
     // Generating the HTML for each part
     enlistments.forEach((enlistment) => {
         // Pending
-        if (enlistment['deskundige_id'] === expertId && enlistment['status'] === 'NIEUW') {
+        if (enlistment['status'] === 'NIEUW') {
             pendingHTML += renderEnlistment(enlistment)
         }
         // Accpeted
-        else if (enlistment['deskundige_id'] === expertId && enlistment['status'] === 'GOEDGEKEURD') {
+        else if (enlistment['status'] === 'GOEDGEKEURD') {
             acceptedHTML += renderEnlistment(enlistment);
         }
         // Rejected
-        else if (enlistment['deskundige_id'] === expertId && enlistment['status'] === 'AFGEKEURD') {
+        else if (enlistment['status'] === 'AFGEKEURD') {
             rejectedHTML += renderEnlistment(enlistment);
         }
     })
@@ -73,8 +78,18 @@ function renderEnlistment(enlistment) {
 
 async function renderEnlistmentModal(researchId, status) {
     // Get research item information from server
-    const response = await fetch(`api/onderzoeken/${researchId}`)
+    const response = await fetch(`api/onderzoeken/${researchId}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+        }
+    })
     const researchItem = await response.json();
+
+    if (researchItem['error'] === 'token_expired') {
+        refreshAccessToken(renderEnlistmentModal, [researchId, status]);
+        return;
+    }
 
     // Generate the HTML
     document.querySelector('.js-research-modal-background')
@@ -104,7 +119,7 @@ async function renderEnlistmentModal(researchId, status) {
                     <p>${status.toLowerCase()}</p>
                 </div>
                 ${
-                    status === 'NIEUW'
+                    status === 'NIEUW' || status === 'GOEDGEKEURD'
                     ? '<button class="research-modal-button red js-delist-button">Uitschrijven</button>'
                     : ''
                 }
@@ -126,11 +141,19 @@ function delist(researchId) {
     fetch('/api/onderzoeken/inschrijvingen', {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
             },
-            body: JSON.stringify({expert_id: expertId, research_id: researchId})
+            body: JSON.stringify({research_id: researchId})
         })
-        .then(() => {
+        .then(response => response.json())
+        .then((data) => {
+
+            if (data['error'] === 'token_expired') {
+                refreshAccessToken(delist, researchId);
+                return;
+            }
+
             closeResearchModal();
             renderEnlistmentPage();
         })

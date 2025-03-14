@@ -1,0 +1,19 @@
+meta {
+  name: Logout
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://127.0.0.1:5000/auth/logout
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MTUzNTg3NiwianRpIjoiZGI2ODE3ZDYtOTUwOC00MDZkLWFhMDItNWU2N2I1MzBlNzBiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InBldGVyQGVtYWlsLmNvbSIsIm5iZiI6MTc0MTUzNTg3NiwiY3NyZiI6ImJhM2E3YmFjLWM0OWQtNDdhMC04YzBjLTNiZWE2YTM0M2FmMCIsImV4cCI6MTc0MTUzNjc3NiwiYWNjb3VudF90eXBlIjoib3JnYW5pc2F0aW9uIiwib3JnYW5pc2F0aW9uX2lkIjoxfQ.JR2AadPh9h0DtAOUPwgARJdiIMSpOVK_nmepWiaQC2c
+}
+
+docs {
+  Put access or refresh token into Auth to make them unusable
+}

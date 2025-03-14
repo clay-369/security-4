@@ -1,0 +1,21 @@
+meta {
+  name: Refresh Token
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://127.0.0.1:5000/auth/refresh
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MTUzNjE5MCwianRpIjoiM2JjMDA0NTQtMmRlZC00N2M2LTlmYzUtNmRkYjI3MDBiOTBlIiwidHlwZSI6InJlZnJlc2giLCJzdWIiOiJ2cmllZEBoci5ubCIsIm5iZiI6MTc0MTUzNjE5MCwiY3NyZiI6ImU2NzBlYzM1LTBhNGYtNDVhMC04NjQ4LWFlZjg4MTk3YmMxYSIsImV4cCI6MTc0NDEyODE5MCwiYWNjb3VudF90eXBlIjoiZXhwZXJ0IiwiZXhwZXJ0X2lkIjoxfQ.JhcYogrfMBMddPUN4Wv6TIr5Js0KpN0ykfV4IIU75eE
+}
+
+docs {
+  When access token is expired, 
+  pass refresh token into Auth
+  Returns new access token
+}

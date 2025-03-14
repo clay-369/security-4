@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request
+from flask_jwt_extended import jwt_required, get_jwt
 
 from lib.model.research import Research
 from lib.model.enlistments import Enlistment
@@ -8,13 +9,14 @@ research_bp = Blueprint('research', __name__)
 # API's
 ## Research Items
 @research_bp.route('/api/onderzoeken', methods=['GET'])
+@jwt_required()
 def get_research_items():
     # This route is for experts, so it only gets research items that are available and are accepted by admin
-    research_model = Research()
+    claims = get_jwt()
+    if claims.get('account_type') != "expert":
+        return {"message": "You are not authorized to access this resource"}, 401
 
-    search_words = ""
-    if request.args.get('search'):
-        search_words = request.args.get('search')
+    research_model = Research()
 
     all_research_items = research_model.get_all_available_research_items()
 
@@ -27,7 +29,12 @@ def get_research_items():
 
 
 @research_bp.get('/api/onderzoeken/<research_id>')
+@jwt_required()
 def get_research_item(research_id):
+    claims = get_jwt()
+    if claims.get('account_type') != "expert":
+        return {"message": "You are not authorized to access this resource"}, 401
+
     research_model = Research()
     research_item = research_model.get_research_by_id(int(research_id))
     formatted_research_item = research_model.format_research_item(research_item)
@@ -36,11 +43,16 @@ def get_research_item(research_id):
 
 ## Enlistments
 @research_bp.route('/api/onderzoeken/inschrijvingen', methods=['POST'])
+@jwt_required()
 def create_enlistment():
-    enlistment_model = Enlistment()
+    claims = get_jwt()
+    if claims.get('account_type') != "expert":
+        return {"message": "You are not authorized to access this resource"}, 401
 
+    expert_id = claims.get('expert_id')
     research_id = request.json['research_id']
-    expert_id = request.json['expert_id']
+
+    enlistment_model = Enlistment()
 
     new_enlistment_id = enlistment_model.create_enlistment(research_id=research_id, expert_id=expert_id)
     new_enlistment = enlistment_model.get_enlistment_by_id(new_enlistment_id)
@@ -49,8 +61,14 @@ def create_enlistment():
 
 
 @research_bp.route('/api/onderzoeken/inschrijvingen', methods=['DELETE'])
+@jwt_required()
 def delete_enlistment():
-    expert_id = request.json['expert_id']
+    claims = get_jwt()
+    if claims.get('account_type') != "expert":
+        return {"message": "You are not authorized to access this resource"}, 401
+
+    expert_id = claims.get('expert_id')
+
     research_id = request.json['research_id']
     enlistment_model = Enlistment()
     deleted_item = enlistment_model.delete_enlistment(expert_id, research_id)
@@ -58,23 +76,20 @@ def delete_enlistment():
     return deleted_item, 200
 
 
-@research_bp.route('/api/onderzoeken/inschrijvingen/<expert_id>', methods=['GET'])
-def get_all_enlistments_by_expert(expert_id):
-    enlistment_model = Enlistment()
+@research_bp.route('/api/onderzoeken/inschrijvingen/deskundige', methods=['GET'])
+@jwt_required()
+def get_all_enlistments_by_expert():
+    claims = get_jwt()
+    if claims.get('account_type') != "expert":
+        return {"message": "You are not authorized to access this resource"}, 401
+
+    expert_id = claims.get('expert_id')
+
     search_words = ""
     if request.args.get('search'):
         search_words = request.args.get('search')
 
-    all_enlistments = enlistment_model.get_formatted_enlistments_by_expert(int(expert_id), search_words)
+    enlistment_model = Enlistment()
+    all_enlistments = enlistment_model.get_formatted_enlistments_by_expert(expert_id, search_words)
     return all_enlistments, 200
 
-@research_bp.route('/api/onderzoeken/edit', methods=['PUT'])
-def api_edit_research():
-    research_model = Research()
-    research = request.get_json()
-
-    research_edit = research_model.research_edit(research)
-    if research_edit:
-        return {"message": "Onderzoek succesvol bewerkt.", 'success': True }, 200
-    else:
-        return {'error': 'Onderzoek bewerken mislukt.'}, 400

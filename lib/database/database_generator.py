@@ -47,7 +47,6 @@ class WP3DatabaseGenerator:
             introductie TEXT,
             type_onderzoeken TEXT,
             voorkeur_benadering TEXT,
-            type_beperking TEXT,
             toezichthouder INTEGER NOT NULL,
             toezichthouder_naam TEXT,
             toezichthouder_email TEXT,
@@ -276,7 +275,7 @@ class WP3DatabaseGenerator:
         insert_statement_organisation = ("""INSERT INTO organisaties
             (naam, organisatie_type, website, beschrijving, contactpersoon, email, telefoonnummer, overige_details, wachtwoord)
             VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)""")
-        values_organisation = ('Stichting accessibility', 'non-profit', 'www.google.com', 'ja ok', 'peter', 'peter@email.com', '06', 'geef geld', 'ABC')
+        values_organisation = ('Stichting accessibility', 'non-profit', 'www.google.com', 'ja ok', 'peter', 'peter@email.com', '06', 'geef geld', hash_password('ABC'))
         self.__execute_transaction_statement(insert_statement_organisation, values_organisation)
         print("✅ Filled default organisation account")
 

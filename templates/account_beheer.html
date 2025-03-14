@@ -7,7 +7,7 @@ styles%}
 <a href="/logout">Uitloggen</a>
 {% endblock %} {% block content %}
 <h1>Welkom</h1>
-<form id="updateDeskundige">
+<form onsubmit="return false;" id="updateDeskundige">
   <div class="form-header">
     <div class="form-header-left">
       <img src="/static/icons/profile_picture.svg" alt="profiel icoon" />
@@ -41,9 +41,9 @@ styles%}
 
     <div class="label-column">
       <label for="wachtwoord"
-        >Wachtwoord <span class="required-field">*</span></label
+        >Wachtwoord</label
       >
-      <input type="password" id="wachtwoord" name="wachtwoord" />
+      <input placeholder="Wachtwoord" type="password" id="wachtwoord" name="wachtwoord" />
     </div>
 
     <div class="label-column">
@@ -141,7 +141,7 @@ styles%}
     <h3>Beperkingen & extra gegevens</h3>
 
     <div class="label-column dropdown">
-      <label for="type-beperking">Type beperking</label>
+      <label for="type-beperking">Beperkingen</label>
       <select name="type-beperking" id="type-beperking"></select>
     </div>
 
@@ -192,13 +192,6 @@ styles%}
       <label for="type-onderzoek">Type onderzoek</label>
       <select name="type-onderzoek" id="type-onderzoek"></select>
     </div>
-  </div>
-  <div class="label-column">
-    <label class="checkbox-container" for="akkoord"
-      >Wilt u uw wachtwoord ook wijzigen?
-      <input type="checkbox" id="akkoord" name="akkoord" />
-      <span class="checkmark"></span>
-    </label>
   </div>
   <input type="submit" value="Opslaan" />
 </form>

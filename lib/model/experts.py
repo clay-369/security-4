@@ -88,17 +88,16 @@ class Experts:
         self.conn.commit()
         return True, "Deskundige gemaakt!"
 
-    def get_deskundigen(self):
+    def get_experts(self):
         self.cursor.execute("SELECT * FROM deskundigen")
         return self.cursor.fetchall()
     
-    def get_single_deskundige(self, expert_id):
-        print(expert_id)
+    def get_single_expert(self, expert_id):
         self.cursor.execute("SELECT * FROM deskundigen WHERE deskundige_id = ?", (expert_id,))
-        return self.cursor.fetchone()
+        return dict(self.cursor.fetchone())
     
-    def update_deskundige(self, expert):
-        neccesary_fields = ["email", "wachtwoord", "voornaam", "achternaam", "postcode", "telefoonnummer", "geboortedatum", "introductie", "voorkeur_benadering", "type_beperking"]
+    def update_expert(self, expert, expert_id):
+        neccesary_fields = ["email", "voornaam", "achternaam", "postcode", "telefoonnummer", "geboortedatum", "introductie", "voorkeur_benadering", "type_beperking"]
 
         if expert["voorkeur_benadering"] == "":
             return False, "U moet een voorkeur benadering selecteren."
@@ -119,7 +118,7 @@ class Experts:
 
             if expert["toezichthouder_telefoonnummer"] == "":
                 return False, "U moet een telefoonnummer invullen voor de toezichthouder omdat u toezichthouder heeft geselecteerd."
-            
+
         else:
             expert["toezichthouder_naam"] = ""
             expert["toezichthouder_email"] = ""
@@ -144,48 +143,44 @@ class Experts:
         # Temporary solution to check if there are "onderzoeken"
         if expert["type_onderzoek"] == "":
             return False, "U moet een type onderzoek selecteren."
-        
-        if expert["type_onderzoek"] == "":
-            return False, "U moet een type onderzoek selecteren."
-        
+
         # Check if all neccesary fields are filled
         for field in expert:
             if field in neccesary_fields and expert[field] == "":
                 return False, f"Het veld {field} is verplicht.\n"
-        
-        if expert["akkoord"] == False:
+
+        self.cursor.execute("""
+            UPDATE deskundigen SET email = ?, voornaam = ?, achternaam = ?, postcode = ?, 
+            telefoonnummer = ?, geboortedatum = ?, hulpmiddelen = ?, bijzonderheden = ?, 
+            bijzonderheden_beschikbaarheid = ?, introductie = ?, voorkeur_benadering = ?, 
+            type_onderzoeken = ?, toezichthouder = ?, toezichthouder_naam = ?, toezichthouder_email = ?, 
+            toezichthouder_telefoonnummer = ? WHERE deskundige_id = ?""",
+            (expert["email"], expert["voornaam"], expert["achternaam"],
+            expert["postcode"], expert["telefoonnummer"], expert["geboortedatum"], expert["hulpmiddelen"],
+            expert["bijzonderheden"], expert["bijzonderheden_beschikbaarheid"], expert["introductie"],
+            expert["voorkeur_benadering"], expert["type_onderzoek"],
+            expert["toezichthouder"], expert["toezichthouder_naam"], expert["toezichthouder_email"],
+            expert["toezichthouder_telefoonnummer"], expert_id))
+
+        if expert['wachtwoord']:
             self.cursor.execute("""
-                UPDATE deskundigen SET email = ?, voornaam = ?, achternaam = ?, postcode = ?, 
-                telefoonnummer = ?, geboortedatum = ?, hulpmiddelen = ?, bijzonderheden = ?, 
-                bijzonderheden_beschikbaarheid = ?, introductie = ?, voorkeur_benadering = ?, type_beperking = ?, 
-                type_onderzoeken = ?, toezichthouder = ?, toezichthouder_naam = ?, toezichthouder_email = ?, 
-                toezichthouder_telefoonnummer = ? WHERE deskundige_id = ?""",
-                (expert["email"], expert["voornaam"], expert["achternaam"],
-                expert["postcode"], expert["telefoonnummer"], expert["geboortedatum"], expert["hulpmiddelen"],
-                expert["bijzonderheden"], expert["bijzonderheden_beschikbaarheid"], expert["introductie"],
-                expert["voorkeur_benadering"], expert["type_beperking"], expert["type_onderzoek"],
-                expert["toezichthouder"], expert["toezichthouder_naam"], expert["toezichthouder_email"],
-                expert["toezichthouder_telefoonnummer"], expert["deskundige_id"]))
-            self.conn.commit()
-            return True, "Deskundige gewijzigd!"
-        
-        else:
-            self.cursor.execute("""
-                UPDATE deskundigen SET wachtwoord = ?, email = ?, voornaam = ?, achternaam = ?, postcode = ?, 
-                telefoonnummer = ?, geboortedatum = ?, hulpmiddelen = ?, bijzonderheden = ?, 
-                bijzonderheden_beschikbaarheid = ?, introductie = ?, voorkeur_benadering = ?, type_beperking = ?, 
-                type_onderzoeken = ?, toezichthouder = ?, toezichthouder_naam = ?, toezichthouder_email = ?, 
-                toezichthouder_telefoonnummer = ? WHERE deskundige_id = ?""",
-                (hash_password(expert["wachtwoord"]), expert["email"], expert["voornaam"], expert["achternaam"],
-                expert["postcode"], expert["telefoonnummer"], expert["geboortedatum"], expert["hulpmiddelen"],
-                expert["bijzonderheden"], expert["bijzonderheden_beschikbaarheid"], expert["introductie"],
-                expert["voorkeur_benadering"], expert["type_beperking"], expert["type_onderzoek"],
-                expert["toezichthouder"], expert["toezichthouder_naam"], expert["toezichthouder_email"],
-                expert["toezichthouder_telefoonnummer"], expert["deskundige_id"]))
-            self.conn.commit()
-            return True, "Deskundige gewijzigd!"
+                UPDATE deskundigen SET wachtwoord = ? WHERE deskundige_id = ?""",
+                (hash_password(expert["wachtwoord"]), expert_id))
+
+        self.conn.commit()
+        return True, "Deskundige gewijzigd!"
 
     def status_update(self, status, expert_id, admin_id):
         self.cursor.execute("UPDATE deskundigen SET status = ?, beheerder_id = ?  WHERE deskundige_id = ?", (status, admin_id, expert_id))
         self.conn.commit()
         return True, "Status gewijzigd!"
+
+    def get_expert_by_email(self, email):
+        self.cursor.execute("SELECT * FROM deskundigen WHERE email = ?", (email,))
+        return self.cursor.fetchone()
+
+
+    def validate_credentials(self, email, password):
+        password = hash_password(password)
+        result = self.cursor.execute("SELECT email FROM deskundigen WHERE wachtwoord = ? AND email = ?", (password, email)).fetchone()
+        return bool(result)

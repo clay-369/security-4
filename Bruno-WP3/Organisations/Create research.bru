@@ -1,0 +1,65 @@
+meta {
+  name: Create research
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://127.0.0.1:5000/onderzoeken
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MTk4MDY0MywianRpIjoiZTdmMDM5ZTgtOTM0Zi00ODUxLWIzZjYtOTRkYmM4NmI0OGE0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InRlc3RAZW1haWwuY29tIiwibmJmIjoxNzQxOTgwNjQzLCJjc3JmIjoiYzAyNmE0NzYtN2JjNi00MWE1LWE4NWMtNjdkOTMxMjY2ZTFhIiwiZXhwIjoxNzQxOTgxNTQzLCJhY2NvdW50X3R5cGUiOiJvcmdhbmlzYXRpb24iLCJvcmdhbmlzYXRpb25faWQiOjR9.QKgLr9DeGsxKme1dW6SDxihhe9-51jI4O9rKul4-0JI
+}
+
+body:json {
+  {
+    "titel": "Onderzoek voor doven",
+    "beschikbaar": false,
+    "beschrijving": "dit is de beschrijving",
+    "datum_vanaf": "01-02-2025",
+    "datum_tot": "01-04-2025",
+    // OP LOCATE, TELEFONISCH, ONLINE
+    "onderzoek_type": "OP LOCATIE",
+    // Only if onderzoek_type is OP LOCATIE
+    "locatie": "Rotterdam",
+    "met_beloning": true,
+    "beloning": "$1", // Optional
+    "leeftijd_vanaf": 20,
+    "leeftijd_tot": 70,
+    "beperkingen": [
+      "doof",
+      "doofblind"
+    ]
+  }
+}
+
+docs {
+  Pass research item in body
+  Access token needed in Auth
+  
+  Format:
+  {
+    "titel": String,
+    "beschikbaar": Bool,
+    "beschrijving": String,
+    "datum_vanaf": String (date),
+    "datum_tot": String (date),
+    "onderzoek_type": String (OP LOCATE, TELEFONISCH, ONLINE),
+    "locatie": String (Only if onderzoek_type is OP LOCATIE),
+    "met_beloning": true,
+    "beloning": "$1", // Optional
+    "leeftijd_vanaf": 20,
+    "leeftijd_tot": 70,
+    "beperkingen": [
+      "blind",
+      "amputatie of mismaaktheid"
+    ]
+  }
+}

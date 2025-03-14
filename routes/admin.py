@@ -1,6 +1,5 @@
-import sqlite3
-
 from flask import Blueprint, render_template, request, session
+from flask_jwt_extended import jwt_required, get_jwt
 
 from lib.model.research import Research
 from lib.model.users import Users
@@ -21,14 +20,19 @@ def manage():
     return render_template('beheerder-beheer.html')
 
 
-@admin_bp.route('/admin/e', methods=['GET'])
+@admin_bp.route('/admin/organisatie', methods=['GET'])
 def organisatie_registratie():
     return render_template('organisatie_registratie.html')
 
 # API's
 ## Create admin account
 @admin_bp.route('/api/admin/beheer', methods=['POST'])
+@jwt_required()
 def api_create_admin():
+    claims = get_jwt()
+    if claims.get('account_type') != "admin":
+        return {"message": "You are not authorized to access this resource"}, 401
+
     data = request.get_json()
     first_name = data.get('first_name')
     last_name = data.get('last_name')
@@ -44,27 +48,41 @@ def api_create_admin():
 
 
 @admin_bp.route('/api/admin/beheer', methods=['GET'])
-def api_get_admin():
+@jwt_required()
+def api_get_all_admins():
+    claims = get_jwt()
+    if claims.get('account_type') != "admin":
+        return {"message": "You are not authorized to access this resource"}, 401
+
     users_model = Users()
     # Get all admins
-    if request.args.get('fetch') == 'adminData':
-        admin_data = users_model.get_admins()
-        admin_dict = [dict(row) for row in admin_data]
+    admin_data = users_model.get_admins()
+    admin_dict = [dict(row) for row in admin_data]
 
-        return admin_dict
-    # Get one admin
-    elif request.args.get('id') is not None:
-        admin_id = request.args.get('id')
-        admin_info = users_model.get_single_admin(admin_id)
-        single_admin_dict = dict(admin_info)
+    return admin_dict
 
-        return single_admin_dict
+
+@admin_bp.route('/api/admin/beheer/<admin_id>', methods=['GET'])
+@jwt_required()
+def get_single_admin(admin_id):
+    claims = get_jwt()
+    if claims.get('account_type') != "admin":
+        return {"message": "You are not authorized to access this resource"}, 401
+
+    users_model = Users()
+    admin_info = users_model.get_single_admin(admin_id)
+    return admin_info
+
 
 # Edit admin
-@admin_bp.route('/api/admin/beheer', methods=['PATCH'])
-def api_edit_admin():
+@admin_bp.route('/api/admin/beheer/<admin_id>', methods=['PATCH'])
+@jwt_required()
+def api_edit_admin(admin_id):
+    claims = get_jwt()
+    if claims.get('account_type') != "admin":
+        return {"message": "You are not authorized to access this resource"}, 401
+
     data = request.get_json()
-    admin_id = data.get('admin_id')
     first_name = data.get('first_name')
     last_name = data.get('last_name')
     email = data.get('email')
@@ -78,10 +96,12 @@ def api_edit_admin():
         return {"success": False}
 
 # Delete admin account
-@admin_bp.route('/api/admin/beheer', methods=['DELETE'])
-def api_delete_admin():
-    data = request.get_json()
-    admin_id = data.get('admin_id')
+@admin_bp.route('/api/admin/beheer/<admin_id>', methods=['DELETE'])
+@jwt_required()
+def api_delete_admin(admin_id):
+    claims = get_jwt()
+    if claims.get('account_type') != "admin":
+        return {"message": "You are not authorized to access this resource"}, 401
 
     users_model = Users()
     delete_admin = users_model.admin_delete(admin_id)
@@ -91,7 +111,12 @@ def api_delete_admin():
         return {"success": False}
 
 @admin_bp.route('/api/organisatie', methods=['POST'])
+@jwt_required()
 def create_organisation():
+    claims = get_jwt()
+    if claims.get('account_type') != "admin":
+        return {"message": "You are not authorized to access this resource"}, 401
+
     data = request.get_json()
 
     organisation_model = Organisation()
@@ -102,12 +127,17 @@ def create_organisation():
     return {"message": "Dit e-mailadres bestaat al.", "success": False}, 400
 
 @admin_bp.route('/api/admin', methods=['GET'])
+@jwt_required()
 def api_get_data():
+    claims = get_jwt()
+    if claims.get('account_type') != "admin":
+        return {"message": "You are not authorized to access this resource"}, 401
+
     experts_model = Experts()
     enlistment_model = Enlistment()
     research_model = Research()
 
-    expert_data = experts_model.get_deskundigen()
+    expert_data = experts_model.get_experts()
     expert_dict = [dict(row) for row in expert_data]
 
     research_data = research_model.get_all_research_items_for_admins()
@@ -116,33 +146,38 @@ def api_get_data():
     enlistment_data = enlistment_model.get_enlistments_details()
     enlistment_dict = [dict(row) for row in enlistment_data]
 
-
     return {
         "experts": expert_dict,
         "enlistments": enlistment_dict,
-        "researches": research_data,
-        "admin_id": session.get('user_id')
+        "researches": research_data
     }
 
 @admin_bp.route('/api/admin', methods=['PATCH'])
+@jwt_required()
 def api_status_update():
+    claims = get_jwt()
+    if claims.get('account_type') != "admin":
+        return {"message": "You are not authorized to access this resource"}, 401
+
+    admin_id = claims.get('admin_id')
+
     data = request.get_json()
     status = data.get('status')
     data_type = data.get('data_type')
     data_id = data.get('data_id')
-    admin_id = data.get('admin_id')
+
     if data_type == 'expert':
         experts_model = Experts()
         experts_model.status_update(status, data_id, admin_id)
-        return {"message" : "Registratie succesvol geaccepteerd!"}
+        return {"message" : "Registratie succesvol geaccepteerd!", "success": True}
     elif data_type == 'enlistment':
         enlistment_model = Enlistment()
         enlistment_model.status_update(status, data_id, admin_id)
-        return {"message" : "Inschrijving succesvol geaccepteerd!"}
+        return {"message" : "Inschrijving succesvol geaccepteerd!", "success": True}
     elif data_type == 'research':
         research_model = Research()
         research_model.status_update(status, data_id, admin_id)
-        return {"message" : "Onderzoek succesvol geaccepteerd!"}
+        return {"message" : "Onderzoek succesvol geaccepteerd!", "success": True}
     else:
         return {"message": "Er is iets fout gegaan tijdens het accepteren van het verzoek."}
 
