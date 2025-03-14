@@ -7,13 +7,13 @@ const expertId = 1;
 
 // Enlistment Page
 export async function renderEnlistmentPage() {
-    const enlistments = await get_enlistments_by_expert(expertId);
+    const enlistments = await get_enlistments_by_expert();
     // Rendering each partition
     renderPartitions(enlistments);
 }
 
 async function renderFilteredEnlistmentPage(search_words) {
-    const enlistments = await get_filtered_enlistments_by_expert(expertId, search_words);
+    const enlistments = await get_filtered_enlistments_by_expert(search_words);
     renderPartitions(enlistments);
 }
 
@@ -25,15 +25,15 @@ function renderPartitions(enlistments) {
     // Generating the HTML for each part
     enlistments.forEach((enlistment) => {
         // Pending
-        if (enlistment['deskundige_id'] === expertId && enlistment['status'] === 'NIEUW') {
+        if (enlistment['status'] === 'NIEUW') {
             pendingHTML += renderEnlistment(enlistment)
         }
         // Accpeted
-        else if (enlistment['deskundige_id'] === expertId && enlistment['status'] === 'GOEDGEKEURD') {
+        else if (enlistment['status'] === 'GOEDGEKEURD') {
             acceptedHTML += renderEnlistment(enlistment);
         }
         // Rejected
-        else if (enlistment['deskundige_id'] === expertId && enlistment['status'] === 'AFGEKEURD') {
+        else if (enlistment['status'] === 'AFGEKEURD') {
             rejectedHTML += renderEnlistment(enlistment);
         }
     })
@@ -73,7 +73,12 @@ function renderEnlistment(enlistment) {
 
 async function renderEnlistmentModal(researchId, status) {
     // Get research item information from server
-    const response = await fetch(`api/onderzoeken/${researchId}`)
+    const response = await fetch(`api/onderzoeken/${researchId}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
+        }
+    })
     const researchItem = await response.json();
 
     // Generate the HTML
@@ -104,7 +109,7 @@ async function renderEnlistmentModal(researchId, status) {
                     <p>${status.toLowerCase()}</p>
                 </div>
                 ${
-                    status === 'NIEUW'
+                    status === 'NIEUW' || status === 'GOEDGEKEURD'
                     ? '<button class="research-modal-button red js-delist-button">Uitschrijven</button>'
                     : ''
                 }
@@ -126,7 +131,8 @@ function delist(researchId) {
     fetch('/api/onderzoeken/inschrijvingen', {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
             },
             body: JSON.stringify({expert_id: expertId, research_id: researchId})
         })

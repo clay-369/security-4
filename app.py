@@ -31,11 +31,11 @@ app.register_blueprint(organisation.organisation_bp)
 
 
 OPEN_ROUTES = ['login_page', 'logout', '/', 'static', 'api_login', 'api_admin_beheer', 'test2', 'auth.login_jwt', 'expert.register', 'expert.deskundige_api', 'expert.disabilities', 'expert.research', "expert.create_expert"]
-PROTECTED_ROUTES = ['organisation.get_research', 'auth.whoami', 'auth.refresh_access_token', 'auth.logout_jwt', 'organisation.create_research_item', 'organisation.get_research_by_id']
+PUBLIC_ROUTES = ['organisation.api_edit_research' 'organisation.get_research', 'auth.whoami', 'auth.refresh_access_token', 'auth.logout_jwt', 'organisation.create_research_item', 'organisation.get_research_by_id']
 ADMIN_ROUTES = ['admin.manage', 'admin.dashboard_beheer', 'admin.organisatie_registratie']
 EXPERT_ROUTES = ['expert.dashboard', 'expert.register', 'expert.edit', 'expert.details']
 
-temp_routes = ['expert.edit', 'expert.deskundige_api', 'research.api_edit_research']
+temp_routes = ['expert.edit', 'expert.deskundige_api']
 
 @app.before_request
 def before_request():
@@ -44,7 +44,7 @@ def before_request():
     if request.endpoint in OPEN_ROUTES:
         return # Let user access route
 
-    if request.endpoint in PROTECTED_ROUTES:
+    if request.endpoint in PUBLIC_ROUTES:
         return # Let jwt function handle protection
 
     # TEMP

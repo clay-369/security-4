@@ -59,3 +59,15 @@ def create_research_item():
     except KeyError:
         return new_research_item, 201 # Created
 
+
+
+@organisation_bp.route('/api/onderzoeken/edit', methods=['PUT'])
+def api_edit_research():
+    research_model = Research()
+    research = request.get_json()
+
+    research_edit = research_model.research_edit(research)
+    if research_edit:
+        return {"message": "Onderzoek succesvol bewerkt.", 'success': True }, 200
+    else:
+        return {'error': 'Onderzoek bewerken mislukt.'}, 400
