@@ -38,6 +38,13 @@ p {
     font-size: 16px;
 }
 
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4 {
+    color: inherit;
+}
+
 a {
     text-decoration: none;
     color: inherit;
@@ -98,6 +105,10 @@ section {
     text-decoration: underline;
 }
 
+.dark .research-container {
+    background-color: #111e55;
+}
+
 
 .research-title {
     margin: 0;
@@ -131,6 +142,10 @@ section {
     padding: 10px;
     border-radius: 8px;
     height: 100%;
+}
+
+.dark .enlistments-container {
+    background-color: #111e55;
 }
 
 .enlistment-category-header {
@@ -171,6 +186,13 @@ section {
     font-size: 18px;
 }
 
+.dark .enlistments-search-input {
+    border-color: #17b3f6;
+}
+.dark .enlistments-search-input::placeholder {
+    color: inherit;
+}
+
 .enlistment {
     display: flex;
     justify-content: space-between;
@@ -202,6 +224,14 @@ section {
     background-color: #FFF;
 }
 
+.dark .enlistment-details-button {
+    color: inherit;
+    border-color: #17b3f6;
+}
+.dark .enlistment-details-button:hover {
+    background-color: #1c3b8b;
+}
+
 
 /* Research Modal */
 .research-modal-background {
@@ -216,12 +246,16 @@ section {
 
 .research-modal {
     background-color: #FFFFFF;
-    padding: 40px;
-    padding-top: 20px;
+    padding: 20px 40px 40px;
     border: 1px solid var(--border-color);
     border-radius: 15px;
     width: 700px;
     min-height: 300px;
+}
+
+.dark .research-modal {
+    background-color: #1C1C1C;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
 }
 
 .close-modal {
@@ -229,6 +263,11 @@ section {
     height: 30px;
     margin-left: 99%;
     cursor: pointer;
+}
+
+.dark .close-modal {
+    color: inherit;
+    filter: invert(89%) sepia(17%) saturate(247%) hue-rotate(172deg) brightness(102%) contrast(94%);
 }
 
 .research-modal-title {
@@ -254,6 +293,10 @@ section {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+.dark .research-modal-details {
+    background-color: #111e55;
+}
+
 .research-modal-details p {
     margin: 0;
     font-size: 18px;
@@ -275,6 +318,11 @@ section {
     border-radius: 5px;
     transition-duration: 0.2s;
 }
+
+.dark .research-modal-button {
+    color: inherit;
+}
+
 .research-modal-button.red {
     border: 2px solid var(--red-color);
     background-color: var(--red-color);

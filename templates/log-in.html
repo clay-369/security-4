@@ -1,10 +1,12 @@
-{% extends 'base.html' %} {% block title %}Loginpagina{% endblock %} {% block
-styles %}
-
-<link rel="stylesheet" href="{{ url_for('static', filename='log-in.css') }}" />
-{% endblock %} {% block nav_links %}
+{% extends 'base.html' %} {% block title %}Loginpagina{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="/static/css/log-in.css" />
+{% endblock %}
+{% block nav_links %}
 <a href="/deskundige/registreer">Registreren</a>
-{% endblock %} {% block content %}
+{% endblock %}
+
+{% block content %}
 <form id="loginForm">
   <h1>Log hier in</h1>
   <label for="email">Email:</label>
@@ -15,6 +17,7 @@ styles %}
 
   <button type="submit">Log In</button>
 </form>
-{% endblock %} {% block scripts %}
+{% endblock %}
+{% block scripts %}
 <script src="{{ url_for('static', filename='js/login.js') }}"></script>
 {% endblock %}

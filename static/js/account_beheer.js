@@ -12,38 +12,61 @@ document
 
 // Load type of disablities
 window.addEventListener("load", function () {
-  fetch("/api/disabilities", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        data.disabilities.forEach((disability) => {
-          const option = document.createElement("option")
-          option.value = disability.beperking_id
-          option.textContent = disability.beperking
-          document.getElementById("type-beperking").appendChild(option)
-        })
-      } else {
-        console.error(data.message)
+  fetch("/api/deskundige/beperkingen", {
+      method: 'GET',
+      headers: {
+          'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`
       }
-    })
-    .catch((error) => {
-      console.error("Error:", error)
-    })
+  })
+      .then(response => response.json())
+      .then(dis => {
+          const disabilityIds = dis['disability_ids']
+      fetch("/api/disabilities", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            data['disabilities'].forEach((disability) => {
 
+                const insideLabelHTML = `
+                    <input type="checkbox" value="${disability.beperking_id}" class="disability-checkbox-${disability.beperking_id}" tabindex="-1"
+                    ${
+                        disabilityIds.includes(disability.beperking_id) 
+                        ? 'checked="checked"'
+                        : ''
+                    }
+                    >
+                    <span class="checkmark dropdown-checkmark"></span>
+                `;
 
-    const addedTypes = new Set();
-    ['Op locatie', 'Telefonisch', 'Online'].forEach((researchType) => {
-      const option = document.createElement("option")
-      option.value = researchType.toUpperCase()
-      option.textContent = researchType
-      document.getElementById("type-onderzoek").appendChild(option)
-      addedTypes.add(researchType)
-    })
+              const label = document.createElement("label");
+              label.classList.add("checkbox-container");
+              label.tabIndex = 0;
+              label.innerHTML = insideLabelHTML;
+              label.innerHTML += disability.beperking;
+              label.addEventListener("keydown", (event) => {
+                if (event["key"] === "Enter") {
+                  let checkbox = document.querySelector(`.disability-checkbox-${disability.beperking_id}`);
+                  checkbox.checked = !checkbox.checked;
+                  console.log(checkbox.checked)
+                }
+              })
+
+              document.getElementById("disability-dropdown").appendChild(label)
+            })
+          } else {
+            console.error(data.message)
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error)
+        })
+
+  })
 })
 
 window.addEventListener("load", function () {
@@ -65,18 +88,16 @@ function fillPage() {
                 return;
             }
             // Update the title and input fields with the user data
-            document.getElementById("voornaam-title").textContent =
-                expert.voornaam
-            document.getElementById("achternaam-title").textContent =
-                expert.achternaam
+            document.getElementById("naam-title").textContent = `${expert.voornaam} ${expert.achternaam}`;
             document.getElementById("voornaam").value = expert.voornaam
             document.getElementById("achternaam").value = expert.achternaam
             document.getElementById("email").value = expert.email
             document.getElementById("postcode").value = expert.postcode
-            document.getElementById("telefoonnummer").value =
-                expert.telefoonnummer
             document.getElementById("geboortedatum").value =
                 expert.geboortedatum
+            document.getElementById("geslacht").value = expert.geslacht;
+            document.getElementById("telefoonnummer").value =
+                expert.telefoonnummer
             document.getElementById("type-beperking").value =
                 expert.type_beperking
             document.getElementById("hulpmiddelen").value =
@@ -85,8 +106,7 @@ function fillPage() {
                 expert.introductie
             document.getElementById("bijzonderheden").value =
                 expert.bijzonderheden
-            document.getElementById("toezichthouder").value =
-                expert.toezichthouder
+            document.getElementById("toezichthouder").checked = expert.toezichthouder
             document.getElementById("toezichthouder-naam").value =
                 expert.toezichthouder_naam
             document.getElementById("toezichthouder-email").value =
@@ -94,10 +114,10 @@ function fillPage() {
             document.getElementById("toezichthouder-telefoonnummer").value =
                 expert.toezichthouder_telefoonnummer
             document.getElementById("type-onderzoek").value =
-                expert.type_onderzoek
+                expert.type_onderzoeken
             document.getElementById("bijzonderheden-beschikbaarheid").value =
                 expert.bijzonderheden_beschikbaarheid
-            if (expert.voorkeur_benadering === "telefoon") {
+            if (expert.voorkeur_benadering === "TELEFONISCH") {
                 document.getElementById("preference-email").checked = false
                 document.getElementById("preference-telefoon").checked = true
             } else {
@@ -122,7 +142,7 @@ document
     if (password === '') {
         password = null;
     }
-    const postcode = document.getElementById("postcode").value
+    const postcode = document.getElementById("postcode").value.toUpperCase()
     const telefoonnummer = document.getElementById("telefoonnummer").value
     const geboortedatum = document.getElementById("geboortedatum").value
     const geslacht = document.getElementById("geslacht").value
@@ -150,6 +170,12 @@ document
       "bijzonderheden-beschikbaarheid"
     ).value
 
+    const beperkingen = collectSelectedDisabilities()
+    if (beperkingen.length < 1) {
+      showSnackbar("Selecteer alstublieft een beperking.")
+      return;
+    }
+
     let deskundige_data = {
       voornaam: firstName,
       achternaam: lastName,
@@ -169,6 +195,7 @@ document
       type_onderzoek: type_onderzoek,
       voorkeur_benadering: voorkeur_benadering,
       bijzonderheden_beschikbaarheid: bijzonderheden_beschikbaarheid,
+      beperkingen: beperkingen
     }
 
     editExpert(deskundige_data);
@@ -203,4 +230,32 @@ function editExpert(expertData) {
                 "error"
             )
         })
+}
+
+
+function toggleDisabilityDropdown() {
+  const containerElem = document.querySelector(
+    ".js-disability-dropdown-container"
+  )
+
+  if (containerElem.classList.contains("show-dropdown")) {
+    containerElem.classList.remove("show-dropdown")
+  } else {
+    containerElem.classList.add("show-dropdown")
+  }
+}
+
+function collectSelectedDisabilities() {
+  const checkboxes = document.querySelectorAll(
+    '.dropdown-content input[type="checkbox"]'
+  )
+
+  const selectedDisabilities = []
+  checkboxes.forEach((checkbox) => {
+    if (checkbox.checked) {
+      selectedDisabilities.push(checkbox.value)
+    }
+  })
+
+  return selectedDisabilities
 }

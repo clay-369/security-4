@@ -1,24 +1,23 @@
 {% extends 'base.html' %} {% block title %}Account beheer{% endblock %} {% block
 styles%}
-<link rel="stylesheet" href="/static/accountbeheer.css" />
+<link rel="stylesheet" href="/static/css/accountbeheer.css" />
 {% endblock %} {% block nav_links %}
 <a href="/deskundige">Dashboard</a>
 <a href="/deskundige/profiel">Profiel</a>
 <a href="/logout">Uitloggen</a>
 {% endblock %} {% block content %}
-<h1>Welkom</h1>
+<h1>Profiel</h1>
 <form onsubmit="return false;" id="updateDeskundige">
   <div class="form-header">
     <div class="form-header-left">
       <img src="/static/icons/profile_picture.svg" alt="profiel icoon" />
       <div class="form-header-text">
-        <h2 id="voornaam-title"></h2>
-        <h2 id="achternaam-title"></h2>
+        <h2 id="naam-title"></h2>
       </div>
     </div>
 
     <div class="button-container">
-      <input type="submit" value="Bewerken" />
+      <input class="edit-button" type="submit" value="Bewerken" />
     </div>
   </div>
 
@@ -95,55 +94,18 @@ styles%}
     </div>
   </div>
 
-  <!-- Toezichthouder -->
-  <div class="account-info-wrapper">
-    <h3>Gegevens van de toezichthouder</h3>
-    <div class="label-column">
-      <label class="checkbox-container"
-        >Toezichthouder
-        <input
-          type="checkbox"
-          id="toezichthouder"
-          name="toezichthouder"
-          checked="checked"
-        />
-        <span class="checkmark"></span>
-      </label>
-    </div>
-
-    <div class="label-column">
-      <label for="toezichthouder-naam">Naam toezichthouder </label>
-      <input type="text" id="toezichthouder-naam" name="toezichthouder-naam" />
-    </div>
-
-    <div class="label-column">
-      <label for="toezichthouder-email">Email toezichthouder </label>
-      <input
-        type="email"
-        id="toezichthouder-email"
-        name="toezichthouder-email"
-      />
-    </div>
-
-    <div class="label-column">
-      <label for="toezichthouder-telefoonnummer"
-        >Telefoonnummer toezichthouder
-      </label>
-      <input
-        type="tel"
-        id="toezichthouder-telefoonnummer"
-        name="toezichthouder-telefoonnummer"
-      />
-    </div>
-  </div>
 
   <div class="account-info-wrapper">
     <h3>Beperkingen & extra gegevens</h3>
 
     <div class="label-column dropdown">
-      <label for="type-beperking">Beperkingen</label>
-      <select name="type-beperking" id="type-beperking"></select>
-    </div>
+        <label for="type-beperking" class="required">Beperkingen <span class="required-field">*</span></label>
+        <div id="type-beperking" class="disability-dropdown-container js-disability-dropdown-container">
+          <span onclick="toggleDisabilityDropdown()" class="dropdown-button js-disabilities-button">Kies uw beperkingen <i class="arrow"></i></span>
+          <div id="disability-dropdown" class="dropdown-content">
+            </div>
+          </div>
+      </div>
 
     <div class="label-column">
       <label for="hulpmiddelen">Gebruikte hulpmiddelen</label>
@@ -190,9 +152,55 @@ styles%}
 
     <div class="label-column dropdown">
       <label for="type-onderzoek">Type onderzoek</label>
-      <select name="type-onderzoek" id="type-onderzoek"></select>
+      <select name="type-onderzoek" id="type-onderzoek">
+            <option value="ONLINE">Online</option>
+            <option value="OP LOCATIE">Op locatie</option>
+            <option value="TELEFONISCH">Telefonisch</option>
+      </select>
     </div>
   </div>
+
+  <!-- Toezichthouder -->
+  <div class="account-info-wrapper">
+    <h3>Gegevens van de toezichthouder</h3>
+    <div class="label-column">
+      <label class="checkbox-container"
+        >Toezichthouder
+        <input
+          type="checkbox"
+          id="toezichthouder"
+          name="toezichthouder" checked="checked"
+        />
+        <span class="checkmark"></span>
+      </label>
+    </div>
+
+    <div class="label-column">
+      <label for="toezichthouder-naam">Naam toezichthouder </label>
+      <input type="text" id="toezichthouder-naam" name="toezichthouder-naam" />
+    </div>
+
+    <div class="label-column">
+      <label for="toezichthouder-email">Email toezichthouder </label>
+      <input
+        type="email"
+        id="toezichthouder-email"
+        name="toezichthouder-email"
+      />
+    </div>
+
+    <div class="label-column">
+      <label for="toezichthouder-telefoonnummer"
+        >Telefoonnummer toezichthouder
+      </label>
+      <input
+        type="tel"
+        id="toezichthouder-telefoonnummer"
+        name="toezichthouder-telefoonnummer"
+      />
+    </div>
+  </div>
+
   <input type="submit" value="Opslaan" />
 </form>
 {% endblock %} {% block scripts %}

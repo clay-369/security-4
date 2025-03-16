@@ -35,11 +35,15 @@ button {
 .table-container {
     background-color: #D9EBF7;
     width: 100%;
-    padding: 20px;
-    border-radius: 8px;
+    padding: 12px;
+    border-radius: 4px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     overflow: scroll;
     box-sizing: border-box;
+}
+
+.dark .table-container {
+    background-color: #1c3b8b;
 }
 
 table {
@@ -63,6 +67,11 @@ tbody th {
     padding-left: 20px;
 }
 
+.dark th,
+.dark td {
+    color: inherit;
+}
+
 tbody tr {
     border-radius: 8px;
     height: 70px;
@@ -83,6 +92,12 @@ tbody td {
     background-color: #FFFFFF;
 }
 
+.dark tbody th,
+.dark tbody td {
+    background-color: #1C1C1C;
+    color: #17b3f6;
+}
+
 .details-btn {
     background-color: #FFFFFF;
     color: #0057B7;
@@ -93,6 +108,13 @@ tbody td {
     font-size: 19px;
     cursor: pointer;
     transition-duration: 0.1s;
+}
+
+.dark .details-btn,
+.dark .create-btn {
+    color: #17b3f6;
+    background-color: inherit;
+    border-color: #17b3f6;
 }
 
 .details-btn:hover {

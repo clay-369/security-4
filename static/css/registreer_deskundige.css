@@ -31,11 +31,19 @@ body {
   min-width: 500px;
   text-align: left;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 16px 0px;
+  margin: 16px 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px 30px;
   align-items: center;
+  color: var(--color-primary);
+  border: 2px solid rgba(255,255,255,0.1);
+}
+
+.dark .form-container {
+  background-color: inherit;
+  color: inherit;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
 }
 
 .form-title {
@@ -162,12 +170,8 @@ fieldset.label-column {
 }
 h1 {
   text-align: center;
-  color: var(--color-primary);
 }
 
-label {
-  color: var(--color-primary);
-}
 
 input {
   background-color: #f2f6ff;
@@ -191,6 +195,15 @@ input {
   display: flex;
   align-items: center;
   cursor: pointer;
+}
+
+.dark .dropdown-button {
+  background-color: inherit;
+  color: inherit;
+}
+
+.dark .dropdown-button .arrow {
+  border-color: #D8EAF6;
 }
 
 .dropdown-button .arrow {
@@ -221,9 +234,12 @@ input {
   border: 1px solid #c3d0ed;
   box-shadow: 0 0 6px rgba(0,0,0,0.1);
   grid-template-columns: 50% 50%;
-  padding: 10px 20px;
-  padding-bottom: 0;
+  padding: 10px 20px 0;
   column-gap: 10px;
+}
+
+.dark .dropdown-content {
+  background: #1C1C1C;
 }
 
 .dropdown-content label {
@@ -239,6 +255,10 @@ input {
 
 .dropdown-content label:hover {
   background-color: #EEE;
+}
+
+.dark .dropdown-content label:hover {
+  background-color: #444444;
 }
 
 .dropdown-content .dropdown-checkmark {
@@ -258,4 +278,8 @@ input {
 
 .document {
   margin-bottom: 15px;
+}
+
+.dark .document {
+  color: inherit;
 }

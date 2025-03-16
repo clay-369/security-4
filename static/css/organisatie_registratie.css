@@ -22,6 +22,10 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.dark .fields-container {
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+
 .form-group {
     display: flex;
     flex-wrap: wrap;

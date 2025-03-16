@@ -68,8 +68,8 @@ class Experts:
             return False, "Dit emailadres is al geregistreerd."
 
         # Create expert
-        self.cursor.execute("INSERT into deskundigen (email,wachtwoord,voornaam,achternaam,postcode,telefoonnummer,geboortedatum,hulpmiddelen,bijzonderheden, bijzonderheden_beschikbaarheid, introductie, voorkeur_benadering, type_onderzoeken, toezichthouder, toezichthouder_naam, toezichthouder_email, toezichthouder_telefoonnummer, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-        (deskundige["email"], hash_password(deskundige["wachtwoord"]), deskundige["voornaam"], deskundige["achternaam"], deskundige["postcode"], deskundige["telefoonnummer"], deskundige["geboortedatum"], deskundige["hulpmiddelen"], deskundige["bijzonderheden"], deskundige["bijzonderheden_beschikbaarheid"], deskundige["introductie"], deskundige["voorkeur_benadering"], deskundige["type_onderzoek"], deskundige["toezichthouder"], deskundige["toezichthouder_naam"], deskundige["toezichthouder_email"], deskundige["toezichthouder_telefoonnummer"], "NIEUW"))
+        self.cursor.execute("INSERT into deskundigen (email,wachtwoord,voornaam,achternaam,postcode,geslacht,telefoonnummer,geboortedatum,hulpmiddelen,bijzonderheden, bijzonderheden_beschikbaarheid, introductie, voorkeur_benadering, type_onderzoeken, toezichthouder, toezichthouder_naam, toezichthouder_email, toezichthouder_telefoonnummer, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        (deskundige["email"], hash_password(deskundige["wachtwoord"]), deskundige["voornaam"], deskundige["achternaam"], deskundige["postcode"], deskundige["geslacht"], deskundige["telefoonnummer"], deskundige["geboortedatum"], deskundige["hulpmiddelen"], deskundige["bijzonderheden"], deskundige["bijzonderheden_beschikbaarheid"], deskundige["introductie"], deskundige["voorkeur_benadering"], deskundige["type_onderzoek"], deskundige["toezichthouder"], deskundige["toezichthouder_naam"], deskundige["toezichthouder_email"], deskundige["toezichthouder_telefoonnummer"], "NIEUW"))
 
         new_expert_id = self.cursor.lastrowid
 
@@ -149,6 +149,20 @@ class Experts:
             if field in neccesary_fields and expert[field] == "":
                 return False, f"Het veld {field} is verplicht.\n"
 
+        # Delete current disabilities
+        self.cursor.execute("DELETE FROM beperking_deskundige WHERE deskundige_id = ?", (expert_id,))
+
+        # Create edited disabilities
+        for disability_id in expert['beperkingen']:
+            self.cursor.execute(
+                """
+                INSERT INTO beperking_deskundige 
+                (beperking_id, deskundige_id)
+                VALUES (?,?)
+                """,
+                (disability_id, expert_id)
+            )
+
         self.cursor.execute("""
             UPDATE deskundigen SET email = ?, voornaam = ?, achternaam = ?, postcode = ?, 
             telefoonnummer = ?, geboortedatum = ?, hulpmiddelen = ?, bijzonderheden = ?, 
@@ -184,3 +198,7 @@ class Experts:
         password = hash_password(password)
         result = self.cursor.execute("SELECT email FROM deskundigen WHERE wachtwoord = ? AND email = ?", (password, email)).fetchone()
         return bool(result)
+
+    def get_disabilities(self, expert_id):
+        rows = self.cursor.execute("SELECT beperking_id FROM beperking_deskundige WHERE deskundige_id = ?", (expert_id,)).fetchall()
+        return [dict(row)['beperking_id'] for row in rows]
