@@ -121,6 +121,13 @@ tbody td {
     background-color: #D8EAF6;
 }
 
+.dark .close-btn:hover,
+.dark .modal-btn:hover,
+.dark .create-btn:hover,
+.dark .details-btn:hover {
+    background-color: #3C3C3C !important;
+}
+
 .text-end {
     margin-top: 20px;
     text-align: right;
