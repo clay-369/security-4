@@ -8,6 +8,7 @@ body, .header {
     margin: 0;
 }
 
+
 form {
     height: 520px;
     width: 400px;
@@ -18,13 +19,26 @@ form {
     border: 2px solid rgba(255,255,255,0.1);
     box-shadow: 0 0 40px rgba(8,7,16,0.6);
     padding: 50px 35px;
+    color: #212121;
+}
 
+.dark form {
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+.dark form,
+.dark input {
+    background-color: inherit;
+    color: inherit;
+}
+
+.dark input {
+    border-color: #c3d0ed;
 }
 
 h1 {
     font-family: Arial, Roboto, "Open Sans", sans-serif;
     font-size: 32px;
-    color: #212121;
 }
 
 label {
@@ -33,14 +47,12 @@ label {
     margin-top: 30px;
     font-size: 16px;
     font-weight: 500;
-    color: #212121;
 }
 
 input {
     display: block;
     height: 40px;
     width: 95%;
-    padding: 8px;
     border: 1px solid #595959;
     background-color: #f2f6ff;
     border-radius: 3px;
