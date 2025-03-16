@@ -63,6 +63,20 @@ def update_expert():
         return {"success": True, "message": message}
     else:
         return {"success": False, "message": message}
+
+@expert_bp.route("/api/deskundige/beperkingen", methods=["GET"])
+@jwt_required()
+def get_disabilities_of_expert():
+    claims = get_jwt()
+    if claims.get('account_type') != "expert":
+        return {"message": "You are not authorized to access this resource"}, 401
+
+    expert_id = claims.get('expert_id')
+    expert_model = Experts()
+    disability_ids = expert_model.get_disabilities(expert_id)
+    return {"disability_ids": disability_ids}, 200
+
+
         
 @expert_bp.route("/api/disabilities", methods=["GET"])
 def disabilities():

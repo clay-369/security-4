@@ -125,17 +125,17 @@
       <fieldset class="label-column">
         <legend>Voorkeur benadering <span class="required-field">*</span></legend>
         <div class="radio-container">
-          <input id="preference-email" type="radio" name="voorkeur-benadering" value="email" checked>
+          <input id="preference-email" type="radio" name="voorkeur-benadering" value="EMAIL" checked>
           <label for="preference-email">E-mail</label>
 
-          <input id="preference-telephone" type="radio" name="voorkeur-benadering" value="telefoon" >
+          <input id="preference-telephone" type="radio" name="voorkeur-benadering" value="TELEFONISCH" >
           <label for="preference-telephone" >Telefonisch</label>
         </div>
       </fieldset>
 
       <div class="label-column dropdown">
         <label for="type-onderzoek">Voorkeur type onderzoek <span class="required-field">*</span></label>
-        <select name="type-onderzoek" id="type-onderzoek">
+        <select name="type-onderzoek" id="type-onderzoek" required>
             <option value="" disabled selected>Selecteer type onderzoek</option>
             <option value="ONLINE">Online</option>
             <option value="OP LOCATIE">Op locatie</option>

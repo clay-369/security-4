@@ -33,6 +33,7 @@ window.addEventListener("load", function () {
             `disability-checkbox-${disability.beperking_id}`
           )
           checkbox.tabIndex = -1
+          checkbox.checked = true;
 
           const checkmarkSpan = document.createElement("span")
           checkmarkSpan.classList.add("checkmark")
@@ -76,7 +77,6 @@ document
     const telefoonnummer = document.getElementById("telefoonnummer").value
     const geboortedatum = document.getElementById("geboortedatum").value
     const geslacht = document.getElementById("geslacht").value
-    const type_beperking = document.getElementById("type-beperking").value
     let hulpmiddelen = document.getElementById("hulpmiddelen").value
     if (hulpmiddelen === "") {
       hulpmiddelen = null
@@ -128,7 +128,6 @@ document
       telefoonnummer: telefoonnummer,
       geboortedatum: geboortedatum,
       geslacht: geslacht,
-      type_beperking: type_beperking,
       hulpmiddelen: hulpmiddelen,
       introductie: introductie,
       bijzonderheden: bijzonderheden,

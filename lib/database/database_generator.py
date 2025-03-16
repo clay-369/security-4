@@ -38,6 +38,7 @@ class WP3DatabaseGenerator:
             wachtwoord TEXT NOT NULL,
             voornaam TEXT NOT NULL,
             achternaam TEXT NOT NULL,
+            geslacht TEXT NOT NULL,
             postcode TEXT,
             telefoonnummer TEXT,
             geboortedatum TEXT,
@@ -227,25 +228,25 @@ class WP3DatabaseGenerator:
 
     def insert_defaults_into_tables(self):
         insert_statement_experts = ("INSERT INTO deskundigen "
-                                    "(email, wachtwoord, voornaam, achternaam, postcode, telefoonnummer, "
+                                    "(email, wachtwoord, voornaam, achternaam, geslacht, postcode, telefoonnummer, "
                                     "geboortedatum, hulpmiddelen, bijzonderheden, bijzonderheden_beschikbaarheid, "
                                     "introductie, type_onderzoeken, voorkeur_benadering, toezichthouder, "
                                     "toezichthouder_naam, toezichthouder_email, toezichthouder_telefoonnummer, "
-                                    "status, beheerder_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
-        values_experts = ("vried@hr.nl", hash_password("geheimer"), "Diederik", "de Vries", "1234AA", "06958388583",
-                          "1-1-1800", "Rollator", "heel oud", "alleen woensdag", "Hallo ik ben Diekerik",
+                                    "status, beheerder_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+        values_experts = ("vried@hr.nl", hash_password("geheimer"), "Diederik", "de Vries", "man", "1234AA", "06958388583",
+                          "2000-01-01", "Rollator", "heel oud", "alleen woensdag", "Hallo ik ben Diekerik",
                           "TELEFONISCH", "nee", 1, "Jan", "jan@email.com", "06122222", "NIEUW", None)
         self.__execute_transaction_statement(insert_statement_experts, values_experts)
         print("✅ Filled new expert account")
 
         insert_statement_experts = ("INSERT INTO deskundigen "
-                                    "(email, wachtwoord, voornaam, achternaam, postcode, telefoonnummer, "
+                                    "(email, wachtwoord, voornaam, achternaam, geslacht, postcode, telefoonnummer, "
                                     "geboortedatum, hulpmiddelen, bijzonderheden, bijzonderheden_beschikbaarheid, "
                                     "introductie, type_onderzoeken, voorkeur_benadering, toezichthouder, "
                                     "toezichthouder_naam, toezichthouder_email, toezichthouder_telefoonnummer, "
-                                    "status, beheerder_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
-        values_experts = ("friet@hr.nl", hash_password("geheimer"), "Diederik", "de Vries", "1234AA", "06958388583",
-                          "1-1-1800", "Rollator", "heel oud", "alleen woensdag", "Hallo ik ben Diekerik",
+                                    "status, beheerder_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+        values_experts = ("friet@hr.nl", hash_password("geheimer"), "Diederik", "de Vries", "man", "1234AA", "06958388583",
+                          "1800-01-01", "Rollator", "heel oud", "alleen woensdag", "Hallo ik ben Diekerik",
                           "TELEFONISCH", "nee", 1, "Jan", "jan@email.com", "06122222", "GOEDGEKEURD", None)
         self.__execute_transaction_statement(insert_statement_experts, values_experts)
         print("✅ Filled accepted expert account")
