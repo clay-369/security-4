@@ -36,6 +36,11 @@ form {
   align-items: center;
 }
 
+.dark .edit-button {
+  background-color: #17b3f6 !important;
+  color: #1c1c1c !important;
+}
+
 .dark form {
   background-color: inherit;
   color: inherit;

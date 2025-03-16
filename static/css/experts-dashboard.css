@@ -186,6 +186,9 @@ section {
     font-size: 18px;
 }
 
+.dark .enlistments-search-input {
+    border-color: #17b3f6;
+}
 .dark .enlistments-search-input::placeholder {
     color: inherit;
 }
@@ -223,6 +226,7 @@ section {
 
 .dark .enlistment-details-button {
     color: inherit;
+    border-color: #17b3f6;
 }
 .dark .enlistment-details-button:hover {
     background-color: #1c3b8b;

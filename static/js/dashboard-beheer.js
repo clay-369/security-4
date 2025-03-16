@@ -23,7 +23,7 @@ function loadTable() {
                 const row = document.createElement('tr');
                 if (expert.status === 'NIEUW') {
                     row.innerHTML = `
-                        <td> ${expert.voornaam} ${expert.achternaam}</td>
+                        <th scope="row"> ${expert.voornaam} ${expert.achternaam}</th>
                         <td>
                             <button tabindex="0" class="btn" onclick="openDetailsModal(${expert.deskundige_id}, 'expert')">Details</button>
                         </td>
@@ -40,7 +40,7 @@ function loadTable() {
                 const row = document.createElement('tr');
                 if (enlistment.status === 'NIEUW') {
                     row.innerHTML = `
-                        <td>${enlistment.voornaam} ${enlistment.achternaam}</td>
+                        <th scope="row">${enlistment.voornaam} ${enlistment.achternaam}</th>
                         <td>${enlistment.titel}</td>
                         <td>
                             <button tabindex="0" class="btn" onclick="openDetailsModal(${enlistment.inschrijving_id}, 'enlistment')">Details</button>
@@ -58,7 +58,7 @@ function loadTable() {
                 const row = document.createElement('tr');
                 if (research.status === 'NIEUW') {
                     row.innerHTML = `
-                        <td>${research.titel}</td>
+                        <th scope="row">${research.titel}</th>
                         <td>
                             <button tabindex="0" class="btn" onclick="openDetailsModal(${research.onderzoek_id}, 'research')">Details</button>
                         </td>

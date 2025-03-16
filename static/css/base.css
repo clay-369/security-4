@@ -34,7 +34,17 @@ header {
   accent-color: #17b3f6;
 }
 
+h1 {
+    color: #0057B7FF;
+}
+h2 {
+    color: #0057B7FF;
+}
+
 .dark h1 {
+    color: #17b3f6;
+}
+.dark h2 {
     color: #17b3f6;
 }
 
@@ -69,4 +79,34 @@ header nav {
 }
 .nav-links a:hover {
     text-decoration: underline;
+}
+
+.dark-mode-toggle {
+    position: absolute;
+    right: 20px;
+    height: 50px;
+    background-color: #FFFFFF;
+    color: #0057B7;
+    transition-duration: 0.2s;
+    font-family: inherit;
+    padding: 0 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    width: 150px;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.dark-mode-toggle:hover {
+    background-color: #CCCCCC !important;
+}
+
+.dark .dark-mode-toggle {
+    background-color: #1C1C1C;
+    color: #17b3f6;
+}
+.dark .dark-mode-toggle:hover {
+    background-color: #333333 !important;
 }
