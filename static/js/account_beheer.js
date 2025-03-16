@@ -65,10 +65,7 @@ function fillPage() {
                 return;
             }
             // Update the title and input fields with the user data
-            document.getElementById("voornaam-title").textContent =
-                expert.voornaam
-            document.getElementById("achternaam-title").textContent =
-                expert.achternaam
+            document.getElementById("naam-title").textContent = `${expert.voornaam} ${expert.achternaam}`;
             document.getElementById("voornaam").value = expert.voornaam
             document.getElementById("achternaam").value = expert.achternaam
             document.getElementById("email").value = expert.email

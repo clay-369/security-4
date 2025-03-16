@@ -36,6 +36,12 @@ form {
   align-items: center;
 }
 
+.dark form {
+  background-color: inherit;
+  color: inherit;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+}
+
 h2 {
   margin: 0px;
 }
@@ -82,7 +88,15 @@ h2 {
   grid-template-columns: 1fr 1fr;
   gap: 10px 30px;
   align-items: center;
+  color: var(--color-primary);
 }
+
+.dark .account-info-wrapper {
+  border: 1px solid #c3d0ed;
+  background-color: inherit;
+  color: inherit;
+}
+
 .account-info-wrapper h3 {
   grid-column: span 2;
 }
@@ -209,9 +223,6 @@ h1 {
   color: var(--color-primary);
 }
 
-label {
-  color: var(--color-primary);
-}
 
 input {
   background-color: #f2f6ff;
@@ -219,38 +230,9 @@ input {
   border: 1px solid #c3d0ed;
   font-size: 100%;
   padding: 0 10px;
-  margin: 10px 0px;
+  margin: 10px 0;
 }
 
-button {
-  background-color: #3dbb56;
-  background: linear-gradient(45deg, #3dbb56, #39b050);
-  transition: background 0.3s ease;
-  border: none;
-  border-radius: 10px;
-  padding: 10px;
-  color: #fff;
-  height: 50px;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-button:hover {
-  transition: 0.3s ease;
-  background: linear-gradient(45deg, #3dbb56, #2d8b3f);
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
-}
-
-.button-container {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  justify-content: right;
-}
-.button-container input {
-  width: 100px;
-}
 
 #toezichthouder-container {
   display: none;

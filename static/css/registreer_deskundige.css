@@ -46,18 +46,6 @@ body {
   box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
 }
 
-
-.dark .label-column textarea,
-.dark select,
-.dark input {
-  background-color: inherit !important;
-  color: inherit !important;
-}
-
-.dark select option {
-  background: #1C1C1C;
-}
-
 .form-title {
   grid-column: span 2;
 }

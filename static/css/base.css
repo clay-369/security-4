@@ -23,7 +23,23 @@ header {
 }
 
 .dark header {
-    background-color: #111e55;
+    background-color: #1c3b8b;
+}
+
+.dark input,
+.dark select,
+.dark .label-column textarea {
+  background-color: inherit !important;
+  color: inherit !important;
+  accent-color: #17b3f6;
+}
+
+.dark h1 {
+    color: #17b3f6;
+}
+
+.dark select option {
+  background: #1C1C1C;
 }
 
 header nav {
