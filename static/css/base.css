@@ -2,6 +2,7 @@ body {
     margin: 0;
 }
 
+
 .dark {
     background-color: #1C1C1C;
     color: #d9ebf7;
@@ -100,7 +101,8 @@ header nav {
     cursor: pointer;
 }
 .dark-mode-toggle:hover {
-    background-color: #CCCCCC !important;
+    background-color: #1C1C1C !important;
+    color: #17b3f6 !important;
 }
 
 .dark .dark-mode-toggle {
@@ -108,5 +110,6 @@ header nav {
     color: #17b3f6;
 }
 .dark .dark-mode-toggle:hover {
-    background-color: #333333 !important;
+    background-color: #FFFFFF !important;
+    color: #0057B7 !important;
 }

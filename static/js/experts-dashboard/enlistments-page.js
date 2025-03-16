@@ -154,6 +154,7 @@ function delist(researchId) {
                 return;
             }
 
+            showSnackbar("U bent succesvol uitgeschreven.", "success");
             closeResearchModal();
             renderEnlistmentPage();
         })

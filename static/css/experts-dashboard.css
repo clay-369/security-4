@@ -9,7 +9,9 @@
     color: #212121;
     font-family: Roboto, serif;
 }
-html,
+html {
+    height: 100vh;
+}
 body {
     height: 100%;
 }
@@ -141,7 +143,7 @@ section {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.17);
     padding: 10px;
     border-radius: 8px;
-    height: 100%;
+    height: calc(100% - 20px);
 }
 
 .dark .enlistments-container {
@@ -235,13 +237,17 @@ section {
 
 /* Research Modal */
 .research-modal-background {
-    position: fixed;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    width: 100%;
-    height: calc(100% - 120px);
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 100vh;
+    width: 100vw;
 }
 
 .research-modal {

@@ -144,6 +144,7 @@ function enlist(researchId) {
                 return;
             }
 
+            showSnackbar("U bent succesvol ingeschreven.", 'success');
             closeResearchModal();
             renderResearchPage();
         });

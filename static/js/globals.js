@@ -4,7 +4,7 @@ function showSnackbar(message, type = "error") {
     // Snackbar
     let snackbar = document.getElementById("snackbar")
     snackbar.className = "show"
-    snackbar.innerHTML = message
+    snackbar.innerHTML = `<span>${message}</span>`
     if (type === "error") {
         snackbar.style.backgroundColor = "#ff4444"
     } else if (type === "success") {
@@ -14,6 +14,7 @@ function showSnackbar(message, type = "error") {
     clearTimeout(snackbarTimeoutId);
     snackbarTimeoutId = setTimeout(function () {
         snackbar.className = snackbar.className.replace("show", "")
+        snackbar.innerHTML = '';
     }, 3000);
 }
 

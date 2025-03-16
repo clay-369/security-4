@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Onderzoeken{% endblock %}
+{% block title %}Onderzoeken & inschrijvingen{% endblock %}
 
 {% block styles %}
 <link rel="stylesheet" href="../static/css/experts-dashboard.css">
@@ -13,10 +13,6 @@
 {% endblock %}
 
 {% block content %}
-<div class="research-modal-background js-research-modal-background hide">
-  <!--Research item modal-->
-</div>
-
 <section class="js-research-section">
   <div class="section-header">
       <h1 class="section-title">Beschikbare onderzoeken</h1>
@@ -56,6 +52,10 @@
       </div>
   </div>
 </section>
+
+<div class="research-modal-background js-research-modal-background hide" role="dialog">
+      <!--Research item modal-->
+    </div>
 {% endblock %}
 
 {% block scripts %}
