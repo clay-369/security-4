@@ -1,7 +1,8 @@
 from flask import Blueprint, request
-from flask_jwt_extended import jwt_required, get_jwt
+from flask_jwt_extended import jwt_required, get_jwt, get_jwt_identity
 
 from lib.model.enlistments import Enlistment
+from lib.model.organisation import Organisation
 from lib.model.research import Research
 
 organisation_bp = Blueprint('organisation', __name__)
@@ -106,4 +107,24 @@ def edit_research(research_id):
         return {"error": "Onderzoek bewerken mislukt."}, 400
 
 
-# @organisation_bp.route('/organisatie', methods=['GET'])
+@organisation_bp.route('/organisatie', methods=['PUT'])
+@jwt_required()
+def edit_organisation():
+    claims = get_jwt()
+    if claims.get('account_type') != "organisation":
+        return {"message": "You are not authorized to access this resource"}, 401
+
+    organisation_id = claims['organisation_id']
+    data = request.get_json()
+
+    print(data)
+
+    organisation_model = Organisation()
+    is_edited = organisation_model.edit_organisation(organisation_id, data)
+    if not is_edited:
+        return {"message": "Organisatie kon niet bewerkt worden."}, 400
+
+    edited_organisation = dict(organisation_model.get_organisation_by_email(data['email']))
+
+    return {"message": "Organisatie succesvol bewerkt.", "organisatie": edited_organisation}, 200
+
