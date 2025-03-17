@@ -1,0 +1,46 @@
+meta {
+  name: Edit research
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://127.0.0.1:5000/onderzoeken/3
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MTk4MzQ5MSwianRpIjoiNDAzMmU0OWYtOTNjMC00MTY2LThjNzEtOTU0ODM4Mzk4ZjhiIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InRlc3RAZW1haWwuY29tIiwibmJmIjoxNzQxOTgzNDkxLCJjc3JmIjoiZWY1Y2JhMjEtZjM0Yy00N2Q1LTkwYTEtYmRkZDU3NjAyYWNkIiwiZXhwIjoxNzQxOTg0MzkxLCJhY2NvdW50X3R5cGUiOiJvcmdhbmlzYXRpb24iLCJvcmdhbmlzYXRpb25faWQiOjR9.9xvJO3f-jlJeC6VHHKlABnOwTow0lfg3e6-78SdREcM
+}
+
+body:json {
+  {
+   "titel": "NEEE",
+   "beschikbaar": 1,
+   "beschrijving": "Doe hier aan mee!",
+   "datum_vanaf": "1 Maart 2025",
+   "datum_tot": "20 April 2025",
+   "met_beloning": 1,
+   "beloning": "Appeltje"
+  }
+}
+
+docs {
+  Pass research item in body Access token needed in Auth
+  
+  Format: 
+  {
+   "titel": String,
+   "beschikbaar": Bool,
+   "beschrijving": String,
+   "datum_vanaf": String,
+   "datum_tot": String,
+   "met_beloning": Bool,
+   "beloning": String
+  }
+}

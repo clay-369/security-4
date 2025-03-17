@@ -1,0 +1,52 @@
+meta {
+  name: Edit Organisation
+  type: http
+  seq: 5
+}
+
+put {
+  url: http://127.0.0.1:5000/organisatie
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MjIyODg0NSwianRpIjoiOTViYjU5NTQtOTU0OC00MDhmLThhYjctMmQ0OWY5YWM5NmMzIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InBpZXRAZW1haWwuY29tIiwibmJmIjoxNzQyMjI4ODQ1LCJjc3JmIjoiOWMxNTdjMmItYzM2ZS00M2VkLWJiZTgtNDYzNjE3NzcwZjY1IiwiZXhwIjoxNzQyMjMwNjQ1LCJhY2NvdW50X3R5cGUiOiJvcmdhbmlzYXRpb24iLCJvcmdhbmlzYXRpb25faWQiOjN9.WfpYljDb7CKVmD8zqhQ-ty5qU7wLoCGed-WD8VU1s0Q
+}
+
+body:json {
+  {
+    "naam": "piet",
+    "organisatie_type": "non-profit",
+    "website": "www.poep.nl",
+    "contact_persoon": "pieter",
+    "email": "piet@email.com",
+    "telefoonnummer": "0987654323",
+    "overige_details": "oi",
+    "wachtwoord": "okE"
+  }
+}
+
+docs {
+  Expected input
+  {
+    "naam": "",
+    "organisatie_type": "",
+    "website": "",
+    "beschrijving": "",
+    "contact_persoon": "",
+    "email": "",
+    "telefoonnummer": "",
+    "overige_details": "",
+    "wachtwoord": ""
+  }
+  
+  organisatie_type should be one of 'non-profit' or 'commerciëel'
+  
+  'beschrijving' is optional
+  'overige_details' is optional
+}
