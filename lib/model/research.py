@@ -118,10 +118,24 @@ class Research:
         available_research = self.cursor.execute("SELECT * FROM onderzoeken WHERE status = ? AND beschikbaar = ?"
                                                  "AND ? BETWEEN leeftijd_vanaf AND leeftijd_tot",
                             ('GOEDGEKEURD', True, age)).fetchall()
-        # filter disabilities
 
 
-        return available_research
+        relevant_research = []
+
+        # Filter disabilities
+        for research in available_research:
+            # Check if any of the expert disabilities is in the research disabilities
+            is_relevant = False
+            research_disability_ids = self.get_disability_ids(research['onderzoek_id'])
+            for dis_id in disability_ids:
+                if dis_id in research_disability_ids:
+                    is_relevant = True
+                    break
+
+            if is_relevant:
+                relevant_research.append(research)
+
+        return relevant_research
 
 
     def get_all_research_items_for_admins(self):
@@ -174,7 +188,6 @@ class Research:
         self.cursor.execute("SELECT organisatie_id FROM onderzoeken WHERE onderzoek_id = ?", (research_id,))
         return self.cursor.fetchone()['organisatie_id']
 
-
     def get_all_information(self, research_id):
         research_item = dict(self.get_research_by_id(research_id))
 
@@ -195,3 +208,9 @@ class Research:
         research_item['inschrijvingen'] = enlistments
 
         return research_item
+
+    def get_disability_ids(self, research_id):
+        id_list = self.cursor.execute("""
+            SELECT beperking_id FROM beperking_onderzoek WHERE onderzoek_id = ?
+        """, (research_id,)).fetchall()
+        return [dis_id['beperking_id'] for dis_id in id_list]
