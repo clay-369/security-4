@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from flask_jwt_extended import jwt_required, get_jwt
 
+from lib.model.enlistments import Enlistment
 from lib.model.research import Research
 
 organisation_bp = Blueprint('organisation', __name__)
@@ -18,8 +19,24 @@ def get_research():
     organisation_id = claims['organisation_id']
 
     research_model = Research()
-    result = research_model.get_all_research_items_by_organisation_id(organisation_id)
-    return result, 200
+    all_ids = research_model.get_all_research_ids_by_organisation_id(organisation_id)
+    if not all_ids:
+        return {"message": "Geen onderzoeken gevonden voor deze organisatie"}, 404
+
+    all_research_ids = [row['onderzoek_id'] for row in all_ids]
+
+    all_research_items = []
+
+    for research_id in all_research_ids:
+        research_item = dict(research_model.get_research_by_id(research_id))
+
+        enlistment_model = Enlistment()
+        enlistments = enlistment_model.get_enlistments_for_organisation(research_id)
+
+        research_item['inschrijvingen'] = enlistments
+        all_research_items.append(research_item)
+
+    return all_research_items, 200
 
 
 @organisation_bp.route('/onderzoeken/<research_id>', methods=['GET'])
@@ -32,10 +49,19 @@ def get_research_by_id(research_id):
     research_model = Research()
     research_item = research_model.get_research_by_id(research_id)
 
-    organisation_id = claims['organisation_id']
+    if not research_item:
+        return {"message": "Onderzoek niet gevonden"}, 404
 
+    organisation_id = claims['organisation_id']
     if research_item['organisatie_id'] != organisation_id:
         return {"message": "You don't have access to this item"}, 401
+
+    research_item = dict(research_item)
+
+    enlistment_model = Enlistment()
+    enlistments = enlistment_model.get_enlistments_for_organisation(research_id)
+
+    research_item['inschrijvingen'] = enlistments
 
     return research_item, 200
 

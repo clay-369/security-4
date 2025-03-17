@@ -9,7 +9,7 @@ class Research:
 
     def get_research_by_id(self, research_id:int):
         result = self.cursor.execute(f"SELECT * FROM onderzoeken WHERE onderzoek_id=?", (research_id,)).fetchone()
-        return dict(result)
+        return result
 
     def create_research(self, research_item:dict, organisation_id:int):
 
@@ -102,12 +102,12 @@ class Research:
         self.conn.commit()
 
         new_research_item = self.get_research_by_id(new_research_id)
-        return new_research_item
+        return dict(new_research_item)
 
-    def get_all_research_items_by_organisation_id(self, organisation_id):
-        self.cursor.execute("SELECT * FROM onderzoeken WHERE organisatie_id = ?", (organisation_id,))
+    def get_all_research_ids_by_organisation_id(self, organisation_id):
+        self.cursor.execute("SELECT onderzoek_id FROM onderzoeken WHERE organisatie_id = ?", (organisation_id,))
         rows = self.cursor.fetchall()
-        return [dict(row) for row in rows]
+        return rows
 
 
     def get_all_available_research_items(self):

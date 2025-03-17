@@ -36,7 +36,7 @@ def get_research_item(research_id):
         return {"message": "You are not authorized to access this resource"}, 401
 
     research_model = Research()
-    research_item = research_model.get_research_by_id(int(research_id))
+    research_item = dict(research_model.get_research_by_id(int(research_id)))
     formatted_research_item = research_model.format_research_item(research_item)
     return formatted_research_item
 
