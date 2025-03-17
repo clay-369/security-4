@@ -1,5 +1,6 @@
 from lib.model.database import Database
 from lib.model.disabilities import Disabilities
+from lib.model.enlistments import Enlistment
 
 
 class Research:
@@ -8,7 +9,11 @@ class Research:
         self.conn, self.cursor = database.connect_db()
 
     def get_research_by_id(self, research_id:int):
-        result = self.cursor.execute(f"SELECT * FROM onderzoeken WHERE onderzoek_id=?", (research_id,)).fetchone()
+        result = self.cursor.execute("SELECT * FROM onderzoeken WHERE onderzoek_id=?", (research_id,)).fetchone()
+        return result
+
+    def get_organisation_by_id(self, research_id:int):
+        result = self.cursor.execute("SELECT organisatie_id FROM onderzoeken WHERE onderzoek_id = ?", (research_id,)).fetchone()
         return result
 
     def create_research(self, research_item:dict, organisation_id:int):
@@ -101,8 +106,7 @@ class Research:
 
         self.conn.commit()
 
-        new_research_item = self.get_research_by_id(new_research_id)
-        return dict(new_research_item)
+        return new_research_id
 
     def get_all_research_ids_by_organisation_id(self, organisation_id):
         self.cursor.execute("SELECT onderzoek_id FROM onderzoeken WHERE organisatie_id = ?", (organisation_id,))
@@ -165,3 +169,25 @@ class Research:
     def get_organisation_id(self, research_id):
         self.cursor.execute("SELECT organisatie_id FROM onderzoeken WHERE onderzoek_id = ?", (research_id,))
         return self.cursor.fetchone()['organisatie_id']
+
+
+    def get_all_information(self, research_id):
+        research_item = dict(self.get_research_by_id(research_id))
+
+        # Add disabilities
+        research_disabilities = self.cursor.execute("""
+                        SELECT beperking FROM beperkingen
+                        WHERE beperking_id IN (SELECT beperking_id FROM beperking_onderzoek WHERE onderzoek_id = ?)
+                    """, (research_id,)).fetchall()
+
+        research_disabilities = [dict(disability)['beperking'] for disability in research_disabilities]
+
+        research_item['beperkingen'] = research_disabilities
+
+        # Add enlistments
+        enlistment_model = Enlistment()
+        enlistments = enlistment_model.get_enlistments_for_organisation(research_id)
+
+        research_item['inschrijvingen'] = enlistments
+
+        return research_item

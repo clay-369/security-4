@@ -28,12 +28,7 @@ def get_research():
     all_research_items = []
 
     for research_id in all_research_ids:
-        research_item = dict(research_model.get_research_by_id(research_id))
-
-        enlistment_model = Enlistment()
-        enlistments = enlistment_model.get_enlistments_for_organisation(research_id)
-
-        research_item['inschrijvingen'] = enlistments
+        research_item = research_model.get_all_information(research_id)
         all_research_items.append(research_item)
 
     return all_research_items, 200
@@ -46,22 +41,21 @@ def get_research_by_id(research_id):
     if claims.get('account_type') != "organisation":
         return {"message": "You are not authorized to access this resource"}, 401
 
-    research_model = Research()
-    research_item = research_model.get_research_by_id(research_id)
-
-    if not research_item:
-        return {"message": "Onderzoek niet gevonden"}, 404
-
     organisation_id = claims['organisation_id']
-    if research_item['organisatie_id'] != organisation_id:
-        return {"message": "You don't have access to this item"}, 401
 
-    research_item = dict(research_item)
+    research_model = Research()
 
-    enlistment_model = Enlistment()
-    enlistments = enlistment_model.get_enlistments_for_organisation(research_id)
+    valid_id = research_model.get_organisation_by_id(research_id)
+    if not valid_id:
+        return {"message": "Dit onderzoek bestaat niet"}, 404
 
-    research_item['inschrijvingen'] = enlistments
+    valid_id = dict(valid_id)['organisatie_id']
+
+    is_validated = (valid_id == organisation_id)
+    if not is_validated:
+        return {"message": "U heeft geen toegang tot dit onderzoek"}, 401
+
+    research_item = research_model.get_all_information(research_id)
 
     return research_item, 200
 
@@ -78,12 +72,12 @@ def create_research_item():
     research_item = request.json
     research_model = Research()
 
-    new_research_item = research_model.create_research(research_item, organisation_id)
+    new_research_id = research_model.create_research(research_item, organisation_id)
     try:
-        if new_research_item['error']:
-            return new_research_item, 422
+        return new_research_id['error'], 422
 
-    except KeyError:
+    except TypeError:
+        new_research_item = research_model.get_all_information(new_research_id)
         return new_research_item, 201  # Created
 
 
@@ -106,6 +100,10 @@ def edit_research(research_id):
 
     is_edited = research_model.edit_research(research, research_id)
     if is_edited:
-        return {"message": "Onderzoek succesvol bewerkt.", "success": True}, 200
+        edited_research = research_model.get_all_information(research_id)
+        return {"message": "Onderzoek succesvol bewerkt.", "success": True, "onderzoek": edited_research}, 200
     else:
         return {"error": "Onderzoek bewerken mislukt."}, 400
+
+
+# @organisation_bp.route('/organisatie', methods=['GET'])
