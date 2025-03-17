@@ -68,3 +68,44 @@ class Enlistment:
         self.cursor.execute("UPDATE inschrijvingen SET status = ?, beheerder_id = ? WHERE inschrijving_id = ?", (status, admin_id, enlistment_id))
         self.conn.commit()
         return True, "Status gewijzigd!"
+
+    def get_enlistments_for_organisation(self, research_id:int):
+        # Get expert details from enlistment
+        experts = self.cursor.execute("""
+            SELECT deskundigen.deskundige_id, voornaam, achternaam, geslacht, geboortedatum, hulpmiddelen, bijzonderheden, 
+            bijzonderheden_beschikbaarheid, introductie, voorkeur_benadering, toezichthouder, toezichthouder_email,
+            toezichthouder_telefoonnummer, inschrijvingen.status
+            FROM deskundigen
+            JOIN inschrijvingen ON inschrijvingen.deskundige_id = deskundigen.deskundige_id
+            WHERE onderzoek_id = ? AND (inschrijvingen.status = ? OR inschrijvingen.status = ?)
+            """, (research_id, "GOEDGEKEURD", "AFGEKEURD")).fetchall()
+
+        # Convert Row to dict
+        experts = [dict(e) for e in experts]
+
+        # Get disabilities from each expert
+        for expert in experts:
+            expert_disabilities = self.cursor.execute("""
+                SELECT beperking FROM beperkingen
+                WHERE beperking_id IN (SELECT beperking_id FROM beperking_deskundige WHERE deskundige_id = ?)
+            """, (expert['deskundige_id'],)).fetchall()
+
+            # Append disabilities to expert dict
+            expert['beperkingen'] = []
+            if expert_disabilities:
+                expert['beperkingen'] += [dict(disability)['beperking'] for disability in expert_disabilities]
+
+        enlistments = {"goedgekeurd": [], "afgekeurd": []}
+        for expert in experts:
+            if expert['status'] == 'GOEDGEKEURD':
+                expert.pop('status')
+                enlistments["goedgekeurd"].append(expert)
+            elif expert['status'] == 'AFGEKEURD':
+                expert.pop('status')
+                enlistments["afgekeurd"].append(expert)
+
+        return enlistments
+
+
+
+

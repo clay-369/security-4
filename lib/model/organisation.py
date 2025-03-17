@@ -1,5 +1,3 @@
-import sqlite3
-
 from lib.model.database import Database
 from lib.model.users import hash_password
 
@@ -53,3 +51,33 @@ class Organisation:
     def get_all_organisations(self):
         result = self.cursor.execute("SELECT * FROM organisaties").fetchall()
         return result
+
+    def edit_organisation(self, organisation_id, data):
+        try:
+            if not data['beschrijving']:
+                data['beschrijving'] = None
+        except KeyError:
+            data['beschrijving'] = None
+
+        try:
+            if not data['overige_details']:
+                data['overige_details'] = None
+        except KeyError:
+            data['overige_details'] = None
+
+        is_edited = False
+
+        try:
+            self.cursor.execute("""
+                UPDATE organisaties
+                SET naam =?, organisatie_type =?, website =?, beschrijving =?, contactpersoon =?, email =?, 
+                telefoonnummer =?, overige_details =?, wachtwoord =? WHERE organisatie_id =?
+            """, (data['naam'], data['organisatie_type'], data['website'], data['beschrijving'], data['contact_persoon'],
+                  data['email'], data['telefoonnummer'], data['overige_details'], hash_password(data['wachtwoord']),
+                  organisation_id)
+            )
+            is_edited = True
+        finally:
+            self.conn.commit()
+
+        return is_edited
