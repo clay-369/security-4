@@ -73,7 +73,7 @@ document
     const achternaam = document.getElementById("achternaam").value
     const email = document.getElementById("email").value
     const wachtwoord = document.getElementById("wachtwoord").value
-    const postcode = document.getElementById("postcode").value
+    const postcode = document.getElementById("postcode").value.toUpperCase()
     const telefoonnummer = document.getElementById("telefoonnummer").value
     const geboortedatum = document.getElementById("geboortedatum").value
     const geslacht = document.getElementById("geslacht").value

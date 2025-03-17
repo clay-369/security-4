@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, request
-from flask_jwt_extended import jwt_required, get_jwt
+from flask_jwt_extended import jwt_required, get_jwt, get_jwt_identity
 
+from lib.model.experts import Experts
 from lib.model.research import Research
 from lib.model.enlistments import Enlistment
-
 research_bp = Blueprint('research', __name__)
 
 # API's
@@ -18,7 +18,15 @@ def get_research_items():
 
     research_model = Research()
 
-    all_research_items = research_model.get_all_available_research_items()
+    expert_model = Experts()
+    expert = expert_model.get_expert_by_email(get_jwt_identity())
+    date_of_birth = expert['geboortedatum']
+    age = expert_model.calculate_age(date_of_birth)
+
+
+    disability_ids = expert_model.get_disabilities(expert['deskundige_id'])
+
+    all_research_items = research_model.get_all_available_research_items(age, disability_ids)
 
     formatted_research_items = []
     for research_item in all_research_items:

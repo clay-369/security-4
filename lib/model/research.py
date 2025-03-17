@@ -114,10 +114,14 @@ class Research:
         return rows
 
 
-    def get_all_available_research_items(self):
-        self.cursor.execute("SELECT * FROM onderzoeken WHERE status = ? AND beschikbaar = ?",
-                            ('GOEDGEKEURD', True))
-        return self.cursor.fetchall()
+    def get_all_available_research_items(self, age: int, disability_ids: list):
+        available_research = self.cursor.execute("SELECT * FROM onderzoeken WHERE status = ? AND beschikbaar = ?"
+                                                 "AND ? BETWEEN leeftijd_vanaf AND leeftijd_tot",
+                            ('GOEDGEKEURD', True, age)).fetchall()
+        # filter disabilities
+
+
+        return available_research
 
 
     def get_all_research_items_for_admins(self):
