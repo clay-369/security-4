@@ -66,7 +66,7 @@ class WP3DatabaseGenerator:
             beheerder_id INTEGER PRIMARY KEY AUTOINCREMENT,
             voornaam TEXT NOT NULL,
             achternaam TEXT NOT NULL,
-            email TEXT NOT NULL,
+            email TEXT NOT NULL UNIQUE,
             wachtwoord TEXT NOT NULL
             );
         """

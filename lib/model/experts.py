@@ -2,6 +2,7 @@ from lib.model.database import Database
 from lib.model.disabilities import Disabilities
 from lib.model.users import hash_password
 import re
+from datetime import datetime, date
 
 class Experts:
     def __init__(self):
@@ -202,3 +203,10 @@ class Experts:
     def get_disabilities(self, expert_id):
         rows = self.cursor.execute("SELECT beperking_id FROM beperking_deskundige WHERE deskundige_id = ?", (expert_id,)).fetchall()
         return [dict(row)['beperking_id'] for row in rows]
+
+    def calculate_age(self, date_of_birth:str) -> int:
+        today = date.today()
+        covert_date = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
+        difference = (today - covert_date).days
+        age = int(difference / 365)
+        return age
