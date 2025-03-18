@@ -128,28 +128,32 @@ function openDetailsModal(dataID, dataType) {
         // Moet nog aan gewerkt worden
         modalContent = `
                         <h1>Inschrijving Details</h1>
+                            <div class="modal-container">
+                                <div>
+                                    <h2>Details inschrijvende:</h2>
+                                    <p>Naam: ${enlistmentData["voornaam"]} ${enlistmentData["achternaam"]}</p>
+                                    <p>Geboortedatum: ${enlistmentData["geboortedatum"]}</p>
+                                    <p>Email: ${enlistmentData["email"]}</p>
+                                    <p>Telefoonnummer: ${enlistmentData["telefoonnummer"]}</p>
+                                    <p>Hulpmiddelen: ${enlistmentData["hulpmiddelen"]}</p>
+                                    <p>Bijzonderheden: ${enlistmentData["bijzonderheden"]}</p>
+                                    <p>Bijzonderheden beschikbaarheid: ${enlistmentData["bijzonderheden_beschikbaarheid"]}</p>
+                                    <p>Type onderzoeken: ${enlistmentData["type_onderzoeken"]}</p>     
+                                </div>
+                                <div>
+                                    <h2>Details onderzoek:</h2>
+                                    <p>Titel: ${enlistmentData["titel"]}</p>
+                                    <p>Beschrijving: ${enlistmentData["beschrijving"]}</p>
+                                    <p>Startdatum: ${enlistmentData["datum_vanaf"]}</p>
+                                    <p>Einddatum: ${enlistmentData["datum_tot"]}</p>
+                                    <p>Onderzoek-type: ${enlistmentData["onderzoek_type"]}</p>
+                                    <p>Locatie: ${enlistmentData["locatie"]}</p>
+                                    <p>Vanaf leeftijd:: ${enlistmentData["leeftijd_vanaf"]}</p>
+                                    <p>Tot leeftijd: ${enlistmentData["leeftijd_tot"]}</p>
+                                <div>
+                                
+                            </div>
                             <form method="POST" id="detailsModal">
-                            
-                                <h2>Details inschrijvende:</h2>
-                                <p>Naam: ${enlistmentData["voornaam"]} ${enlistmentData["achternaam"]}</p>
-                                <p>Geboortedatum: ${enlistmentData["geboortedatum"]}</p>
-                                <p>Email: ${enlistmentData["email"]}</p>
-                                <p>Telefoonnummer: ${enlistmentData["telefoonnummer"]}</p>
-                                <p>Hulpmiddelen: ${enlistmentData["hulpmiddelen"]}</p>
-                                <p>Bijzonderheden: ${enlistmentData["bijzonderheden"]}</p>
-                                <p>Bijzonderheden beschikbaarheid: ${enlistmentData["bijzonderheden_beschikbaarheid"]}</p>
-                                <p>Type onderzoeken: ${enlistmentData["type_onderzoeken"]}</p>     
-        
-                                <h2>Details onderzoek:</h2>
-                                <p>Titel: ${enlistmentData["titel"]}</p>
-                                <p>Beschrijving: ${enlistmentData["beschrijving"]}</p>
-                                <p>Startdatum: ${enlistmentData["datum_vanaf"]}</p>
-                                <p>Einddatum: ${enlistmentData["datum_tot"]}</p>
-                                <p>Onderzoek-type: ${enlistmentData["onderzoek_type"]}</p>
-                                <p>Locatie: ${enlistmentData["locatie"]}</p>
-                                <p>Vanaf leeftijd:: ${enlistmentData["leeftijd_vanaf"]}</p>
-                                <p>Tot leeftijd: ${enlistmentData["leeftijd_tot"]}</p>
-        
                                 <input class="modal-btn" type="submit" name="submit" value="Accepteren">
                                 <input class="modal-btn" type="submit" name="submit" value="Weigeren">
                             </form>
@@ -160,36 +164,43 @@ function openDetailsModal(dataID, dataType) {
         // Moet nog aan gewerkt worden
         modalContent = `
         <div>
-                        <h1>Onderzoek Details</h1>
-                        <h2>Onderzoek</h2>
-                        <p>titel: ${research.titel}</p>
-                        <p>beschrijving: ${research.beschrijving}</p>
-                        <p>datum: ${research.datum_vanaf} tot ${
-          research.datum_tot
-        }</p>
-                        <p>type: ${research.onderzoek_type.toLowerCase()}</p>
-                        
-                        <!-- If OP LOCATIE-->
-                        <p>locatie: ${research.locatie}</p>
-                        <!--If statement for beloning-->
-                        <p>${research.beloning}</p>
-                        <p>${research.leeftijd_vanaf} tot ${
-          research.leeftijd_tot
-        } jaar</p>
-                        <p>${research.titel}</p>
-                        
-                        <h3>Beperkingen</h3>
-                        <!--todo-->
-                        
-                        <h3>Organisatie</h3>
-                        <p>${research.naam}</p>
-                        
-                            <form method="POST" id="detailsModal">
-                                <input class="modal-btn" type="submit" name="submit" value="Accepteren">
-                                <input class="modal-btn" type="submit" name="submit" value="Weigeren">
-                            </form>
-                        </div>
-                `
+            <div class="modal-container">
+                <div>
+                    <h1>Onderzoek Details</h1>
+                    <h2>Onderzoek</h2>
+                    <p>titel: ${research.titel}</p>
+                    <p>beschrijving: ${research.beschrijving}</p>
+                    <p>datum: ${research.datum_vanaf} tot ${research.datum_tot}</p>
+                    <p>type: ${research.onderzoek_type.toLowerCase()}</p>
+                    
+                    <!-- If OP LOCATIE-->
+                    ${
+                        research.locatie
+                        ? `<p>locatie: ${research.locatie}</p>`
+                        : ''
+                    }
+                    
+                    <!--If statement for beloning-->
+                    ${
+                        research.beloning 
+                        ? `<p>${research.beloning}</p>
+                            <p>${research.leeftijd_vanaf} tot ${research.leeftijd_tot} jaar</p>
+                            <p>${research.titel}</p>`
+                        : ''
+                    }
+                    
+                </div>
+                <div>
+                    <h3>Organisatie</h3>
+                    <p>${research.naam}</p>
+                </div>
+            </div>
+            <form method="POST" id="detailsModal">
+                <input class="modal-btn" type="submit" name="submit" value="Accepteren">
+                <input class="modal-btn" type="submit" name="submit" value="Weigeren">
+            </form>
+        </div>
+        `
       }
 
       const modal = document.createElement("div")

@@ -5,6 +5,7 @@
   top: 50%;
   left: 50%;
   margin: 20px;
+
   background-color: #d8eaf6;
   transform: translate(-50%, -50%);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -13,7 +14,7 @@
   justify-content: center;
   flex-direction: column;
   z-index: 10;
-  padding-bottom: 10px;
+  padding: 30px 0;
 }
 
 .dark .modal {
@@ -28,7 +29,7 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  padding: 0px 50px;
+  padding: 0 50px;
   gap: 100px;
   justify-content: center;
 }
@@ -47,6 +48,7 @@
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  padding: 10px;
 }
 
 .dark .modal-content {
