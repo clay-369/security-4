@@ -30,9 +30,9 @@ function loadTable() {
 
           row.innerHTML = `
                         <th scope="row"> ${expert.voornaam} ${expert.achternaam}</th>
-                        <th scope="row"> Registratie</th>
-                        <th scope="row"> ${expert.status}</th>
-                        <th scope="row"> ${adminName}</th>
+                        <td> Registratie</td>
+                        <td> ${expert.status}</td>
+                        <td> ${adminName}</td>
                         `
           expertsBody.appendChild(row)
         }
@@ -48,9 +48,9 @@ function loadTable() {
 
           row.innerHTML = `
                         <th scope="row">${enlistment.voornaam} ${enlistment.achternaam}</th>
-                        <th scope="row">Onderzoek ${enlistment.titel}</th>
-                        <th scope="row">${enlistment.status}</th>
-                        <th scope="row"> ${adminName}</th>
+                        <td>Onderzoek ${enlistment.titel}</td>
+                        <td>${enlistment.status}</td>
+                        <td> ${adminName}</td>
                         `
           enlistmentBody.appendChild(row)
         }
@@ -66,9 +66,9 @@ function loadTable() {
 
           row.innerHTML = `
                         <th scope="row">${research.titel}</th>
-                        <th scope="row">Onderzoek</th>
-                        <th scope="row">${research.status}</th>
-                        <th scope="row"> ${adminName}</th>
+                        <td>Onderzoek</td>
+                        <td>${research.status}</td>
+                        <td> ${adminName}</td>
                         `
           researchesBody.appendChild(row)
         }
