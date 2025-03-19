@@ -15,13 +15,13 @@ headers {
 }
 
 auth:bearer {
-  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MjMyNTQxMywianRpIjoiMjI2NjdmODQtY2UyNC00NTU4LWE3YTItZTU3YzE1Nzc5NzFmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InBldGVyQGVtYWlsLmNvbSIsIm5iZiI6MTc0MjMyNTQxMywiY3NyZiI6IjdiOGY0MjVhLTdmYjctNDZhMC04YWUxLWE1MTJiMTdiZmM2NiIsImV4cCI6MTc0MjMyNzIxMywiYWNjb3VudF90eXBlIjoib3JnYW5pc2F0aW9uIiwib3JnYW5pc2F0aW9uX2lkIjoxfQ.ZnUTh03gFgKAcqtMU5P8CCcIdDixE-3D9CtNov9tKvk
+  token: 
 }
 
 body:json {
   {
     "titel": "Onderzoek voor doven",
-    "beschikbaar": false,
+    "beschikbaar": true,
     "beschrijving": "dit is de beschrijving",
     "datum_vanaf": "01-02-2025",
     "datum_tot": "01-04-2025",
@@ -41,25 +41,26 @@ body:json {
 }
 
 docs {
-  Pass research item in body
-  Access token needed in Auth
+  Pass research item in body.
+  Access token is needed in Auth.
   
   Format:
   {
     "titel": String,
     "beschikbaar": Bool,
     "beschrijving": String,
-    "datum_vanaf": String (date),
-    "datum_tot": String (date),
+    "datum_vanaf": String,
+    "datum_tot": String,
     "onderzoek_type": String (OP LOCATE, TELEFONISCH, ONLINE),
     "locatie": String (Only if onderzoek_type is OP LOCATIE),
-    "met_beloning": true,
-    "beloning": "$1", // Optional
-    "leeftijd_vanaf": 20,
-    "leeftijd_tot": 70,
+    "met_beloning": Bool,
+    "beloning": String (Only if "met_beloning is true"),
+    "leeftijd_vanaf": Int,
+    "leeftijd_tot": Int,
     "beperkingen": [
       "blind",
-      "amputatie of mismaaktheid"
-    ]
+      "amputatie of mismaaktheid",
+      "doof"
+    ] (Can be any disability that is in the database)
   }
 }

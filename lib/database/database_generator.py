@@ -237,7 +237,7 @@ class WP3DatabaseGenerator:
         insert_statement_organisation = ("""INSERT INTO organisaties
             (naam, organisatie_type, website, beschrijving, contactpersoon, email, telefoonnummer, overige_details, wachtwoord)
             VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)""")
-        values_organisation = ('Stichting accessibility', 'non-profit', 'www.google.com', 'ja ok', 'peter', 'peter@email.com', '06', 'geef geld', hash_password('ABC'))
+        values_organisation = ('Stichting accessibility', 'non-profit', 'www.google.com', 'Mijn beschrijving', 'peter', 'peter@email.com', '06', 'Details', hash_password('ABC'))
         self.__execute_transaction_statement(insert_statement_organisation, values_organisation)
         print("✅ Filled default organisation account")
 
@@ -247,8 +247,8 @@ class WP3DatabaseGenerator:
             'titel': 'Onderzoek naar doofheid van mensen',
             'beschikbaar': True,
             'beschrijving': 'Wij zoeken 20 mensen die doof zijn voor een onderzoek naar het gehoor.',
-            'datum_vanaf': '2025-01-01',
-            'datum_tot': '2025-08-01',
+            'datum_vanaf': '01-01-2025',
+            'datum_tot': '01-08-2025',
             'onderzoek_type': 'OP LOCATIE',
             'locatie': 'Rotterdam',
             'met_beloning': True,
