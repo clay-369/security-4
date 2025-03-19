@@ -1,174 +1,213 @@
-{% extends 'base.html' %}
-{% block title %} Registratie ervaringdeskundige {% endblock %}
-{% block styles %}
-    <link rel="stylesheet" href="/static/css/registreer_deskundige.css" />
-{% endblock %}
-{% block nav_links %}
-  <a href="/login">Login</a>
-{% endblock %}
+{% extends 'base.html' %} {% block title %} Registratie ervaringdeskundige {%
+endblock %} {% block styles %}
+<link rel="stylesheet" href="/static/css/registreer_deskundige.css" />
+{% endblock %} {% block nav_links %}
+<a href="/login">Login</a>
+{% endblock %} {% block content %}
+<h1>Registratie ervaringsdeskundige</h1>
+<div class="form-container">
+  <h2 class="form-title">Vul de onderstaande gegevens in</h2>
+  <div class="label-column">
+    <label for="voornaam" class="required"
+      >Voornaam <span class="required-field">*</span></label
+    >
+    <input type="text" id="voornaam" name="voornaam" required />
+  </div>
 
-{% block content %}
-    <h1>Registratie ervaringsdeskundige</h1>
-    <div class="form-container">
-      <h2 class="form-title">Vul de onderstaande gegevens in</h2>
-      <div class="label-column">
-        <label for="voornaam" class="required">Voornaam <span class="required-field">*</span></label>
-        <input type="text" id="voornaam" name="voornaam" />
-      </div>
+  <div class="label-column">
+    <label for="achternaam" class="required"
+      >Achternaam <span class="required-field">*</span></label
+    >
+    <input type="text" id="achternaam" name="achternaam" required />
+  </div>
 
-      <div class="label-column">
-        <label for="achternaam" class="required">Achternaam <span class="required-field">*</span></label>
-        <input type="text" id="achternaam" name="achternaam" />
-      </div>
+  <div class="label-column">
+    <label for="email" class="required"
+      >E-mail <span class="required-field">*</span></label
+    >
+    <input type="email" id="email" name="email" required />
+  </div>
 
-      <div class="label-column">
-        <label for="email" class="required">E-mail <span class="required-field">*</span></label>
-        <input type="email" id="email" name="email" />
-      </div>
+  <div class="label-column">
+    <label for="wachtwoord" class="required"
+      >Wachtwoord <span class="required-field">*</span></label
+    >
+    <input type="password" id="wachtwoord" name="wachtwoord" required />
+  </div>
 
-      <div class="label-column">
-        <label for="wachtwoord" class="required">Wachtwoord <span class="required-field">*</span></label>
-        <input type="password" id="wachtwoord" name="wachtwoord" />
-      </div>
+  <div class="label-column">
+    <label for="telefoonnummer" class="required"
+      >Telefoonnummer <span class="required-field">*</span></label
+    >
+    <input type="text" id="telefoonnummer" name="telefoonnummer" required />
+  </div>
 
-      <div class="label-column">
-        <label for="telefoonnummer" class="required">Telefoonnummer <span class="required-field">*</span></label>
-        <input type="text" id="telefoonnummer" name="telefoonnummer" />
-      </div>
+  <div class="label-column">
+    <label for="postcode" class="required"
+      >Postcode <span class="required-field">*</span></label
+    >
+    <input type="text" id="postcode" name="postcode" required />
+  </div>
 
-      <div class="label-column">
-        <label for="postcode" class="required">Postcode <span class="required-field">*</span></label>
-        <input type="text" id="postcode" name="postcode" />
-      </div>
+  <div class="label-column">
+    <label for="geboortedatum" class="required"
+      >Geboortedatum <span class="required-field">*</span></label
+    >
+    <input type="date" id="geboortedatum" name="geboortedatum" required />
+  </div>
 
-      <div class="label-column">
-        <label for="geboortedatum" class="required">Geboortedatum <span class="required-field">*</span></label>
-        <input type="date" id="geboortedatum" name="geboortedatum" />
-      </div>
+  <div class="label-column dropdown">
+    <label for="geslacht" class="required"
+      >Geslacht <span class="required-field">*</span></label
+    >
+    <select name="geslacht" id="geslacht" required>
+      <option value="man">Man</option>
+      <option value="vrouw">Vrouw</option>
+      <option value="anders">Anders</option>
+    </select>
+  </div>
 
-      <div class="label-column dropdown">
-        <label for="geslacht" class="required">Geslacht <span class="required-field">*</span></label>
-        <select name="geslacht" id="geslacht">
-          <option value="man">Man</option>
-          <option value="vrouw">Vrouw</option>
-          <option value="anders">Anders</option>
-        </select>
-      </div>
-
-      <div class="label-column dropdown">
-        <label for="type-beperking" class="required">Beperkingen <span class="required-field">*</span></label>
-        <div id="type-beperking" class="disability-dropdown-container js-disability-dropdown-container">
-          <button onclick="toggleDisabilityDropdown()" class="dropdown-button js-disabilities-button">Kies uw beperkingen <i class="arrow"></i></button>
-          <div id="disability-dropdown" class="dropdown-content">
-            </div>
-          </div>
-      </div>
-
-      <div class="label-column">
-        <label for="hulpmiddelen">Gebruikte hulpmiddelen</label>
-        <input type="text" id="hulpmiddelen" name="hulpmiddelen" />
-      </div>
-
-      <div class="label-column full-width-form-element">
-        <label for="introductie" class="required">Introductie <span class="required-field">*</span></label>
-        <textarea name="introductie" id="introductie"></textarea>
-      </div>
-
-      <div class="label-column full-width-form-element">
-        <label for="bijzonderheden">Bijzonderheden</label>
-        <input type="text" id="bijzonderheden" name="bijzonderheden" />
-      </div>
-
-      <div class="full-width-form-element">
-        <label class="checkbox-container" for="toezichthouder"
-          >Toezichthouder
-          <input
-            type="checkbox"
-            id="toezichthouder"
-            name="toezichthouder"
-          />
-          <span class="checkmark"></span>
-        </label>
-      </div>
-
-      <div id="toezichthouder-container" class="full-width-form-element">
-        <div class="label-column">
-          <label for="toezichthouder-naam">Naam toezichthouder <span class="required-field">*</span></label>
-          <input
-            type="text"
-            id="toezichthouder-naam"
-            name="toezichthouder-naam"
-          />
-        </div>
-
-        <div class="label-column">
-          <label for="toezichthouder-email">Email toezichthouder <span class="required-field">*</span></label>
-          <input
-            type="email"
-            id="toezichthouder-email"
-            name="toezichthouder-email"
-          />
-        </div>
-
-        <div class="label-column full-width-form-element">
-          <label for="toezichthouder-telefoonnummer"
-            >Telefoonnummer toezichthouder<span class="required-field">*</span>
-          </label>
-          <input
-            type="tel"
-            id="toezichthouder-telefoonnummer"
-            name="toezichthouder-telefoonnummer"
-          />
-        </div>
-      </div>
-
-      <fieldset class="label-column">
-        <legend>Voorkeur benadering <span class="required-field">*</span></legend>
-        <div class="radio-container">
-          <input id="preference-email" type="radio" name="voorkeur-benadering" value="EMAIL" checked>
-          <label for="preference-email">E-mail</label>
-
-          <input id="preference-telephone" type="radio" name="voorkeur-benadering" value="TELEFONISCH" >
-          <label for="preference-telephone" >Telefonisch</label>
-        </div>
-      </fieldset>
-
-      <div class="label-column dropdown">
-        <label for="type-onderzoek">Voorkeur type onderzoek <span class="required-field">*</span></label>
-        <select name="type-onderzoek" id="type-onderzoek" required>
-            <option value="" disabled selected>Selecteer type onderzoek</option>
-            <option value="ONLINE">Online</option>
-            <option value="OP LOCATIE">Op locatie</option>
-            <option value="TELEFONISCH">Telefonisch</option>
-        </select>
-      </div>
-
-      <div class="label-column full-width-form-element">
-        <label for="bijzonderheden-beschikbaarheid"
-          >Bijzonderheden beschikbaarheid
-        </label>
-        <input
-          type="text"
-          name="bijzonderheden-beschikbaarheid"
-          id="bijzonderheden-beschikbaarheid"
-        />
-      </div>
-      <div class="label-column">
-        <label class="checkbox-container" for="akkoord"
-          >Akkoord met voorwaarden en privacy
-          <input type="checkbox" id="akkoord" name="akkoord" />
-          <span class="checkmark"></span>
-        </label>
-      </div>
-      <div class="label-column">
-        <a class="document" target="_blank" href="/static/accessibilitynl_voorwaarden_gegevens-01012025.pdf">Klik hier om de voorwaarden te lezen</a>
-      </div>
-
-
-      <input id="createDeskundige" type="submit" value="Registreer" class="label-column" />
+  <div class="label-column dropdown">
+    <label for="type-beperking" class="required"
+      >Beperkingen <span class="required-field">*</span></label
+    >
+    <div
+      id="type-beperking"
+      class="disability-dropdown-container js-disability-dropdown-container"
+    >
+      <button
+        onclick="toggleDisabilityDropdown()"
+        class="dropdown-button js-disabilities-button"
+      >
+        Kies uw beperkingen <i class="arrow"></i>
+      </button>
+      <div id="disability-dropdown" class="dropdown-content"></div>
     </div>
-{% endblock %}
+  </div>
 
-{% block scripts %}
-    <script src="../static/js/registreer_deskundige.js"></script>
+  <div class="label-column">
+    <label for="hulpmiddelen">Gebruikte hulpmiddelen</label>
+    <input type="text" id="hulpmiddelen" name="hulpmiddelen" required />
+  </div>
+
+  <div class="label-column full-width-form-element">
+    <label for="introductie" class="required"
+      >Introductie <span class="required-field">*</span></label
+    >
+    <textarea name="introductie" id="introductie" required></textarea>
+  </div>
+
+  <div class="label-column full-width-form-element">
+    <label for="bijzonderheden">Bijzonderheden</label>
+    <input type="text" id="bijzonderheden" name="bijzonderheden" required />
+  </div>
+
+  <div class="full-width-form-element">
+    <label class="checkbox-container" for="toezichthouder"
+      >Toezichthouder
+      <input type="checkbox" id="toezichthouder" name="toezichthouder" />
+      <span class="checkmark"></span>
+    </label>
+  </div>
+
+  <div id="toezichthouder-container" class="full-width-form-element">
+    <div class="label-column">
+      <label for="toezichthouder-naam"
+        >Naam toezichthouder <span class="required-field">*</span></label
+      >
+      <input type="text" id="toezichthouder-naam" name="toezichthouder-naam" />
+    </div>
+
+    <div class="label-column">
+      <label for="toezichthouder-email"
+        >Email toezichthouder <span class="required-field">*</span></label
+      >
+      <input
+        type="email"
+        id="toezichthouder-email"
+        name="toezichthouder-email"
+      />
+    </div>
+
+    <div class="label-column full-width-form-element">
+      <label for="toezichthouder-telefoonnummer"
+        >Telefoonnummer toezichthouder<span class="required-field">*</span>
+      </label>
+      <input
+        type="tel"
+        id="toezichthouder-telefoonnummer"
+        name="toezichthouder-telefoonnummer"
+      />
+    </div>
+  </div>
+
+  <fieldset class="label-column">
+    <legend>Voorkeur benadering <span class="required-field">*</span></legend>
+    <div class="radio-container">
+      <input
+        id="preference-email"
+        type="radio"
+        name="voorkeur-benadering"
+        value="EMAIL"
+        checked
+      />
+      <label for="preference-email">E-mail</label>
+
+      <input
+        id="preference-telephone"
+        type="radio"
+        name="voorkeur-benadering"
+        value="TELEFONISCH"
+      />
+      <label for="preference-telephone">Telefonisch</label>
+    </div>
+  </fieldset>
+
+  <div class="label-column dropdown">
+    <label for="type-onderzoek"
+      >Voorkeur type onderzoek <span class="required-field">*</span></label
+    >
+    <select name="type-onderzoek" id="type-onderzoek" required>
+      <option value="" disabled selected>Selecteer type onderzoek</option>
+      <option value="ONLINE">Online</option>
+      <option value="OP LOCATIE">Op locatie</option>
+      <option value="TELEFONISCH">Telefonisch</option>
+    </select>
+  </div>
+
+  <div class="label-column full-width-form-element">
+    <label for="bijzonderheden-beschikbaarheid"
+      >Bijzonderheden beschikbaarheid
+    </label>
+    <input
+      type="text"
+      name="bijzonderheden-beschikbaarheid"
+      id="bijzonderheden-beschikbaarheid"
+    />
+  </div>
+  <div class="label-column">
+    <label class="checkbox-container" for="akkoord"
+      >Akkoord met voorwaarden en privacy
+      <input type="checkbox" id="akkoord" name="akkoord" />
+      <span class="checkmark"></span>
+    </label>
+  </div>
+  <div class="label-column">
+    <a
+      class="document"
+      target="_blank"
+      href="/static/accessibilitynl_voorwaarden_gegevens-01012025.pdf"
+      >Klik hier om de voorwaarden te lezen</a
+    >
+  </div>
+
+  <input
+    id="createDeskundige"
+    type="submit"
+    value="Registreer"
+    class="label-column"
+  />
+</div>
+{% endblock %} {% block scripts %}
+<script src="../static/js/registreer_deskundige.js"></script>
 {% endblock %}
