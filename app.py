@@ -213,4 +213,4 @@ def research_test():
     return render_template('edit_research_test.html')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)

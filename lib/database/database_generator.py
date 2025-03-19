@@ -2,6 +2,9 @@ import sqlite3
 from hashlib import sha256
 from pathlib import Path
 
+from lib.model.research import Research
+
+
 def hash_password(password):
     return sha256(password.encode('utf-8')).hexdigest()
 
@@ -25,10 +28,14 @@ class WP3DatabaseGenerator:
         self.create_table_inschrijvingen()
         self.create_table_token_blocklist()
         if self.create_initial_data:
-            self.insert_beperkingen()
-            self.insert_beheerders()
-            self.insert_defaults_into_tables()
+            self.fill_database()
 
+
+    def fill_database(self):
+        self.insert_beperkingen()
+        self.insert_beheerders()
+        self.insert_defaults_into_tables()
+        self.insert_research()
 
     def create_table_deskundigen(self):
         create_statement = """
@@ -227,52 +234,6 @@ class WP3DatabaseGenerator:
 
 
     def insert_defaults_into_tables(self):
-        insert_statement_experts = ("INSERT INTO deskundigen "
-                                    "(email, wachtwoord, voornaam, achternaam, geslacht, postcode, telefoonnummer, "
-                                    "geboortedatum, hulpmiddelen, bijzonderheden, bijzonderheden_beschikbaarheid, "
-                                    "introductie, type_onderzoeken, voorkeur_benadering, toezichthouder, "
-                                    "toezichthouder_naam, toezichthouder_email, toezichthouder_telefoonnummer, "
-                                    "status, beheerder_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
-        values_experts = ("vried@hr.nl", hash_password("geheimer"), "Diederik", "de Vries", "man", "1234AA", "06958388583",
-                          "2000-01-01", "Rollator", "heel oud", "alleen woensdag", "Hallo ik ben Diekerik",
-                          "TELEFONISCH", "nee", 1, "Jan", "jan@email.com", "06122222", "NIEUW", None)
-        self.__execute_transaction_statement(insert_statement_experts, values_experts)
-        print("✅ Filled new expert account")
-
-        insert_statement_experts = ("INSERT INTO deskundigen "
-                                    "(email, wachtwoord, voornaam, achternaam, geslacht, postcode, telefoonnummer, "
-                                    "geboortedatum, hulpmiddelen, bijzonderheden, bijzonderheden_beschikbaarheid, "
-                                    "introductie, type_onderzoeken, voorkeur_benadering, toezichthouder, "
-                                    "toezichthouder_naam, toezichthouder_email, toezichthouder_telefoonnummer, "
-                                    "status, beheerder_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
-        values_experts = ("friet@hr.nl", hash_password("geheimer"), "Diederik", "de Vries", "man", "1234AA", "06958388583",
-                          "1800-01-01", "Rollator", "heel oud", "alleen woensdag", "Hallo ik ben Diekerik",
-                          "TELEFONISCH", "nee", 1, "Jan", "jan@email.com", "06122222", "GOEDGEKEURD", None)
-        self.__execute_transaction_statement(insert_statement_experts, values_experts)
-        print("✅ Filled accepted expert account")
-
-        insert_statement_research = ("""INSERT INTO onderzoeken 
-            (organisatie_id, titel, beschrijving, beschikbaar, datum_vanaf, datum_tot, onderzoek_type, locatie, 
-                met_beloning, beloning, leeftijd_vanaf, leeftijd_tot, status) 
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""")
-
-        values_research = (1, 'Onderzoeken 2222', "Oke", True, '01-02-2025', '01-04-2025', 'OP LOCATIE',
-                           'Abbenbroek', True, '$1', 19, 77, 'NIEUW')
-        self.__execute_transaction_statement(insert_statement_research, values_research)
-        print("✅ Filled new research item")
-
-
-        insert_statement_research = ("""INSERT INTO onderzoeken 
-                    (organisatie_id, titel, beschrijving, beschikbaar, datum_vanaf, datum_tot, onderzoek_type, locatie, 
-                        met_beloning, beloning, leeftijd_vanaf, leeftijd_tot, status) 
-                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""")
-
-        values_research = (1, 'Onderzoeken 2222', "Oke", True, '01-02-2025', '01-04-2025', 'OP LOCATIE',
-                           'Abbenbroek', True, '$1', 19, 77, 'GOEDGEKEURD')
-        self.__execute_transaction_statement(insert_statement_research, values_research)
-        print("✅ Filled accepted research item")
-
-
         insert_statement_organisation = ("""INSERT INTO organisaties
             (naam, organisatie_type, website, beschrijving, contactpersoon, email, telefoonnummer, overige_details, wachtwoord)
             VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)""")
@@ -280,6 +241,52 @@ class WP3DatabaseGenerator:
         self.__execute_transaction_statement(insert_statement_organisation, values_organisation)
         print("✅ Filled default organisation account")
 
+    def insert_research(self):
+        # Create default research item:
+        research_item = {
+            'titel': 'Onderzoek naar doofheid van mensen',
+            'beschikbaar': True,
+            'beschrijving': 'Wij zoeken 20 mensen die doof zijn voor een onderzoek naar het gehoor.',
+            'datum_vanaf': '2025-01-01',
+            'datum_tot': '2025-08-01',
+            'onderzoek_type': 'OP LOCATIE',
+            'locatie': 'Rotterdam',
+            'met_beloning': True,
+            'beloning': 'Bol.com cadeaukaart van 20 euro.',
+            'leeftijd_vanaf': 18,
+            'leeftijd_tot': 80,
+            'status': 'NIEUW'
+        }
+        organisation_id = 1
+
+        # Create new research
+        insert_statement = """
+            INSERT INTO onderzoeken 
+            (
+                organisatie_id, titel, beschrijving, beschikbaar, datum_vanaf, datum_tot, onderzoek_type, locatie, 
+                met_beloning, beloning, leeftijd_vanaf, leeftijd_tot, status
+            ) 
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+            """
+
+        values = (
+                organisation_id, research_item['titel'], research_item['beschrijving'], research_item['beschikbaar'],
+                research_item['datum_vanaf'], research_item['datum_tot'], research_item['onderzoek_type'],
+                research_item['locatie'], research_item['met_beloning'], research_item['beloning'],
+                research_item['leeftijd_vanaf'], research_item['leeftijd_tot'], research_item['status']
+            )
+
+        self.__execute_transaction_statement(insert_statement, values)
+        print("✅ Filled research")
+
+        disability_research_couple = [
+            (1, 1), # Doof
+            (2, 1), # Slechthorend
+            (3, 1)  # Doofblind
+        ]
+        insert_statement_dis = "INSERT INTO beperking_onderzoek (beperking_id, onderzoek_id) VALUES (?,?)"
+        self.__execute_many_transaction_statement(insert_statement_dis, disability_research_couple)
+        print("✅ Filled disability with research")
 
 
 
@@ -320,6 +327,9 @@ class WP3DatabaseGenerator:
                 raise ValueError(
                     f"Could not create database file {self.database_file} due to error {e}"
                 )
+
+
+
 
 
 if __name__ == "__main__":

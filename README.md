@@ -1,14 +1,23 @@
-# wp3-2025-starter
+Python versie: 3.13
 
-Template voor WP3 opdracht "Accessibility Hub". Vul dit document aan zoals beschreven in eisen rondom opleveren (zie ook de [opdracht](CASUS.md))
+Maak een virtual environment:
+1) python -m venv venv
+2) .\venv\Scripts\activate
 
-Namen:
+Installeer packages:
+pip install -r requirements.txt
 
-- Clayton Sumter
-- Yorick Mol
-- Timothy Jansen
-- Daan Stuivenberg
+Start de app met:
+python app.py
+En ga naar http://127.0.0.1:5000
 
-Bronnen:
+# Website
+Log in met de email "kruwg@hr.nl" en wachtwoord "geheim" om in te loggen in een beheerder account.
+
+## Beheerders
+Op het beheerder dashboard 
+
+
+# Bronnen:
 
 - https://www.w3schools.com/
