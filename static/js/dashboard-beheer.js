@@ -92,6 +92,18 @@ function openDetailsModal(dataID, dataType) {
       if (dataType === "expert") {
         const expertData = responseData.experts[dataID - 1] // Index key offset
 
+      let guardianContent = "";
+      if (expertData['toezichthouder'] === 1) {
+          guardianContent = `
+            <div>
+            <h2>Gegevens Voogd</h2>
+            <p>Naam: ${expertData['toezichthouder_naam']}</p>
+            <p>Email: ${expertData['toezichthouder_email']}</p>
+            <p>Telefoonnummer: ${expertData['toezichthouder_telefoonnummer']}</p>
+            </div>
+      `;
+      }
+
         // Moet nog aan gewerkt worden
         modalContent = `
                         <h1>Expert Details</h1>
@@ -115,7 +127,8 @@ function openDetailsModal(dataID, dataType) {
                                 <p>Bijzonderheden: ${expertData["bijzonderheden"]}</p>
                                 <p>Bijzonderheden beschikbaarheid: ${expertData["bijzonderheden_beschikbaarheid"]}</p>
                                 <p>Type onderzoeken: ${expertData["type_onderzoeken"]}</p>     
-                            </div>                        
+                            </div>    
+                            ${guardianContent}                    
                         </div>
                             <form method="POST" id="detailsModal">
                                 <input class="modal-btn" type="submit" name="submit" value="Accepteren">

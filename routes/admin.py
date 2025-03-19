@@ -24,6 +24,10 @@ def manage():
 def organisatie_registratie():
     return render_template('organisatie_registratie.html')
 
+@admin_bp.route('/admin/log', methods=['GET'])
+def request_log():
+    return render_template('request_log.html')
+
 # API's
 ## Create admin account
 @admin_bp.route('/api/admin/beheer', methods=['POST'])
@@ -136,6 +140,7 @@ def api_get_data():
     experts_model = Experts()
     enlistment_model = Enlistment()
     research_model = Research()
+    user_model = Users()
 
     expert_data = experts_model.get_experts()
     expert_dict = [dict(row) for row in expert_data]
@@ -146,10 +151,14 @@ def api_get_data():
     enlistment_data = enlistment_model.get_enlistments_details()
     enlistment_dict = [dict(row) for row in enlistment_data]
 
+    admin_data = user_model.get_admins()
+    admin_dict = [dict(row) for row in admin_data]
+
     return {
         "experts": expert_dict,
         "enlistments": enlistment_dict,
-        "researches": research_data
+        "researches": research_data,
+        "admins": admin_dict
     }
 
 @admin_bp.route('/api/admin', methods=['PATCH'])
@@ -169,15 +178,19 @@ def api_status_update():
     if data_type == 'expert':
         experts_model = Experts()
         experts_model.status_update(status, data_id, admin_id)
-        return {"message" : "Registratie succesvol geaccepteerd!", "success": True}
+        return {"message" : "Registratie succesvol bijgewerkt!", "success": True}
     elif data_type == 'enlistment':
         enlistment_model = Enlistment()
         enlistment_model.status_update(status, data_id, admin_id)
-        return {"message" : "Inschrijving succesvol geaccepteerd!", "success": True}
+        return {"message" : "Inschrijving succesvol bijgewerkt!", "success": True}
     elif data_type == 'research':
         research_model = Research()
         research_model.status_update(status, data_id, admin_id)
-        return {"message" : "Onderzoek succesvol geaccepteerd!", "success": True}
+        return {"message" : "Onderzoek succesvol bijgewerkt!", "success": True}
     else:
-        return {"message": "Er is iets fout gegaan tijdens het accepteren van het verzoek."}
+        return {"message": "Er is iets fout gegaan tijdens het bijgewerkt van het verzoek."}
+
+
+
+
 

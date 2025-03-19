@@ -42,7 +42,7 @@ PUBLIC_API_ROUTES = [
     'organisation.edit_research', 'organisation.get_research', 'auth.whoami', 'auth.login_jwt', 'auth.refresh_access_token',
     'auth.logout_jwt', 'organisation.create_research_item', 'organisation.get_research_by_id', 'organisation.edit_organisation'
 ]
-ADMIN_ROUTES = ['admin.manage', 'admin.dashboard_beheer', 'admin.organisatie_registratie']
+ADMIN_ROUTES = ['admin.manage', 'admin.dashboard_beheer', 'admin.organisatie_registratie', 'admin.request_log']
 EXPERT_ROUTES = ['expert.dashboard', 'expert.register', 'expert.edit', 'expert.details']
 
 temp_routes = ['expert.edit', 'expert.deskundige_api']
