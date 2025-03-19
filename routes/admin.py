@@ -178,17 +178,17 @@ def api_status_update():
     if data_type == 'expert':
         experts_model = Experts()
         experts_model.status_update(status, data_id, admin_id)
-        return {"message" : "Registratie succesvol geaccepteerd!", "success": True}
+        return {"message" : "Registratie succesvol bijgewerkt!", "success": True}
     elif data_type == 'enlistment':
         enlistment_model = Enlistment()
         enlistment_model.status_update(status, data_id, admin_id)
-        return {"message" : "Inschrijving succesvol geaccepteerd!", "success": True}
+        return {"message" : "Inschrijving succesvol bijgewerkt!", "success": True}
     elif data_type == 'research':
         research_model = Research()
         research_model.status_update(status, data_id, admin_id)
-        return {"message" : "Onderzoek succesvol geaccepteerd!", "success": True}
+        return {"message" : "Onderzoek succesvol bijgewerkt!", "success": True}
     else:
-        return {"message": "Er is iets fout gegaan tijdens het accepteren van het verzoek."}
+        return {"message": "Er is iets fout gegaan tijdens het bijgewerkt van het verzoek."}
 
 
 

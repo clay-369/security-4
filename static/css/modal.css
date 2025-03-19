@@ -17,6 +17,10 @@
   padding: 30px 0;
 }
 
+.modal.account-modal {
+  display: none;
+}
+
 .dark .modal {
   background-color: #1c3b8b;
 }
