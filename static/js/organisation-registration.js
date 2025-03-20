@@ -60,10 +60,11 @@ function createOrganisation(data) {
     })
         .then(response => response.json())
         .then(data => {
-            if (data['error'] === 'token_expired') {
-                window.location.replace("/logout");
-            }
-            const type = data['success'] ? 'success' : 'error'
+            if (data["error"] === "token_expired") {
+                refreshAccessToken(createOrganisation, [data]);
+                return;
+              }
+            const type = data['success'] ? 'success' : 'error';
             showSnackbar(data['message'], type);
 
             if (data['success']) {

@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from lib.model.database import Database
 from lib.model.disabilities import Disabilities
 from lib.model.enlistments import Enlistment
@@ -5,7 +7,7 @@ from lib.model.enlistments import Enlistment
 
 class Research:
     def __init__(self):
-        database = Database("./databases/database.db")
+        database = Database('./databases/database.db')
         self.conn, self.cursor = database.connect_db()
 
     def get_research_by_id(self, research_id:int):

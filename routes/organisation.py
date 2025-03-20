@@ -117,14 +117,13 @@ def edit_organisation():
     organisation_id = claims['organisation_id']
     data = request.get_json()
 
-    print(data)
-
     organisation_model = Organisation()
     is_edited = organisation_model.edit_organisation(organisation_id, data)
     if not is_edited:
         return {"message": "Organisatie kon niet bewerkt worden."}, 400
 
     edited_organisation = dict(organisation_model.get_organisation_by_email(data['email']))
+    edited_organisation.pop('wachtwoord')
 
     return {"message": "Organisatie succesvol bewerkt.", "organisatie": edited_organisation}, 200
 
