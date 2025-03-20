@@ -33,7 +33,7 @@ window.addEventListener("load", function () {
             `disability-checkbox-${disability.beperking_id}`
           )
           checkbox.tabIndex = -1
-          checkbox.checked = true;
+          checkbox.checked = true
 
           const checkmarkSpan = document.createElement("span")
           checkmarkSpan.classList.add("checkmark")
@@ -48,8 +48,10 @@ window.addEventListener("load", function () {
           label.innerHTML += disability.beperking
           label.addEventListener("keydown", (event) => {
             if (event["key"] === "Enter") {
-              let checkbox = document.querySelector(`.disability-checkbox-${disability.beperking_id}`);
-              checkbox.checked = !checkbox.checked;
+              let checkbox = document.querySelector(
+                `.disability-checkbox-${disability.beperking_id}`
+              )
+              checkbox.checked = !checkbox.checked
             }
           })
 
@@ -142,6 +144,12 @@ document
       beperkingen: beperkingen,
     }
 
+    const { success, message } = check_account(deskundige_data)
+    if (!success) {
+      showSnackbar(message, "error")
+      return
+    }
+
     fetch("/api/deskundige", {
       method: "POST",
       headers: {
@@ -188,5 +196,134 @@ function toggleDisabilityDropdown() {
     containerElem.classList.remove("show-dropdown")
   } else {
     containerElem.classList.add("show-dropdown")
+  }
+}
+
+function check_account(deskundige) {
+  const neccesary_fields = [
+    "email",
+    "wachtwoord",
+    "voornaam",
+    "achternaam",
+    "postcode",
+    "telefoonnummer",
+    "geboortedatum",
+    "introductie",
+    "voorkeur_benadering",
+    "type_beperking",
+  ]
+  const email_regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  const wachtwoord_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
+  const telefoonnummer_regex = /^\d{10}$/
+  const postcode_regex = /^[1-9][0-9]{3} ?[A-Z]{2}$/
+
+  if (deskundige["voorkeur_benadering"] == "") {
+    return {
+      success: false,
+      message: "U moet een voorkeur benadering selecteren.",
+    }
+  }
+
+  if (deskundige["introductie"].length < 10) {
+    return {
+      success: false,
+      message: "Vertel wat meer in je introductie.",
+    }
+  }
+
+  if (deskundige["akkoord"] == false) {
+    return {
+      success: false,
+      message: "U moet akkoord gaan met de voorwaarden en privacy.",
+    }
+  }
+
+  if (deskundige["toezichthouder"] == true) {
+    neccesary_fields.push("toezichthouder_naam")
+    neccesary_fields.push("toezichthouder_email")
+    neccesary_fields.push("toezichthouder_telefoonnummer")
+
+    if (deskundige["toezichthouder_naam"] == "") {
+      return {
+        success: false,
+        message:
+          "U moet een naam invullen voor de toezichthouder omdat u toezichthouder heeft geselecteerd.",
+      }
+    }
+
+    if (deskundige["toezichthouder_email"] == "") {
+      return {
+        success: false,
+        message:
+          "U moet een e-mailadres invullen voor de toezichthouder omdat u toezichthouder heeft geselecteerd.",
+      }
+    }
+
+    if (deskundige["toezichthouder_telefoonnummer"] == "") {
+      return {
+        success: false,
+        message:
+          "U moet een telefoonnummer invullen voor de toezichthouder omdat u toezichthouder heeft geselecteerd.",
+      }
+    }
+  }
+
+  if (!email_regex.test(deskundige["email"])) {
+    return {
+      success: false,
+      message: "U moet een geldig e-mailadres invullen.",
+    }
+  }
+
+  if (!wachtwoord_regex.test(deskundige["wachtwoord"])) {
+    return {
+      success: false,
+      message:
+        "Het wachtwoord moet minimaal 8 tekens lang zijn, ten minste één kleine letter, één hoofdletter en één cijfer bevatten. Het mag alleen letters en cijfers bevatten.",
+    }
+  }
+
+  if (!telefoonnummer_regex.test(deskundige["telefoonnummer"])) {
+    return {
+      success: false,
+      message: "U moet een geldig telefoonnummer invullen.",
+    }
+  }
+
+  if (!postcode_regex.test(deskundige["postcode"])) {
+    return {
+      success: false,
+      message: "U moet een geldige postcode invullen.",
+    }
+  }
+
+  if (deskundige["type_onderzoek"] == "") {
+    return {
+      success: false,
+      message: "U moet een type onderzoek selecteren.",
+    }
+  }
+
+  for (const field of neccesary_fields) {
+    if (deskundige[field] == "") {
+      return {
+        success: false,
+        message: `Het veld ${field} is verplicht.`,
+      }
+    }
+  }
+
+  for (const field of deskundige) {
+    if (field in neccesary_fields && deskundige[field] == "") {
+      return {
+        success: false,
+        message: `Het veld ${field} is verplicht.`,
+      }
+    }
+  }
+
+  return {
+    success: true,
+    message: "Account is geldig.",
   }
 }
