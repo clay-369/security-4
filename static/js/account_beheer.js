@@ -343,7 +343,8 @@ function check_account(deskundige) {
   if (!wachtwoord_regex.test(deskundige["wachtwoord"])) {
     return {
       success: false,
-      message: "U moet een geldig wachtwoord invullen.",
+      message:
+        "Het wachtwoord moet minimaal 8 tekens lang zijn, ten minste één kleine letter, één hoofdletter en één cijfer bevatten. Het mag alleen letters en cijfers bevatten.",
     }
   }
 
