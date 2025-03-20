@@ -1,15 +1,25 @@
 const disabilities = []
 const research = []
 
-// Toezichthouder checkbox
+// Global variable
+let toezichthouder = false
+
 document
-  .getElementById("toezichthouder")
+  .getElementById("geboortedatum")
   .addEventListener("change", function () {
-    if (this.checked) {
+    const dateToday = new Date()
+    const dateOfBirth = new Date(this.value)
+    const age = dateToday.getFullYear() - dateOfBirth.getFullYear()
+
+    if (age < 18) {
+      showSnackbar("U moet een voogd hebben om te registreren.", "error")
       document.getElementById("toezichthouder-container").style.display =
         "block"
+      toezichthouder = true
+      return
     } else {
       document.getElementById("toezichthouder-container").style.display = "none"
+      toezichthouder = false
     }
   })
 
@@ -88,7 +98,6 @@ document
     if (bijzonderheden === "") {
       bijzonderheden = null
     }
-    const toezichthouder = document.getElementById("toezichthouder").checked
     const akkoord = document.getElementById("akkoord").checked
     const toezichthouder_naam = document.getElementById(
       "toezichthouder-naam"
@@ -238,7 +247,7 @@ function check_account(deskundige) {
     }
   }
 
-  if (deskundige["toezichthouder"] == true) {
+  if (toezichthouder == true) {
     neccesary_fields.push("toezichthouder_naam")
     neccesary_fields.push("toezichthouder_email")
     neccesary_fields.push("toezichthouder_telefoonnummer")
@@ -306,15 +315,6 @@ function check_account(deskundige) {
 
   for (const field of neccesary_fields) {
     if (deskundige[field] == "") {
-      return {
-        success: false,
-        message: `Het veld ${field} is verplicht.`,
-      }
-    }
-  }
-
-  for (const field of deskundige) {
-    if (field in neccesary_fields && deskundige[field] == "") {
       return {
         success: false,
         message: `Het veld ${field} is verplicht.`,

@@ -1,13 +1,11 @@
 {% extends 'base.html' %} {% block title %}Account beheer{% endblock %} {% block
 styles%}
 <link rel="stylesheet" href="/static/css/accountbeheer.css" />
-{% endblock %}
-{% block nav_links %}
+{% endblock %} {% block nav_links %}
 <a href="/deskundige">Dashboard</a>
 <a href="/deskundige/profiel">Profiel</a>
 <a href="/logout">Uitloggen</a>
-{% endblock %}
-{% block content %}
+{% endblock %} {% block content %}
 <h1>Profiel</h1>
 <form onsubmit="return false;" id="updateDeskundige">
   <div class="form-header">
@@ -41,10 +39,13 @@ styles%}
     </div>
 
     <div class="label-column">
-      <label for="wachtwoord"
-        >Wachtwoord</label
-      >
-      <input placeholder="Wachtwoord" type="password" id="wachtwoord" name="wachtwoord" />
+      <label for="wachtwoord">Wachtwoord</label>
+      <input
+        placeholder="Wachtwoord"
+        type="password"
+        id="wachtwoord"
+        name="wachtwoord"
+      />
     </div>
 
     <div class="label-column">
@@ -96,18 +97,25 @@ styles%}
     </div>
   </div>
 
-
   <div class="account-info-wrapper">
     <h3>Beperkingen & extra gegevens</h3>
 
     <div class="label-column dropdown">
-        <label for="type-beperking" class="required">Beperkingen <span class="required-field">*</span></label>
-        <div id="type-beperking" class="disability-dropdown-container js-disability-dropdown-container">
-          <span onclick="toggleDisabilityDropdown()" class="dropdown-button js-disabilities-button">Kies uw beperkingen <i class="arrow"></i></span>
-          <div id="disability-dropdown" class="dropdown-content">
-            </div>
-          </div>
+      <label for="type-beperking" class="required"
+        >Beperkingen <span class="required-field">*</span></label
+      >
+      <div
+        id="type-beperking"
+        class="disability-dropdown-container js-disability-dropdown-container"
+      >
+        <span
+          onclick="toggleDisabilityDropdown()"
+          class="dropdown-button js-disabilities-button"
+          >Kies uw beperkingen <i class="arrow"></i
+        ></span>
+        <div id="disability-dropdown" class="dropdown-content"></div>
       </div>
+    </div>
 
     <div class="label-column">
       <label for="hulpmiddelen">Gebruikte hulpmiddelen</label>
@@ -155,27 +163,16 @@ styles%}
     <div class="label-column dropdown">
       <label for="type-onderzoek">Type onderzoek</label>
       <select name="type-onderzoek" id="type-onderzoek">
-            <option value="ONLINE">Online</option>
-            <option value="OP LOCATIE">Op locatie</option>
-            <option value="TELEFONISCH">Telefonisch</option>
+        <option value="ONLINE">Online</option>
+        <option value="OP LOCATIE">Op locatie</option>
+        <option value="TELEFONISCH">Telefonisch</option>
       </select>
     </div>
   </div>
 
   <!-- Toezichthouder -->
-  <div class="account-info-wrapper">
+  <div class="account-info-wrapper" id="toezichthouder-wrapper">
     <h3>Gegevens van de toezichthouder</h3>
-    <div class="label-column">
-      <label class="checkbox-container"
-        >Toezichthouder
-        <input
-          type="checkbox"
-          id="toezichthouder"
-          name="toezichthouder" checked="checked"
-        />
-        <span class="checkmark"></span>
-      </label>
-    </div>
 
     <div class="label-column">
       <label for="toezichthouder-naam">Naam toezichthouder </label>
