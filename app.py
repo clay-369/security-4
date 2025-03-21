@@ -118,19 +118,7 @@ def logout():
     return render_template('logout.html')
 
 
-# API tests
-## Create Research
-@app.route('/test/maak-onderzoek')
-def test():
-    return render_template('api-test.html')
-
-@app.route('/test/organisatie/login')
-def test2():
-    return render_template('public-api-test.html')
-
-
 # JWT
-
 ## Load current user
 @jwt.user_lookup_loader
 def user_lookup_callback(_jwt_headers, jwt_data):
@@ -201,10 +189,6 @@ def token_in_blocklist_callback(_jwt_header, jwt_data):
 
     return is_blocked
 
-
-@app.route('/edit/research')
-def research_test():
-    return render_template('edit_research_test.html')
 
 if __name__ == "__main__":
     app.run(debug=False)
