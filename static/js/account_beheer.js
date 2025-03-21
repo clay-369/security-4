@@ -1,12 +1,22 @@
 // Toezichthouder checkbox
+// Global variable
+let toezichthouder = false
+
 document
-  .getElementById("toezichthouder")
+  .getElementById("geboortedatum")
   .addEventListener("change", function () {
-    if (this.checked) {
-      document.getElementById("toezichthouder-container").style.display =
-        "block"
+    const dateToday = new Date()
+    const dateOfBirth = new Date(this.value)
+    const age = dateToday.getFullYear() - dateOfBirth.getFullYear()
+
+    if (age < 18) {
+      showSnackbar("U moet een voogd hebben om te registreren.", "error")
+      document.getElementById("toezichthouder-wrapper").style.display = "block"
+      toezichthouder = true
+      return
     } else {
-      document.getElementById("toezichthouder-container").style.display = "none"
+      document.getElementById("toezichthouder-wrapper").style.display = "none"
+      toezichthouder = false
     }
   })
 
@@ -105,7 +115,6 @@ function fillPage() {
       document.getElementById("hulpmiddelen").value = expert.hulpmiddelen
       document.getElementById("introductie").value = expert.introductie
       document.getElementById("bijzonderheden").value = expert.bijzonderheden
-      document.getElementById("toezichthouder").checked = expert.toezichthouder
       document.getElementById("toezichthouder-naam").value =
         expert.toezichthouder_naam
       document.getElementById("toezichthouder-email").value =
@@ -121,6 +130,15 @@ function fillPage() {
       } else {
         document.getElementById("preference-email").checked = true
         document.getElementById("preference-telephone").checked = false
+      }
+
+      if (expert.toezichthouder == true) {
+        document.getElementById("toezichthouder-wrapper").style.display =
+          "block"
+        toezichthouder = true
+      } else {
+        document.getElementById("toezichthouder-wrapper").style.display = "none"
+        toezichthouder = false
       }
     })
     .catch((error) => {
@@ -147,7 +165,6 @@ document
     const hulpmiddelen = document.getElementById("hulpmiddelen").value
     const introductie = document.getElementById("introductie").value
     const bijzonderheden = document.getElementById("bijzonderheden").value
-    const toezichthouder = document.getElementById("toezichthouder").checked
     const toezichthouder_naam = document.getElementById(
       "toezichthouder-naam"
     ).value
@@ -302,7 +319,7 @@ function check_account(deskundige) {
     }
   }
 
-  if (deskundige["toezichthouder"] == true) {
+  if (toezichthouder == true) {
     neccesary_fields.push("toezichthouder_naam")
     neccesary_fields.push("toezichthouder_email")
     neccesary_fields.push("toezichthouder_telefoonnummer")
@@ -370,15 +387,6 @@ function check_account(deskundige) {
 
   for (const field of neccesary_fields) {
     if (deskundige[field] == "") {
-      return {
-        success: false,
-        message: `Het veld ${field} is verplicht.`,
-      }
-    }
-  }
-
-  for (const field of deskundige) {
-    if (field in neccesary_fields && deskundige[field] == "") {
       return {
         success: false,
         message: `Het veld ${field} is verplicht.`,
