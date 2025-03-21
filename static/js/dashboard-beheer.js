@@ -136,7 +136,6 @@ function openDetailsModal(dataID, dataType) {
                             </form>
                 `
       } else if (dataType === "enlistment") {
-        console.log("Enlistment function")
         const enlistmentData = responseData.enlistments[dataID - 1] // Index key offset
         // Moet nog aan gewerkt worden
         modalContent = `
@@ -185,7 +184,6 @@ function openDetailsModal(dataID, dataType) {
                             </form>
                 `
       } else if (dataType === "research") {
-        console.log("Research function")
         const research = responseData.researches[dataID - 1]
         // Moet nog aan gewerkt worden
         modalContent = `

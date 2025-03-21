@@ -57,7 +57,6 @@ window.addEventListener("load", function () {
                     `.disability-checkbox-${disability.beperking_id}`
                   )
                   checkbox.checked = !checkbox.checked
-                  console.log(checkbox.checked)
                 }
               })
 

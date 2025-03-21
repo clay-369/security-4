@@ -1,5 +1,4 @@
 from lib.model.database import Database
-from lib.model.disabilities import Disabilities
 from lib.model.users import hash_password
 import re
 from datetime import datetime, date

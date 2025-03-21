@@ -1,6 +1,5 @@
 import {closeResearchModal, showResearchModal} from "../experts-dashboard.js";
 import {get_enlistments_by_expert} from "./enlistments.js";
-import {renderEnlistmentPage} from "./enlistments-page.js";
 
 
 export async function renderResearchPage() {

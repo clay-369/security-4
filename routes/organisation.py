@@ -1,7 +1,6 @@
 from flask import Blueprint, request
-from flask_jwt_extended import jwt_required, get_jwt, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt
 
-from lib.model.enlistments import Enlistment
 from lib.model.organisation import Organisation
 from lib.model.research import Research
 

@@ -2,7 +2,6 @@ import sqlite3
 from hashlib import sha256
 from pathlib import Path
 
-from lib.model.research import Research
 
 
 def hash_password(password):

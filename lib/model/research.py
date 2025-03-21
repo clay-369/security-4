@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from lib.model.database import Database
 from lib.model.disabilities import Disabilities
 from lib.model.enlistments import Enlistment
