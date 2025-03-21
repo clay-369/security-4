@@ -86,11 +86,6 @@ def disabilities():
         return {"success": True, "disabilities": all_disabilities, "message": "Beperkingen gevonden"}
     else:
         return {"success": False, "message": "Geen beperkingen gevonden"}
-        
-# @expert_bp.route("/api/research", methods=["GET"])
-# def research():
-#     research_model = Research()
-#     all_research = research_model.get_all_research_items()
-#     return {"success": True, "research": all_research, "message": "Onderzoeken gevonden"}
+
 
 

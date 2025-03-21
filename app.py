@@ -43,9 +43,7 @@ PUBLIC_API_ROUTES = [
     'auth.logout_jwt', 'organisation.create_research_item', 'organisation.get_research_by_id', 'organisation.edit_organisation'
 ]
 ADMIN_ROUTES = ['admin.manage', 'admin.dashboard_beheer', 'admin.organisatie_registratie', 'admin.request_log']
-EXPERT_ROUTES = ['expert.dashboard', 'expert.register', 'expert.edit', 'expert.details']
-
-temp_routes = ['expert.edit', 'expert.deskundige_api']
+EXPERT_ROUTES = ['expert.dashboard', 'expert.register', 'expert.edit', 'expert.details', 'expert.edit']
 
 @app.before_request
 def before_request():
@@ -54,10 +52,6 @@ def before_request():
 
     if request.endpoint in PUBLIC_API_ROUTES:
         return # Let jwt function handle protection
-
-    # TEMP
-    if request.endpoint in temp_routes:
-        return
 
     logged_in = session.get('user_id')
 

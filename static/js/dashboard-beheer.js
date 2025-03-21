@@ -168,13 +168,10 @@ function openDetailsModal(dataID, dataType) {
                                     
                                     ${
                                         enlistmentData.beloning 
-                                        ? `<p>Beloning: ${enlistmentData.beloning}</p>
-                                            <p>${enlistmentData.leeftijd_vanaf} tot ${enlistmentData.leeftijd_tot} jaar</p>
-                                            <p>${enlistmentData.titel}</p>`
+                                        ? `<p>Beloning: ${enlistmentData.beloning}</p>`
                                         : ''
                                     }
-                                    <p>Vanaf leeftijd: ${enlistmentData["leeftijd_vanaf"]}</p>
-                                    <p>Tot leeftijd: ${enlistmentData["leeftijd_tot"]}</p>
+                                    <p>Leeftijd: ${enlistmentData.leeftijd_vanaf} tot ${enlistmentData.leeftijd_tot} jaar</p>
                                 <div>
                                 
                             </div>
@@ -192,26 +189,26 @@ function openDetailsModal(dataID, dataType) {
                 <div>
                     <h1>Onderzoek Details</h1>
                     <h2>Onderzoek</h2>
-                    <p>titel: ${research.titel}</p>
-                    <p>beschrijving: ${research.beschrijving}</p>
-                    <p>datum: ${research.datum_vanaf} tot ${research.datum_tot}</p>
-                    <p>type: ${research.onderzoek_type.toLowerCase()}</p>
+                    <p>Titel: ${research.titel}</p>
+                    <p>Beschrijving: ${research.beschrijving}</p>
+                    <p>Datum: ${research.datum_vanaf} tot ${research.datum_tot}</p>
+                    <p>Type: ${research.onderzoek_type.toLowerCase()}</p>
                     
                     
                     ${
                         research.locatie
-                        ? `<p>locatie: ${research.locatie}</p>`
+                        ? `<p>Locatie: ${research.locatie}</p>`
                         : ''
                     }
                     
                     
                     ${
                         research.beloning 
-                        ? `<p>Beloning: ${research.beloning}</p>
-                            <p>${research.leeftijd_vanaf} tot ${research.leeftijd_tot} jaar</p>
-                            <p>${research.titel}</p>`
+                        ? `<p>Beloning: ${research.beloning}</p>`
                         : ''
                     }
+                    
+                    <p>Leeftijd: ${research.leeftijd_vanaf} tot ${research.leeftijd_tot} jaar</p>
                     
                 </div>
                 <div>

@@ -8,7 +8,10 @@ Installeer packages:
 pip install -r requirements.txt
 
 Start de app met:
-python app.py
+`python .\lib\database\database_generator.py`, om de database te genereren.
+
+`python app.py`, om de app te starten.
+
 En ga naar http://127.0.0.1:5000
 
 # Website
