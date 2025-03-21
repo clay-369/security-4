@@ -7,7 +7,7 @@ styles%}
 <a href="/logout">Uitloggen</a>
 {% endblock %} {% block content %}
 <h1>Profiel</h1>
-<form onsubmit="return false;" id="updateDeskundige">
+<div class="form">
   <div class="form-header">
     <div class="form-header-left">
       <img src="/static/icons/profile_picture.svg" alt="profiel icoon" />
@@ -16,9 +16,6 @@ styles%}
       </div>
     </div>
 
-    <div class="button-container">
-      <input class="edit-button" type="submit" value="Bewerken" />
-    </div>
   </div>
 
   <!-- Persoonlijke gegevens -->
@@ -101,18 +98,18 @@ styles%}
     <h3>Beperkingen & extra gegevens</h3>
 
     <div class="label-column dropdown">
-      <label for="type-beperking" class="required"
-        >Beperkingen <span class="required-field">*</span></label
+      <span for="type-beperking" class="required"
+        >Beperkingen <span class="required-field">*</span></span
       >
       <div
         id="type-beperking"
         class="disability-dropdown-container js-disability-dropdown-container"
       >
-        <span
+        <button
           onclick="toggleDisabilityDropdown()"
           class="dropdown-button js-disabilities-button"
           >Kies uw beperkingen <i class="arrow"></i
-        ></span>
+        ></button>
         <div id="disability-dropdown" class="dropdown-content"></div>
       </div>
     </div>
@@ -200,8 +197,8 @@ styles%}
     </div>
   </div>
 
-  <input type="submit" value="Opslaan" />
-</form>
+  <button onclick="submitEdit()" class="save-edit" id="updateDeskundige">Opslaan</button>
+</div>
 {% endblock %} {% block scripts %}
 <script src="/static/js/account_beheer.js"></script>
 {% endblock %}

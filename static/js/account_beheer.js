@@ -146,11 +146,7 @@ function fillPage() {
     })
 }
 
-document
-  .getElementById("updateDeskundige")
-  .addEventListener("submit", function (event) {
-    event.preventDefault()
-
+function submitEdit() {
     const firstName = document.getElementById("voornaam").value
     const lastName = document.getElementById("achternaam").value
     const email = document.getElementById("email").value
@@ -220,7 +216,7 @@ document
     }
 
     editExpert(deskundige_data)
-  })
+  }
 
 function editExpert(expertData) {
   fetch("/api/deskundige", {
@@ -239,6 +235,7 @@ function editExpert(expertData) {
       }
       if (data.success) {
         showSnackbar("Deskundige gewijzigd!", "success")
+        fillPage();
       } else {
         console.error(data.message)
         showSnackbar(data.message, "error")
@@ -355,14 +352,17 @@ function check_account(deskundige) {
       message: "U moet een geldig e-mailadres invullen.",
     }
   }
+    console.log(deskundige['wachtwoord'])
 
-  if (!wachtwoord_regex.test(deskundige["wachtwoord"])) {
-    return {
-      success: false,
-      message:
-        "Het wachtwoord moet minimaal 8 tekens lang zijn, ten minste één kleine letter, één hoofdletter en één cijfer bevatten. Het mag alleen letters en cijfers bevatten.",
+    if (deskundige['wachtwoord'] !== '' && deskundige['wachtwoord'] !== null) {
+        if (!wachtwoord_regex.test(deskundige["wachtwoord"])) {
+            return {
+                success: false,
+                message:
+                    "Het wachtwoord moet minimaal 8 tekens lang zijn, ten minste één kleine letter, één hoofdletter en één cijfer bevatten. Het mag alleen letters en cijfers bevatten.",
+            }
+        }
     }
-  }
 
   if (!telefoonnummer_regex.test(deskundige["telefoonnummer"])) {
     return {
