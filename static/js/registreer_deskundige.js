@@ -4,6 +4,18 @@ const research = []
 // Global variable
 let toezichthouder = false
 
+// Toezichthouder checkbox
+document
+  .getElementById("toezichthouder")
+  .addEventListener("change", function () {
+    if (this.checked) {
+      document.getElementById("toezichthouder-container").style.display =
+        "block"
+    } else {
+      document.getElementById("toezichthouder-container").style.display = "none"
+    }
+  })
+
 document
   .getElementById("geboortedatum")
   .addEventListener("change", function () {
@@ -98,6 +110,7 @@ document
     if (bijzonderheden === "") {
       bijzonderheden = null
     }
+    const toezichthouder = document.getElementById("toezichthouder").checked
     const akkoord = document.getElementById("akkoord").checked
     const toezichthouder_naam = document.getElementById(
       "toezichthouder-naam"
