@@ -123,10 +123,10 @@ function openDetailsModal(dataID, dataType) {
 
                             <div>
                                 <h2>Overige gegevens</h2>
-                                <p>Hulpmiddelen: ${expertData["hulpmiddelen"]}</p>
-                                <p>Bijzonderheden: ${expertData["bijzonderheden"]}</p>
-                                <p>Bijzonderheden beschikbaarheid: ${expertData["bijzonderheden_beschikbaarheid"]}</p>
-                                <p>Type onderzoeken: ${expertData["type_onderzoeken"]}</p>     
+                                <p>Hulpmiddelen: ${expertData["hulpmiddelen"] || 'Geen'}</p>
+                                <p>Bijzonderheden: ${expertData["bijzonderheden"] || 'Geen'}</p>
+                                <p>Bijzonderheden beschikbaarheid: ${expertData["bijzonderheden_beschikbaarheid"] || 'Geen'}</p>
+                                <p>Voorkeur onderzoeken: ${expertData["type_onderzoeken"].toLowerCase()}</p>     
                             </div>    
                             ${guardianContent}                    
                         </div>
@@ -148,10 +148,10 @@ function openDetailsModal(dataID, dataType) {
                                     <p>Geboortedatum: ${enlistmentData["geboortedatum"]}</p>
                                     <p>Email: ${enlistmentData["email"]}</p>
                                     <p>Telefoonnummer: ${enlistmentData["telefoonnummer"]}</p>
-                                    <p>Hulpmiddelen: ${enlistmentData["hulpmiddelen"]}</p>
-                                    <p>Bijzonderheden: ${enlistmentData["bijzonderheden"]}</p>
-                                    <p>Bijzonderheden beschikbaarheid: ${enlistmentData["bijzonderheden_beschikbaarheid"]}</p>
-                                    <p>Type onderzoeken: ${enlistmentData["type_onderzoeken"]}</p>     
+                                    <p>Hulpmiddelen: ${enlistmentData["hulpmiddelen"] || 'Geen'}</p>
+                                    <p>Bijzonderheden: ${enlistmentData["bijzonderheden"] || 'Geen'}</p>
+                                    <p>Bijzonderheden beschikbaarheid: ${enlistmentData["bijzonderheden_beschikbaarheid"] || 'Geen'}</p>
+                                    <p>Voorkeur onderzoeken: ${enlistmentData["type_onderzoeken"].toLowerCase()}</p>     
                                 </div>
                                 <div>
                                     <h2>Details onderzoek:</h2>
@@ -159,9 +159,22 @@ function openDetailsModal(dataID, dataType) {
                                     <p>Beschrijving: ${enlistmentData["beschrijving"]}</p>
                                     <p>Startdatum: ${enlistmentData["datum_vanaf"]}</p>
                                     <p>Einddatum: ${enlistmentData["datum_tot"]}</p>
-                                    <p>Onderzoek-type: ${enlistmentData["onderzoek_type"]}</p>
-                                    <p>Locatie: ${enlistmentData["locatie"]}</p>
-                                    <p>Vanaf leeftijd:: ${enlistmentData["leeftijd_vanaf"]}</p>
+                                    <p>Onderzoek-type: ${enlistmentData["onderzoek_type"].toLowerCase()}</p>
+                                    ${
+                                        enlistmentData.locatie
+                                        ? `<p>locatie: ${enlistmentData.locatie}</p>`
+                                        : ''
+                                    }
+                                    
+                                    
+                                    ${
+                                        enlistmentData.beloning 
+                                        ? `<p>Beloning: ${enlistmentData.beloning}</p>
+                                            <p>${enlistmentData.leeftijd_vanaf} tot ${enlistmentData.leeftijd_tot} jaar</p>
+                                            <p>${enlistmentData.titel}</p>`
+                                        : ''
+                                    }
+                                    <p>Vanaf leeftijd: ${enlistmentData["leeftijd_vanaf"]}</p>
                                     <p>Tot leeftijd: ${enlistmentData["leeftijd_tot"]}</p>
                                 <div>
                                 
@@ -186,17 +199,17 @@ function openDetailsModal(dataID, dataType) {
                     <p>datum: ${research.datum_vanaf} tot ${research.datum_tot}</p>
                     <p>type: ${research.onderzoek_type.toLowerCase()}</p>
                     
-                    <!-- If OP LOCATIE-->
+                    
                     ${
                         research.locatie
                         ? `<p>locatie: ${research.locatie}</p>`
                         : ''
                     }
                     
-                    <!--If statement for beloning-->
+                    
                     ${
                         research.beloning 
-                        ? `<p>${research.beloning}</p>
+                        ? `<p>Beloning: ${research.beloning}</p>
                             <p>${research.leeftijd_vanaf} tot ${research.leeftijd_tot} jaar</p>
                             <p>${research.titel}</p>`
                         : ''
