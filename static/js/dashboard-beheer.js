@@ -92,17 +92,17 @@ function openDetailsModal(dataID, dataType) {
       if (dataType === "expert") {
         const expertData = responseData.experts[dataID - 1] // Index key offset
 
-      let guardianContent = "";
-      if (expertData['toezichthouder'] === 1) {
+        let guardianContent = ""
+        if (expertData["toezichthouder"] === 1) {
           guardianContent = `
             <div>
             <h2>Gegevens Voogd</h2>
-            <p>Naam: ${expertData['toezichthouder_naam']}</p>
-            <p>Email: ${expertData['toezichthouder_email']}</p>
-            <p>Telefoonnummer: ${expertData['toezichthouder_telefoonnummer']}</p>
+            <p>Naam: ${expertData["toezichthouder_naam"]}</p>
+            <p>Email: ${expertData["toezichthouder_email"]}</p>
+            <p>Telefoonnummer: ${expertData["toezichthouder_telefoonnummer"]}</p>
             </div>
-      `;
-      }
+      `
+        }
 
         // Moet nog aan gewerkt worden
         modalContent = `
@@ -136,7 +136,6 @@ function openDetailsModal(dataID, dataType) {
                             </form>
                 `
       } else if (dataType === "enlistment") {
-        console.log("Enlistment function")
         const enlistmentData = responseData.enlistments[dataID - 1] // Index key offset
         // Moet nog aan gewerkt worden
         modalContent = `
@@ -172,7 +171,6 @@ function openDetailsModal(dataID, dataType) {
                             </form>
                 `
       } else if (dataType === "research") {
-        console.log("Research function")
         const research = responseData.researches[dataID - 1]
         // Moet nog aan gewerkt worden
         modalContent = `
@@ -183,23 +181,25 @@ function openDetailsModal(dataID, dataType) {
                     <h2>Onderzoek</h2>
                     <p>titel: ${research.titel}</p>
                     <p>beschrijving: ${research.beschrijving}</p>
-                    <p>datum: ${research.datum_vanaf} tot ${research.datum_tot}</p>
+                    <p>datum: ${research.datum_vanaf} tot ${
+          research.datum_tot
+        }</p>
                     <p>type: ${research.onderzoek_type.toLowerCase()}</p>
                     
                     <!-- If OP LOCATIE-->
                     ${
-                        research.locatie
+                      research.locatie
                         ? `<p>locatie: ${research.locatie}</p>`
-                        : ''
+                        : ""
                     }
                     
                     <!--If statement for beloning-->
                     ${
-                        research.beloning 
+                      research.beloning
                         ? `<p>${research.beloning}</p>
                             <p>${research.leeftijd_vanaf} tot ${research.leeftijd_tot} jaar</p>
                             <p>${research.titel}</p>`
-                        : ''
+                        : ""
                     }
                     
                 </div>
