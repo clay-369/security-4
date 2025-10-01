@@ -1,12 +1,19 @@
 import sqlite3
 from hashlib import sha256
 from pathlib import Path
+import bcrypt
 
-
-
+# Hash password using bcrypt
 def hash_password(password):
-    return sha256(password.encode('utf-8')).hexdigest()
+    # Encode password to bytes
+    password = password.encode('utf-8')
 
+    # Generate salt
+    salt = bcrypt.gensalt()
+
+    # Hash password
+    hashed_password = bcrypt.hashpw(password, salt)
+    return hashed_password
 
 class WP3DatabaseGenerator:
     def __init__(self, database_file, overwrite=False, initial_data=False):
